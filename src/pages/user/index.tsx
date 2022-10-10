@@ -12,6 +12,9 @@ function UserIndexPage(): JSX.Element {
             <Link href="/user/join">
                 회원가입
             </Link>
+            <Link href="/levels">
+                레벨 목록
+            </Link>
         </div>
     );
 }
