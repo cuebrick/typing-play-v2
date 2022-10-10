@@ -1,0 +1,22 @@
+@import "variables";
+.level-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  .level-item {
+    display: flex;
+    width: calc(25% - 20px);
+    height: 120px;
+    margin: $DEFAULT_ITEM_GAP;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    .trophy-badge{
+      width: 90px;
+      height: 90px;
+      flex-shrink: 0;
+      background-color: red;
+    }
+  }
+}
