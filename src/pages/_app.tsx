@@ -1,8 +1,10 @@
-import '../assets/styles/globals.css'
 import {ReactElement, ReactNode} from "react";
 import type {NextPage} from "next";
 import type { AppProps } from 'next/app'
-import DefaultLayout from "../components/layout/DefaultLayout";
+
+import 'assets/styles/index.scss';
+
+import DefaultLayout from "components/layout/DefaultLayout";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
