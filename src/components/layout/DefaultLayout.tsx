@@ -9,8 +9,11 @@ function DefaultLayout({children}: Props): JSX.Element {
                 <h1>
                     typing play
                 </h1>
+                <div className="user-info">
+                    user-icon
+                </div>
             </header>
-            <div>
+            <div className="contents-body">
                 {children}
             </div>
         </>
