@@ -1,16 +1,19 @@
 import {ReactNode} from "react";
+import Image from "next/image"
+import logo from "assets/images/logo.svg"
+import userIcon from "assets/images/user-icon.svg"
 
 type Props = {children: ReactNode}
 
 function DefaultLayout({children}: Props): JSX.Element {
     return (
         <>
-            <header>
-                <h1>
-                    typing play
-                </h1>
+            <header className="default-layout-header">
+                <div className="logo">
+                    <Image src={logo} alt="Typing Play"/>
+                </div>
                 <div className="user-info">
-                    user-icon
+                    <Image src={userIcon} alt="User Icon"/>
                 </div>
             </header>
             <div className="contents-body">
