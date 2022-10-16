@@ -2,7 +2,13 @@
 // font
 
 // reset
-
+body{
+  margin: 0;
+  // font
+}
+div, header{
+  box-sizing: border-box;
+}
 // base style
 body {
   background-color: $APP_THEME_BACKGROUND_COLOR;
