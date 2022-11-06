@@ -2,10 +2,22 @@ import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
 import FormData from "components/forms/FormData";
 import TextForm from "components/forms/TextForm";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import SelectForm from "components/forms/SelectForm";
+import {useRouter} from "next/router";
 
-function EditorPage(): JSX.Element {
+function LevelEditor(): JSX.Element {
+    const router = useRouter()
+    const { levelId } = router.query
+
+    useEffect(() => {
+        if (levelId) {
+            console.log('콘솔 ====>', levelId, router)
+            // called api
+            // and response
+
+        }
+    }, [levelId])
 
     const [groupOptions, setGroupOptions] = useState([
         {
@@ -71,14 +83,30 @@ function EditorPage(): JSX.Element {
                 </FormData>
             </FormRow>
             <FormRow>
-                <FormLabel htmlFor="description">
-                    그룹
+                <FormLabel htmlFor="input-type">
+                    유형
                 </FormLabel>
                 <FormData>
-                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="placeholder" options={groupOptions}/>
+                    switch
+                </FormData>
+            </FormRow>
+            <FormRow>
+                <FormLabel htmlFor="difficulty">
+                    난이도
+                </FormLabel>
+                <FormData>
+                    slide bar
+                </FormData>
+            </FormRow>
+            <FormRow>
+                <FormLabel htmlFor="language">
+                    언어
+                </FormLabel>
+                <FormData>
+                    radio button
                 </FormData>
             </FormRow>
         </div>
     )
 }
-export default EditorPage;
+export default LevelEditor;
