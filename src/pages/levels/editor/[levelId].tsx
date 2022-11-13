@@ -2,7 +2,7 @@ import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
 import FormData from "components/forms/FormData";
 import TextForm from "components/forms/TextForm";
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import SelectForm from "components/forms/SelectForm";
 import {useRouter} from "next/router";
 
@@ -48,6 +48,16 @@ function LevelEditor(): JSX.Element {
         createDateTime: null,
         modifiedDateTime: null
     })
+
+    const onChange = (e: ChangeEvent): void => {
+        const {value, name} = e.target as HTMLInputElement;
+        let data = {
+            ...levelData,
+            [name]: value
+        }
+        setLevelData(data);
+    }
+
     return (
         <div className="editor-page">
             <FormRow>
@@ -55,7 +65,7 @@ function LevelEditor(): JSX.Element {
                     제목
                 </FormLabel>
                 <FormData>
-                    <TextForm name="title" value={levelData.title} placeholder="제목"/>
+                    <TextForm name="title" value={levelData.title} placeholder="제목" onChange={onChange}/>
                 </FormData>
             </FormRow>
             <FormRow>
@@ -63,7 +73,7 @@ function LevelEditor(): JSX.Element {
                     부제목
                 </FormLabel>
                 <FormData>
-                    <TextForm name="subTitle" value={levelData.subTitle} placeholder="부제목"/>
+                    <TextForm name="subTitle" value={levelData.subTitle} placeholder="부제목" onChange={onChange}/>
                 </FormData>
             </FormRow>
             <FormRow>
@@ -71,7 +81,7 @@ function LevelEditor(): JSX.Element {
                     설명
                 </FormLabel>
                 <FormData>
-                    <TextForm name="description" value={levelData.description} placeholder="설명"/>
+                    <TextForm name="description" value={levelData.description} placeholder="설명" onChange={onChange}/>
                 </FormData>
             </FormRow>
             <FormRow>
@@ -79,7 +89,7 @@ function LevelEditor(): JSX.Element {
                     타자 데이터
                 </FormLabel>
                 <FormData>
-                    <TextForm type="textarea" name="text" value={levelData.text} placeholder="타자 데이터"/>
+                    <TextForm type="textarea" name="text" value={levelData.text} placeholder="타자 데이터" onChange={onChange}/>
                 </FormData>
             </FormRow>
             <FormRow>

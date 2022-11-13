@@ -1,18 +1,21 @@
+import {ChangeEvent} from "react";
+
 type Props = {
     type?: string;
     name: string;
     value: string;
     placeholder?: string;
+    onChange(e: ChangeEvent): void;
 }
-function TextForm({type, name, value, placeholder}: Props): JSX.Element {
+function TextForm({type, name, value, placeholder, onChange}: Props): JSX.Element {
     return (
         <>
         {
             type === "textarea"
             ? (
-                <textarea id={name} name={name} value={value} placeholder={placeholder}/>
+                <textarea id={name} name={name} value={value} placeholder={placeholder} onChange={onChange}/>
             ) : (
-                <input type="text" id={name} name={name} value={value} placeholder={placeholder}/>
+                <input type="text" id={name} name={name} value={value} placeholder={placeholder} onChange={onChange}/>
             )
         }
         </>
