@@ -4,7 +4,6 @@
 // reset
 body{
   margin: 0;
-  // font
 }
 div, header{
   box-sizing: border-box;
@@ -12,7 +11,15 @@ div, header{
 // base style
 body {
   background-color: $APP_THEME_BACKGROUND_COLOR;
+  font-size: $DEFAULT_FONT_SIZE;
 }
+input[type=text],
+input[type=password],
+textarea,
+select {
+  font-size: $DEFAULT_FONT_SIZE;
+}
+
 
 // layout
 @import "layout";
