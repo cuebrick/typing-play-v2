@@ -5,6 +5,7 @@ import TextForm from "components/forms/TextForm";
 import {ChangeEvent, useEffect, useState} from "react";
 import SelectForm from "components/forms/SelectForm";
 import {useRouter} from "next/router";
+import SwitchForm from "components/forms/SwitchForm";
 
 function LevelEditor(): JSX.Element {
     const router = useRouter()
@@ -58,6 +59,16 @@ function LevelEditor(): JSX.Element {
         setLevelData(data);
     }
 
+    const onChangeCheckbox = (e: ChangeEvent) : void => {
+        const {checked, name} = e.target as HTMLInputElement;
+        let data = {
+            ...levelData,
+            [name]: checked ? 'word' : 'letter'
+        }
+        console.log('<<<<<<<', data)
+        setLevelData(data);
+    }
+
     return (
         <div className="editor-page">
             <FormRow>
@@ -97,7 +108,7 @@ function LevelEditor(): JSX.Element {
                     유형
                 </FormLabel>
                 <FormData>
-                    switch
+                    <SwitchForm onChange={onChangeCheckbox} name="inputType" checkedLabel="자소" checkedValue="word" uncheckedLabel="단어" uncheckedValue="letter" checked={levelData.inputType === 'word'} />
                 </FormData>
             </FormRow>
             <FormRow>
