@@ -6,6 +6,8 @@ import {ChangeEvent, useEffect, useState} from "react";
 import SelectForm from "components/forms/SelectForm";
 import {useRouter} from "next/router";
 import SwitchForm from "components/forms/SwitchForm";
+import RadioFormGroup from "components/forms/RadioFormGroup";
+import {inputType, languageOptions} from "constants/Constants";
 
 function LevelEditor(): JSX.Element {
     const router = useRouter()
@@ -43,7 +45,7 @@ function LevelEditor(): JSX.Element {
         text: "",
         inputType: "",
         difficulty: "",
-        language: "",
+        language: "ko",
         levelId: "",
         writer: "",
         createDateTime: null,
@@ -63,7 +65,7 @@ function LevelEditor(): JSX.Element {
         const {checked, name} = e.target as HTMLInputElement;
         let data = {
             ...levelData,
-            [name]: checked ? 'word' : 'letter'
+            [name]: checked ? inputType.word.value : inputType.letter.value
         }
         console.log('<<<<<<<', data)
         setLevelData(data);
@@ -108,7 +110,7 @@ function LevelEditor(): JSX.Element {
                     유형
                 </FormLabel>
                 <FormData>
-                    <SwitchForm onChange={onChangeCheckbox} name="inputType" checkedLabel="자소" checkedValue="word" uncheckedLabel="단어" uncheckedValue="letter" checked={levelData.inputType === 'word'} />
+                    <SwitchForm onChange={onChangeCheckbox} name="inputType" checkedLabel={inputType.letter.label} checkedValue={inputType.word.value} uncheckedLabel={inputType.word.label} uncheckedValue={inputType.letter.value} checked={levelData.inputType === inputType.word.value} />
                 </FormData>
             </FormRow>
             <FormRow>
@@ -124,7 +126,7 @@ function LevelEditor(): JSX.Element {
                     언어
                 </FormLabel>
                 <FormData>
-                    radio button
+                    <RadioFormGroup name="language" value={levelData.language} options={languageOptions} onChange={onChange} />
                 </FormData>
             </FormRow>
         </div>
