@@ -8,6 +8,7 @@ import {useRouter} from "next/router";
 import SwitchForm from "components/forms/SwitchForm";
 import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
+import InputRangeForm from "components/forms/InputRangeForm";
 
 function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
@@ -118,7 +119,7 @@ function LevelsEditorPage(): JSX.Element {
                     난이도
                 </FormLabel>
                 <FormData>
-                    slide bar
+                    <InputRangeForm name="difficulty" value={levelData.difficulty} onChange={onChange} />
                 </FormData>
             </FormRow>
             <FormRow>
