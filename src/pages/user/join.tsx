@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function JoinPage(): JSX.Element {
+function UserJoinPage(): JSX.Element {
     return (
         <div>
             <div>
@@ -27,4 +27,4 @@ function JoinPage(): JSX.Element {
     )
 }
 
-export default JoinPage;
+export default UserJoinPage;

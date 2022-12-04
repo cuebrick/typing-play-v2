@@ -1,6 +1,6 @@
 import levelData from "sample/json/level-data.json"
 import LevelItem from "../../components/level/LevelItem";
-function Index(): JSX.Element {
+function LevelsIndexPage(): JSX.Element {
   return (
     <div className="level-list">
         {levelData.map(level => (
@@ -10,4 +10,4 @@ function Index(): JSX.Element {
   )
 }
 
-export default Index;
+export default LevelsIndexPage;

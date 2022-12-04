@@ -9,7 +9,7 @@ import SwitchForm from "components/forms/SwitchForm";
 import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
 
-function LevelEditor(): JSX.Element {
+function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
     const { levelId } = router.query
 
@@ -132,4 +132,4 @@ function LevelEditor(): JSX.Element {
         </div>
     )
 }
-export default LevelEditor;
+export default LevelsEditorPage;

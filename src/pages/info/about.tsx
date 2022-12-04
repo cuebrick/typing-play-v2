@@ -1,6 +1,6 @@
-function About(): JSX.Element {
+function AboutPage(): JSX.Element {
   return (
     <>About</>
   )
 }
-export default About;
+export default AboutPage;

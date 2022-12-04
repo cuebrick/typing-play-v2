@@ -1,6 +1,6 @@
-function Application(): JSX.Element {
+function ApplicationPage(): JSX.Element {
   return (
     <>Application</>
   )
 }
-export default Application;
+export default ApplicationPage;

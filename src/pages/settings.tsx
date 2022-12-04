@@ -1,6 +1,6 @@
-function Settings(): JSX.Element {
+function SettingsPage(): JSX.Element {
   return (
     <>Settings</>
   )
 }
-export default Settings;
+export default SettingsPage;
