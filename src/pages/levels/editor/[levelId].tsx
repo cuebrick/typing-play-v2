@@ -127,7 +127,7 @@ function LevelsEditorPage(): JSX.Element {
                 </FormData>
             </FormRow>
             <FormRow>
-                <FormLabel htmlFor="input-type">
+                <FormLabel htmlFor="inputType">
                     유형
                 </FormLabel>
                 <FormData>
