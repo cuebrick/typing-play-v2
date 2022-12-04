@@ -63,6 +63,17 @@ function LevelsEditorPage(): JSX.Element {
         setLevelData(data);
     }
 
+    const onChangeSelect = (e: ChangeEvent) : void => {
+        const {value, name, selectedIndex, options} = e.target as HTMLSelectElement;
+        const groupTitle = selectedIndex > 0 ? options[selectedIndex].label : '';
+        let data = {
+            ...levelData,
+            [name]: value,
+            groupTitle
+        }
+        setLevelData(data);
+    }
+
     const onChangeCheckbox = (e: ChangeEvent) : void => {
         const {checked, name} = e.target as HTMLInputElement;
         let data = {

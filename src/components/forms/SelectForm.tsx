@@ -1,12 +1,15 @@
+import {ChangeEvent} from "react";
+
 type Props = {
     name: string;
     value: string;
     valueKey: string;
     labelKey: string;
     placeholder: string;
-    options: Array<any>;// any, never, object, unknown
+    options: Array<any>;// any, never, object, unknown;
+    onChange(e: ChangeEvent): void;
 }
-function SelectForm({name, value, valueKey, labelKey, placeholder, options}: Props): JSX.Element {
+function SelectForm({name, value, valueKey, labelKey, placeholder, options, onChange}: Props): JSX.Element {
     return (
         <>
             <select name={name} id={name} value={value} placeholder={placeholder}>
