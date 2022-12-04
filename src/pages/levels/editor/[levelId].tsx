@@ -9,6 +9,7 @@ import SwitchForm from "components/forms/SwitchForm";
 import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
 import InputRangeForm from "components/forms/InputRangeForm";
+import {ILevel} from "interfaces/levelInterface";
 
 function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
@@ -37,15 +38,15 @@ function LevelsEditorPage(): JSX.Element {
             title: "세 번째 그룹"
         }
     ])
-    const [levelData, setLevelData] = useState({
+    const [levelData, setLevelData] = useState<ILevel>({
         groupId: "",
         groupTitle: "",
         title: "",
         subTitle: "",
         description: "",
         text: "",
-        inputType: "",
-        difficulty: "",
+        inputType: "word",
+        difficulty: "1",
         language: "ko",
         levelId: "",
         writer: "",
@@ -130,6 +131,9 @@ function LevelsEditorPage(): JSX.Element {
                     <RadioFormGroup name="language" value={levelData.language} options={languageOptions} onChange={onChange} />
                 </FormData>
             </FormRow>
+            <pre>
+                {JSON.stringify(levelData, null, '\t')}
+            </pre>
         </div>
     )
 }
