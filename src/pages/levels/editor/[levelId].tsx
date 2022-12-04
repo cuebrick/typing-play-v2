@@ -119,6 +119,14 @@ function LevelsEditorPage(): JSX.Element {
                 </FormData>
             </FormRow>
             <FormRow>
+                <FormLabel htmlFor="groupId">
+                    그룹 id
+                </FormLabel>
+                <FormData>
+                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupOptions} onChange={onChangeSelect}/>
+                </FormData>
+            </FormRow>
+            <FormRow>
                 <FormLabel htmlFor="input-type">
                     유형
                 </FormLabel>
