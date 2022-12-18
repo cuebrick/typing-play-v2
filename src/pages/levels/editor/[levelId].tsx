@@ -120,10 +120,14 @@ function LevelsEditorPage(): JSX.Element {
             </FormRow>
             <FormRow>
                 <FormLabel htmlFor="groupId">
-                    그룹 id
+                    레벨 그룹
                 </FormLabel>
                 <FormData>
                     <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupOptions} onChange={onChangeSelect}/>
+                    <button onClick={onClickEditGroup}>수정</button>
+                    {isShowGroupLayer && (
+                        <LevelGroupModal onChangeGroups={onChangeGroup} />
+                    )}
                 </FormData>
             </FormRow>
             <FormRow>
