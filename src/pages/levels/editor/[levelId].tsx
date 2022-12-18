@@ -10,6 +10,14 @@ import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
 import InputRangeForm from "components/forms/InputRangeForm";
 import {ILevel} from "interfaces/levelInterface";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "database"
+import LevelGroupSelector from "components/level/LevelGroupSelector";
+import Modal from "components/modal/Modal";
+import ModalHeader from "components/modal/ModalHeader";
+import ModalBody from "components/modal/ModalBody";
+import ModalFooter from "components/modal/ModalFooter";
+import LevelGroupModal from "components/modal/LevelGroupModal";
 
 function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
@@ -157,6 +165,7 @@ function LevelsEditorPage(): JSX.Element {
             <pre>
                 {JSON.stringify(levelData, null, '\t')}
             </pre>
+            <button onClick={onClickSave}>저장</button>
         </div>
     )
 }
