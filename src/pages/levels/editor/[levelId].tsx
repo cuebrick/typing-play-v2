@@ -10,6 +10,14 @@ import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
 import InputRangeForm from "components/forms/InputRangeForm";
 import {ILevel} from "interfaces/levelInterface";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "database"
+import LevelGroupSelector from "components/level/LevelGroupSelector";
+import Modal from "components/modal/Modal";
+import ModalHeader from "components/modal/ModalHeader";
+import ModalBody from "components/modal/ModalBody";
+import ModalFooter from "components/modal/ModalFooter";
+import LevelGroupModal from "components/modal/LevelGroupModal";
 
 function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
@@ -83,6 +91,29 @@ function LevelsEditorPage(): JSX.Element {
         console.log('<<<<<<<', data)
         setLevelData(data);
     }
+    
+    const saveLevel = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "levels"), levelData)
+            console.log("Document written with ID: ", docRef.id);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+    }
+    
+    const onClickSave = () => {
+        saveLevel()
+    }
+
+    const [isShowGroupLayer, setIsShowGroupLayer] = useState(false);
+    const onClickEditGroup = () => {
+        setIsShowGroupLayer(true);
+    }
+
+    const onChangeGroup = () => {
+        console.log('onChangeGroup();')
+        // 자식에서 바뀐 목록을 부모에서 조회
+    }
 
     return (
         <div className="editor-page">
@@ -120,10 +151,14 @@ function LevelsEditorPage(): JSX.Element {
             </FormRow>
             <FormRow>
                 <FormLabel htmlFor="groupId">
-                    그룹 id
+                    레벨 그룹
                 </FormLabel>
                 <FormData>
                     <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupOptions} onChange={onChangeSelect}/>
+                    <button onClick={onClickEditGroup}>수정</button>
+                    {isShowGroupLayer && (
+                        <LevelGroupModal onChangeGroups={onChangeGroup} />
+                    )}
                 </FormData>
             </FormRow>
             <FormRow>
@@ -153,6 +188,7 @@ function LevelsEditorPage(): JSX.Element {
             <pre>
                 {JSON.stringify(levelData, null, '\t')}
             </pre>
+            <button onClick={onClickSave}>저장</button>
         </div>
     )
 }
