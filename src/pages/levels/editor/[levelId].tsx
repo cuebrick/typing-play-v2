@@ -91,6 +91,29 @@ function LevelsEditorPage(): JSX.Element {
         console.log('<<<<<<<', data)
         setLevelData(data);
     }
+    
+    const saveLevel = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "levels"), levelData)
+            console.log("Document written with ID: ", docRef.id);
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+    }
+    
+    const onClickSave = () => {
+        saveLevel()
+    }
+
+    const [isShowGroupLayer, setIsShowGroupLayer] = useState(false);
+    const onClickEditGroup = () => {
+        setIsShowGroupLayer(true);
+    }
+
+    const onChangeGroup = () => {
+        console.log('onChangeGroup();')
+        // 자식에서 바뀐 목록을 부모에서 조회
+    }
 
     return (
         <div className="editor-page">
