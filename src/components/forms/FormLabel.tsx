@@ -2,7 +2,7 @@ import {ReactNode} from "react";
 
 type Props = {
     children: ReactNode;
-    htmlFor: string;
+    htmlFor?: string;
     required?: boolean;
 }
 function FormLabel({children, htmlFor, required}: Props): JSX.Element {
