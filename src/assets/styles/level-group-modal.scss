@@ -1,0 +1,16 @@
+.level-group-editor {
+  display: flex;
+
+  .level-group-list {
+    width: 200px;
+    flex-shrink: 0;
+
+    > li {
+      min-height: 40px;
+
+      &:hover {
+        background-color: rgba(0, 100, 256, 0.1);
+      }
+    }
+  }
+}
