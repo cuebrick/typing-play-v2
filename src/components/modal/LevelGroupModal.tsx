@@ -7,42 +7,33 @@ import TextForm from "components/forms/TextForm";
 import FormData from "components/forms/FormData";
 import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import {db} from 'database';
+import {ILevelGroup} from 'interfaces/LevelGroupInterface';
 
 interface IProps {
   onChangeGroups(): void;
   onClose(): void;
 }
 
-interface ILevelGroup {
-  id: string | undefined;
-  title: string;
-  order: number;
-}
+
 
 function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
 
   const [groupList, setGroupList] = useState<ILevelGroup[]>([]);
   // const [groupList, setGroupList] = useState<Array<ILevelGroup>>([]);
+  const getLevelGroups = async () => {
+    const querySnapshot = await getDocs(collection(db, 'levelGroups'));
+    const groups: ILevelGroup[] = [];
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      groups.push(doc.data() as ILevelGroup);
+    });
+    setGroupList(groups);
+  }
+
   useEffect(() => {
-    // todo : api 호출
-    const result = [
-      {
-        id: "A01",
-        title: "첫 번째 그룹",
-        order: 0
-      },
-      {
-        id: "A02",
-        title: "두 번째 그룹",
-        order: 1
-      },
-      {
-        id: "A03",
-        title: "세 번째 그룹",
-        order: 2
-      }
-    ]
-    setGroupList(result);
+    getLevelGroups();
   }, [])
 
   const onChanged = () => {
@@ -62,19 +53,24 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
 
   const onChange = (e: ChangeEvent): void => {
     const {name, value} = e.target as HTMLInputElement
-    console.log('onChange()', name, value, e);
+    console.log('onChange()1:', detail/*, name, value, e*/);
     setDetail({
       ...detail,
       [name]: value
-    })
+    });
   }
 
   const onClickCreate = (): void => {
     setDetail({...defaultDetail});
   }
-  
-  const onClickSave = (): void => {
-    // TODO: save
+
+  const onClickSave = async () => {
+    try {
+      const docRef = await addDoc(collection(db, 'levelGroups'), detail);
+      console.log('docRef', docRef.id, docRef);
+    } catch (error) {
+      // error handling
+    }
   }
 
   const onClickDelete = (): void => {

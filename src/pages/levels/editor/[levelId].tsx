@@ -10,7 +10,7 @@ import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
 import InputRangeForm from "components/forms/InputRangeForm";
 import {ILevel} from "interfaces/levelInterface";
-import { collection, addDoc } from "firebase/firestore";
+import {collection, addDoc, getDocs} from "firebase/firestore";
 import { db } from "database"
 import LevelGroupSelector from "components/level/LevelGroupSelector";
 import Modal from "components/modal/Modal";
@@ -18,6 +18,7 @@ import ModalHeader from "components/modal/ModalHeader";
 import ModalBody from "components/modal/ModalBody";
 import ModalFooter from "components/modal/ModalFooter";
 import LevelGroupModal from "components/modal/LevelGroupModal";
+import {ILevelGroup} from 'interfaces/LevelGroupInterface';
 
 function LevelsEditorPage(): JSX.Element {
     const router = useRouter()
@@ -28,24 +29,22 @@ function LevelsEditorPage(): JSX.Element {
             console.log('콘솔 ====>', levelId, router)
             // called api
             // and response
-
+            getLevelGroups();
         }
-    }, [levelId])
+    }, [levelId]);
 
-    const [groupOptions, setGroupOptions] = useState([
-        {
-            id: "A01",
-            title: "첫 번째 그룹"
-        },
-        {
-            id: "A02",
-            title: "두 번째 그룹"
-        },
-        {
-            id: "A03",
-            title: "세 번째 그룹"
-        }
-    ])
+    const getLevelGroups = async () => {
+        const querySnapshot = await getDocs(collection(db, 'levelGroups'));
+        const groups: ILevelGroup[] = [];
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+            groups.push(doc.data() as ILevelGroup);
+        });
+        setGroupList(groups);
+    }
+
+    const [groupList, setGroupList] = useState<ILevelGroup[]>([]);
+
     const [levelData, setLevelData] = useState<ILevel>({
         groupId: "",
         groupTitle: "",
@@ -115,6 +114,10 @@ function LevelsEditorPage(): JSX.Element {
         // 자식에서 바뀐 목록을 부모에서 조회
     }
 
+    const onCloseGroupModal = () => {
+        console.log('onCloseGroupModal');
+    }
+
     return (
         <div className="editor-page">
             <FormRow>
@@ -154,10 +157,10 @@ function LevelsEditorPage(): JSX.Element {
                     레벨 그룹
                 </FormLabel>
                 <FormData>
-                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupOptions} onChange={onChangeSelect}/>
+                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupList} onChange={onChangeSelect}/>
                     <button onClick={onClickEditGroup}>수정</button>
                     {isShowGroupLayer && (
-                        <LevelGroupModal onChangeGroups={onChangeGroup} />
+                        <LevelGroupModal onChangeGroups={onChangeGroup} onClose={onCloseGroupModal} />
                     )}
                 </FormData>
             </FormRow>

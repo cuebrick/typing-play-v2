@@ -11,7 +11,7 @@ function RadioFormGroup({name, value, options, onChange}: Props):JSX.Element {
   return (
       <div className="radio-form-group">
         {options?.map((item:any) => (
-            <label>
+            <label key={item.value}>
               <input type="radio" name={name} value={item.value} checked={item.value === value} onChange={onChange} />
               {item.label}
             </label>
