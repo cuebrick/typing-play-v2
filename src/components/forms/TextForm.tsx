@@ -3,7 +3,7 @@ import {ChangeEvent} from "react";
 type Props = {
     type?: string;
     name: string;
-    value: string;
+    value: string | number | readonly string[] | undefined;
     placeholder?: string;
     onChange(e: ChangeEvent): void;
 }
