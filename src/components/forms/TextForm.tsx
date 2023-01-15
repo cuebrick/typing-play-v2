@@ -5,9 +5,10 @@ type Props = {
     name: string;
     value: string | number | readonly string[] | undefined;
     placeholder?: string;
+    required?: boolean;
     onChange(e: ChangeEvent): void;
 }
-function TextForm({type, name, value, placeholder, onChange}: Props): JSX.Element {
+function TextForm({type, name, value, placeholder, required, onChange}: Props): JSX.Element {
     return (
         <>
         {
@@ -15,7 +16,7 @@ function TextForm({type, name, value, placeholder, onChange}: Props): JSX.Elemen
             ? (
                 <textarea id={name} name={name} value={value} placeholder={placeholder} onChange={onChange}/>
             ) : (
-                <input type="text" id={name} name={name} value={value} placeholder={placeholder} onChange={onChange}/>
+                <input type={type} id={name} name={name} value={value} placeholder={placeholder} required={required} onChange={onChange}/>
             )
         }
         </>
@@ -23,6 +24,8 @@ function TextForm({type, name, value, placeholder, onChange}: Props): JSX.Elemen
 }
 
 TextForm.defaultProps = {
-    placeholder: "입력"
+    type: 'text',
+    placeholder: "입력",
+    required: false
 }
 export default TextForm;
