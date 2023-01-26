@@ -13,6 +13,9 @@ function DefaultLayout({children}: Props): JSX.Element {
       if (user) {
         console.log('user는 >>>', user, auth)
         setLoginUser(user)
+      } else {
+        console.log('user 로그아웃이 해제됨!', user, auth);
+        setLoginUser(user)
       }
     })
   }, [auth])

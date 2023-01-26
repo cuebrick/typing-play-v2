@@ -14,8 +14,13 @@ function LoginCardItem(): JSX.Element {
   const [loginUser, setLoginUser] = useState(auth.currentUser)
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      // console.log('user >>>>> ', user)
       if (user) {
         setLoginUser(user)
+        console.log('login 성공', user);
+      } else {
+        setLoginUser(user)
+        console.log('logout 성공', user)
       }
     })
   }, [auth])
@@ -42,11 +47,14 @@ function LoginCardItem(): JSX.Element {
       const data = await signInWithEmailAndPassword(auth, email, password)
       console.log('로그인 성공 >>', data)
     }
+    setEmail("")
+    setUserName("")
+    setPassword("")
   }
 
   const onClickLogout = (): void => {
     signOut(auth).then((response) => {
-      console.log('response>>', response)
+      console.log('로그아웃 성공', response)
     })
   }
 
@@ -60,20 +68,20 @@ function LoginCardItem(): JSX.Element {
       <form onSubmit={onSubmit}>
         {loginUser ? <FormRow>
             {loginUser.email}
-          <button onClick={onClickLogout}>log out</button>
+          <button type="button" onClick={onClickLogout}>log out</button>
         </FormRow>
           :
           (
             <>
-              <button onClick={onClickLoginStatus}>{isNewAccount ? '출석체크로 이동' : '출석부 등록으로 이동'}</button>
+              <button type="button" onClick={onClickLoginStatus}>{isNewAccount ? '로그인으로 변경' : '회원가입으로 변경'}</button>
               <FormRow>
-                <FormLabel>이메일</FormLabel>
+                <FormLabel htmlFor="email">이메일</FormLabel>
                 <FormData>
                   <TextForm onChange={onChange} name="email" required value={email}/>
                 </FormData>
               </FormRow>
               <FormRow>
-                <FormLabel>
+                <FormLabel htmlFor="userName">
                   사용자 이름
                 </FormLabel>
                 <FormData>
@@ -81,7 +89,7 @@ function LoginCardItem(): JSX.Element {
                 </FormData>
               </FormRow>
               <FormRow>
-                <FormLabel>
+                <FormLabel htmlFor="password">
                   비밀번호
                 </FormLabel>
                 <FormData>
@@ -89,13 +97,11 @@ function LoginCardItem(): JSX.Element {
                 </FormData>
               </FormRow>
               <FormRow>
-
-                <input type="submit" value={isNewAccount ? '출석체크' : '출석부 등록'}/>
+                <input type="submit" value={isNewAccount ? '출석부 등록' : '출석체크'}/>
               </FormRow>
             </>
           )
         }
-
       </form>
     </div>
   )
