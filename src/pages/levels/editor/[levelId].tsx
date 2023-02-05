@@ -38,7 +38,7 @@ function LevelsEditorPage(): JSX.Element {
         const groups: ILevelGroup[] = [];
         querySnapshot.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
-            groups.push(doc.data() as ILevelGroup);
+            groups.push({...doc.data(), id: doc.id} as ILevelGroup);
         });
         setGroupList(groups);
     }
@@ -111,6 +111,7 @@ function LevelsEditorPage(): JSX.Element {
 
     const onChangeGroup = () => {
         console.log('onChangeGroup();')
+        getLevelGroups();
         // 자식에서 바뀐 목록을 부모에서 조회
     }
 

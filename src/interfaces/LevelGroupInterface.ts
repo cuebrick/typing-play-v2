@@ -1,5 +1,5 @@
 export interface ILevelGroup {
-  id: string | undefined;
+  id: string;
   title: string;
   order: number;
 }
