@@ -117,6 +117,7 @@ function LevelsEditorPage(): JSX.Element {
 
     const onCloseGroupModal = () => {
         console.log('onCloseGroupModal');
+        setIsShowGroupLayer(false);
     }
 
     return (
