@@ -1,15 +1,17 @@
+import {observer} from 'mobx-react-lite';
 import Modal from "components/modal/Modal";
 import ModalHeader from "components/modal/ModalHeader";
 import ModalBody from "components/modal/ModalBody";
 import ModalFooter from "components/modal/ModalFooter";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useContext, useEffect, useState} from "react";
 import TextForm from "components/forms/TextForm";
 import FormData from "components/forms/FormData";
 import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
-import {addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, setDoc} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, setDoc} from "firebase/firestore";
 import {db} from 'database';
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
+import {LevelContext} from "store/LevelContext";
 
 interface IProps {
   onChangeGroups(): void;
@@ -18,22 +20,12 @@ interface IProps {
 
 function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
 
+  const store = useContext(LevelContext);
   const [isEdit, setIsEdit] = useState(false);
-  const [groupList, setGroupList] = useState<ILevelGroup[]>([]);
-  const getLevelGroups = async () => {
-    const q = query(collection(db, 'levelGroups'), orderBy('order'));
-    const querySnapshot = await getDocs(q);
-    const groups: ILevelGroup[] = [];
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      groups.push({...doc.data(), id: doc.id} as ILevelGroup);
-    });
-    setGroupList(groups);
-  }
 
   useEffect(() => {
-    getLevelGroups();
-  }, [])
+    store.getLevelGroupList()
+  }, [store])
 
   const defaultDetail: ILevelGroup = Object.freeze({
     id: '',
@@ -69,7 +61,7 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
         const docRef = await addDoc(collection(db, 'levelGroups'), detail);
         console.log('docRef', docRef.id, docRef);
       }
-      getLevelGroups();
+      store.getLevelGroupList()
       onChangeGroups();
     } catch (error) {
       // TODO: error handling
@@ -79,7 +71,7 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
   const onClickDelete = async (): Promise<void> => {
     await deleteDoc(doc(db, 'levelGroups', detail.id));
     // console.log('<<< response:', detail.id);
-    getLevelGroups();
+    store.getLevelGroupList()
     setDetail({...defaultDetail});
   }
 
@@ -93,7 +85,7 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
       <ModalBody>
         <div className="level-group-editor">
           <ul className="level-group-list">
-            {groupList?.map(group => <li key={group.id} onClick={() => onClickGroup(group)}>{group.title}</li>)}
+            {store.levelGroupList.map(group => <li key={group.id} onClick={() => onClickGroup(group)}>{group.title}</li>)}
             <li>
               <button onClick={onClickCreate} disabled={!isEdit}>생성</button>
             </li>
@@ -132,4 +124,4 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
   )
 }
 
-export default LevelGroupModal
+export default observer(LevelGroupModal)

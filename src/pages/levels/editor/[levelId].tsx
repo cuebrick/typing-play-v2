@@ -1,8 +1,9 @@
+import {observer} from "mobx-react-lite"
 import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
 import FormData from "components/forms/FormData";
 import TextForm from "components/forms/TextForm";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, ReactElement, useContext, useEffect, useState} from "react";
 import SelectForm from "components/forms/SelectForm";
 import {useRouter} from "next/router";
 import SwitchForm from "components/forms/SwitchForm";
@@ -19,8 +20,10 @@ import ModalBody from "components/modal/ModalBody";
 import ModalFooter from "components/modal/ModalFooter";
 import LevelGroupModal from "components/modal/LevelGroupModal";
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
+import {LevelContext, LevelProvider} from "store/LevelContext";
 
 function LevelsEditorPage(): JSX.Element {
+    const store = useContext(LevelContext)
     const router = useRouter()
     const { levelId } = router.query
 
@@ -29,7 +32,7 @@ function LevelsEditorPage(): JSX.Element {
             console.log('콘솔 ====>', levelId, router)
             // called api
             // and response
-            getLevelGroups();
+            store.getLevelGroupList()
         }
     }, [levelId]);
 
@@ -159,7 +162,7 @@ function LevelsEditorPage(): JSX.Element {
                     레벨 그룹
                 </FormLabel>
                 <FormData>
-                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={groupList} onChange={onChangeSelect}/>
+                    <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택" options={store.levelGroupList} onChange={onChangeSelect}/>
                     <button onClick={onClickEditGroup}>수정</button>
                     {isShowGroupLayer && (
                         <LevelGroupModal onChangeGroups={onChangeGroup} onClose={onCloseGroupModal} />
@@ -197,4 +200,11 @@ function LevelsEditorPage(): JSX.Element {
         </div>
     )
 }
-export default LevelsEditorPage;
+
+LevelsEditorPage.getProvider = (page: ReactElement): ReactElement => {
+    return (
+      <LevelProvider>{page}</LevelProvider>
+    )
+}
+
+export default observer(LevelsEditorPage);
