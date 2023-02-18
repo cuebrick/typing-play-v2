@@ -1,26 +1,20 @@
 import {observer} from "mobx-react-lite"
-import FormRow from "components/forms/FormRow";
-import FormLabel from "components/forms/FormLabel";
-import FormData from "components/forms/FormData";
-import TextForm from "components/forms/TextForm";
 import {ChangeEvent, ReactElement, useContext, useEffect, useState} from "react";
-import SelectForm from "components/forms/SelectForm";
 import {useRouter} from "next/router";
-import SwitchForm from "components/forms/SwitchForm";
-import RadioFormGroup from "components/forms/RadioFormGroup";
 import {inputType, languageOptions} from "constants/Constants";
-import InputRangeForm from "components/forms/InputRangeForm";
 import {ILevel} from "interfaces/levelInterface";
-import {collection, addDoc, getDocs} from "firebase/firestore";
-import { db } from "database"
-import LevelGroupSelector from "components/level/LevelGroupSelector";
-import Modal from "components/modal/Modal";
-import ModalHeader from "components/modal/ModalHeader";
-import ModalBody from "components/modal/ModalBody";
-import ModalFooter from "components/modal/ModalFooter";
 import LevelGroupModal from "components/modal/LevelGroupModal";
-import {ILevelGroup} from 'interfaces/LevelGroupInterface';
 import {LevelContext, LevelProvider} from "store/LevelContext";
+import {
+  FormData,
+  FormLabel,
+  FormRow,
+  InputRangeForm,
+  RadioFormGroup,
+  SelectForm,
+  SwitchForm,
+  TextForm
+} from "components/forms";
 
 function LevelsEditorPage(): JSX.Element {
     const store = useContext(LevelContext)
