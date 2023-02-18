@@ -8,13 +8,12 @@ import TextForm from "components/forms/TextForm";
 import FormData from "components/forms/FormData";
 import FormRow from "components/forms/FormRow";
 import FormLabel from "components/forms/FormLabel";
-import {addDoc, collection, deleteDoc, doc, setDoc} from "firebase/firestore";
-import {db} from 'database';
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
 import {LevelContext} from "store/LevelContext";
 
 interface IProps {
-  onChangeGroups(): void;
+  onChangeGroups?(): void;
+
   onClose(): void;
 }
 
@@ -41,7 +40,6 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
 
   const onChange = (e: ChangeEvent): void => {
     const {name, value} = e.target as HTMLInputElement
-    // console.log('onChange()1:', detail/*, name, value, e*/);
     setDetail({
       ...detail,
       [name]: value
@@ -53,26 +51,15 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
     setIsEdit(false);
   }
 
-  const onClickSave = async () => {
-    try {
-      if (isEdit) {
-        await setDoc(doc(db, 'levelGroups', detail.id), detail);
-      } else {
-        const docRef = await addDoc(collection(db, 'levelGroups'), detail);
-        console.log('docRef', docRef.id, docRef);
-      }
-      store.getLevelGroupList()
-      onChangeGroups();
-    } catch (error) {
-      // TODO: error handling
-    }
+  const onClickSave = () => {
+    store.saveGroupList(detail, isEdit)
   }
 
   const onClickDelete = async (): Promise<void> => {
-    await deleteDoc(doc(db, 'levelGroups', detail.id));
-    // console.log('<<< response:', detail.id);
-    store.getLevelGroupList()
-    setDetail({...defaultDetail});
+    const response = await store.deleteGroupList(detail.id);
+    if (response.success) {
+      setDetail({...defaultDetail});
+    }
   }
 
   const onClickClose = (): void => {
@@ -85,7 +72,8 @@ function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
       <ModalBody>
         <div className="level-group-editor">
           <ul className="level-group-list">
-            {store.levelGroupList.map(group => <li key={group.id} onClick={() => onClickGroup(group)}>{group.title}</li>)}
+            {store.levelGroupList.map(group => <li key={group.id}
+                                                   onClick={() => onClickGroup(group)}>{group.title}</li>)}
             <li>
               <button onClick={onClickCreate} disabled={!isEdit}>생성</button>
             </li>

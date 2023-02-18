@@ -1,12 +1,26 @@
 import {Context, createContext, PropsWithChildren} from "react";
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
-import {collection, getDocs, orderBy, query, QuerySnapshot} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, QuerySnapshot, setDoc} from "firebase/firestore";
 import {db} from "database";
 import {useLocalObservable} from "mobx-react-lite";
+import {ILevel} from "interfaces/levelInterface";
+import {runInAction} from "mobx";
 
 export interface ILevelContext {
   levelGroupList: ILevelGroup[];
+
   getLevelGroupList(): void;
+
+  saveLevel(levelData: ILevel): void;
+
+  saveGroupList(levelGroup: ILevelGroup, isEdit: boolean): void;
+
+  deleteGroupList(id: string): Promise<IResponse>;
+}
+
+export interface IResponse {
+  success: boolean;
+  error?: unknown;
 }
 
 const defaultState: ILevelContext = {
@@ -15,15 +29,50 @@ const defaultState: ILevelContext = {
   async getLevelGroupList() {
     const q = query(collection(db, 'levelGroups'), orderBy('order'));
     const querySnapshot: QuerySnapshot = await getDocs(q);
-    // this.levelGroupList = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
-    // querySnapshot.docs.map
     const groups: ILevelGroup[] = [];
     querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ", doc.data());
       groups.push({...doc.data(), id: doc.id} as ILevelGroup);
     });
-    this.levelGroupList = groups;
+    runInAction(() => {
+      this.levelGroupList = groups;
+    })
+  },
+
+  async saveGroupList(levelGroup: ILevelGroup, isEdit: boolean = false) {
+    try {
+      if (isEdit) {
+        await setDoc(doc(db, 'levelGroups', levelGroup.id), levelGroup);
+      } else {
+        const docRef = await addDoc(collection(db, 'levelGroups'), levelGroup);
+        console.log('docRef', docRef.id, docRef);
+      }
+      this.getLevelGroupList()
+    } catch (error) {
+      // TODO: error handling
+    }
+  },
+
+  async deleteGroupList(id: string): Promise<IResponse> {
+    try {
+      await deleteDoc(doc(db, 'levelGroups', id));
+      this.getLevelGroupList()
+      return {success: true}
+    } catch (error) {
+      return {success: false, error}
+    }
+
+  },
+
+  async saveLevel(levelData: ILevel) {
+    try {
+      const docRef = await addDoc(collection(db, "levels"), levelData)
+      console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   }
+
+
 }
 
 export const LevelContext: Context<ILevelContext> = createContext<ILevelContext>(defaultState);
