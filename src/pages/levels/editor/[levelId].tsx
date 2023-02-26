@@ -20,10 +20,13 @@ function LevelsEditorPage(): JSX.Element {
   const store = useContext(LevelContext)
   const router = useRouter()
   const {levelId} = router.query
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (levelId) {
+      setIsEdit('create-level' !== levelId);
       store.getLevelGroupList()
+      store.getLevel(levelId as string)
     }
   }, [levelId, store]);
 
@@ -42,6 +45,12 @@ function LevelsEditorPage(): JSX.Element {
     createDateTime: null,
     modifiedDateTime: null
   })
+
+  useEffect(() => {
+    if (store.level) {
+      setLevelData({...store.level})
+    }
+  }, [store.level])
 
   const onChange = (e: ChangeEvent): void => {
     const {value, name} = e.target as HTMLInputElement;
@@ -72,8 +81,10 @@ function LevelsEditorPage(): JSX.Element {
     setLevelData(data);
   }
 
-  const onClickSave = () => {
-    store.saveLevel(levelData)
+  const onClickSave = async () => {
+    const response = await store.saveLevel(levelData, isEdit);
+    console.log('<<<<response', response.id, response)
+    router.push(`/levels/editor/${response.id}`)
   }
 
   const [isShowGroupLayer, setIsShowGroupLayer] = useState(false);

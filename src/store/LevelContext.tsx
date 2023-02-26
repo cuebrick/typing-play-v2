@@ -1,17 +1,30 @@
 import {Context, createContext, PropsWithChildren} from "react";
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
-import {addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, QuerySnapshot, setDoc} from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc, DocumentData,
+  DocumentReference, getDoc,
+  getDocs,
+  orderBy,
+  query,
+  QuerySnapshot,
+  setDoc
+} from "firebase/firestore";
 import {db} from "database";
 import {useLocalObservable} from "mobx-react-lite";
 import {ILevel} from "interfaces/levelInterface";
 import {runInAction} from "mobx";
 
 export interface ILevelContext {
+  level: ILevel;
   levelGroupList: ILevelGroup[];
 
   getLevelGroupList(): void;
 
-  saveLevel(levelData: ILevel): void;
+  getLevel(id: string): void;
+  saveLevel(levelData: ILevel, isEdit: boolean): Promise<DocumentReference>;
 
   saveGroupList(levelGroup: ILevelGroup, isEdit: boolean): void;
 
@@ -63,12 +76,29 @@ const defaultState: ILevelContext = {
 
   },
 
-  async saveLevel(levelData: ILevel) {
+  async getLevel(id: string) {
+    const docRef = doc(db, "levels", id);
+    const docSnap = await getDoc(docRef);
+    console.log('docSnap >>>', docSnap)
+    // return docSnap.data()
+    runInAction(() => {
+      this.level = docSnap.data() as ILevel;
+    })
+  },
+
+  async saveLevel(levelData: ILevel, isEdit: boolean) {
     try {
-      const docRef = await addDoc(collection(db, "levels"), levelData)
-      console.log("Document written with ID: ", docRef.id);
+      if (isEdit) {
+        await setDoc(doc(db, 'levels', levelData.levelId), levelData);
+      } else {
+        const docRef = await addDoc(collection(db, "levels"), levelData)
+        console.log("Document written with ID: ", docRef.id);
+        // return docRef;
+        return docRef;
+      }
     } catch (error) {
       console.error("Error adding document: ", error);
+      return false;
     }
   }
 
