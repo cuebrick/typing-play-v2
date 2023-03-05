@@ -10,12 +10,14 @@ import {
   orderBy,
   query,
   QuerySnapshot,
-  setDoc
+  setDoc, Timestamp
 } from "firebase/firestore";
 import {db} from "database";
 import {useLocalObservable} from "mobx-react-lite";
 import {ILevel} from "interfaces/levelInterface";
 import {runInAction} from "mobx";
+import firebase from "firebase/compat";
+import {auth} from "database";
 
 export interface ILevelContext {
   level: ILevel;
@@ -24,7 +26,7 @@ export interface ILevelContext {
   getLevelGroupList(): void;
 
   getLevel(id: string): void;
-  saveLevel(levelData: ILevel, isEdit: boolean): Promise<DocumentReference>;
+  saveLevel(levelData: ILevel, isEdit: boolean): Promise<DocumentReference | unknown>;
 
   saveGroupList(levelGroup: ILevelGroup, isEdit: boolean): void;
 
@@ -88,18 +90,30 @@ const defaultState: ILevelContext = {
 
   async saveLevel(levelData: ILevel, isEdit: boolean) {
     try {
+      let docRef;
+
       if (isEdit) {
-        await setDoc(doc(db, 'levels', levelData.levelId), levelData);
+        docRef = doc(db, 'levels', levelData.levelId)
+        levelData.modifiedDateTime = Timestamp.now().seconds;
       } else {
-        const docRef = await addDoc(collection(db, "levels"), levelData)
-        console.log("Document written with ID: ", docRef.id);
-        // return docRef;
-        return docRef;
+        docRef = doc(collection(db, "levels"));
+        levelData.createDateTime = Timestamp.now().seconds;
+        levelData.levelId = docRef.id;
+        if (auth.currentUser) {
+          levelData.writerEmail = auth.currentUser.email;
+          levelData.writerUid = auth.currentUser.uid;
+        }
       }
+      await setDoc(docRef, levelData);
+      // const docRef = await addDoc(collection(db, "levels"), levelData)
+      console.log("Document written with ID: ", docRef.id);
+      // return docRef;
+      return docRef;
     } catch (error) {
       console.error("Error adding document: ", error);
-      return false;
+      return error;
     }
+    // return false
   }
 
 

@@ -9,7 +9,8 @@ export interface ILevel {
   difficulty: string;
   language: string;
   levelId: string;
-  writer: string;
-  createDateTime: null;
-  modifiedDateTime: null;
+  writerUid: string | null;
+  writerEmail: string | null;
+  createDateTime: number | null;
+  modifiedDateTime: number | null;
 }

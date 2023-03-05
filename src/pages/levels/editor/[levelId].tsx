@@ -41,7 +41,8 @@ function LevelsEditorPage(): JSX.Element {
     difficulty: "1",
     language: "ko",
     levelId: "",
-    writer: "",
+    writerUid: null,
+    writerEmail: null,
     createDateTime: null,
     modifiedDateTime: null
   })
@@ -82,9 +83,13 @@ function LevelsEditorPage(): JSX.Element {
   }
 
   const onClickSave = async () => {
+    console.log('isEdit', isEdit)
+    // debugger;
     const response = await store.saveLevel(levelData, isEdit);
     console.log('<<<<response', response.id, response)
-    router.push(`/levels/editor/${response.id}`)
+    if (!isEdit) {
+      router.push(`/levels/editor/${response.id}`)
+    }
   }
 
   const [isShowGroupLayer, setIsShowGroupLayer] = useState(false);
