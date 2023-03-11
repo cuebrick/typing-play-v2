@@ -1,13 +1,28 @@
-import levelData from "sample/json/level-data.json"
-import LevelItem from "../../components/level/LevelItem";
+import {observer} from 'mobx-react-lite';
+import {ReactElement, useContext, useEffect} from 'react';
+import {LevelContext, LevelProvider} from 'store/LevelContext';
+import LevelItem from "components/level/LevelItem";
+
 function LevelsIndexPage(): JSX.Element {
+  const store = useContext(LevelContext);
+
+  useEffect(() => {
+    if (store.levelList.length === 0) {
+      store.getLevelList();
+    }
+  }, [store]);
+
   return (
     <div className="level-list">
-        {levelData.map(level => (
-            <LevelItem key={level.id} levelData={level}/>
-        ))}
+      {store.levelList.map(level => (
+        <LevelItem key={level.levelId} levelData={level} />
+      ))}
     </div>
-  )
+  );
 }
 
-export default LevelsIndexPage;
+LevelsIndexPage.getProvider = (page: ReactElement): ReactElement => {
+  return <LevelProvider>{page}</LevelProvider>;
+};
+
+export default observer(LevelsIndexPage);
