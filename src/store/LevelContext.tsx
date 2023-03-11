@@ -20,7 +20,7 @@ import firebase from "firebase/compat";
 import {auth} from "database";
 
 export interface ILevelContext {
-  level: ILevel;
+  level: ILevel | null;
   levelGroupList: ILevelGroup[];
 
   getLevelGroupList(): void;
@@ -39,6 +39,7 @@ export interface IResponse {
 }
 
 const defaultState: ILevelContext = {
+  level: null,
   levelGroupList: [],
 
   async getLevelGroupList() {
@@ -96,7 +97,7 @@ const defaultState: ILevelContext = {
         docRef = doc(db, 'levels', levelData.levelId)
         levelData.modifiedDateTime = Timestamp.now().seconds;
       } else {
-        docRef = doc(collection(db, "levels"));
+        docRef = await doc(collection(db, "levels"));
         levelData.createDateTime = Timestamp.now().seconds;
         levelData.levelId = docRef.id;
         if (auth.currentUser) {
