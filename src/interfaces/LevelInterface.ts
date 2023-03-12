@@ -1,3 +1,5 @@
+import {Timestamp} from 'firebase/firestore';
+
 export interface ILevel {
   groupId: string;
   groupTitle: string;
@@ -11,6 +13,12 @@ export interface ILevel {
   levelId: string;
   writerUid: string | null;
   writerEmail: string | null;
-  createDateTime: number | null;
-  modifiedDateTime: number | null;
+  createdAt: Timestamp | null;
+  modifiedAt: Timestamp | null;
+  order: number;
+}
+
+export interface ILevelListParams {
+  groupId?: string;
+  orderBy?: string;
 }
