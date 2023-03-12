@@ -4,6 +4,7 @@ import type {AppProps} from 'next/app'
 
 import 'assets/styles/index.scss';
 
+import {AuthProvider} from 'store/AuthContext';
 import DefaultLayout from "components/layout/DefaultLayout";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const getProvider = Component.getProvider ?? ((page: ReactElement) => page);
 
-  return getProvider(getLayout(<Component {...pageProps} />))
+  return <AuthProvider>{getProvider(getLayout(<Component {...pageProps} />))}</AuthProvider>
   // return <Component {...pageProps} />
 }
 

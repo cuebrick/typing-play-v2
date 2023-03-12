@@ -92,9 +92,15 @@ function LevelsEditorPage(): JSX.Element {
     setIsShowGroupLayer(false);
   }
 
-  const onClickCreate = () => {
-    router.push(`/levels/editor/${CREATE}`);
-    store.setLevel({...defaultLevelData});
+  const onClickGoList = () => {
+    router.push('/editor');
+  }
+
+  const onClickCreate = (withClear?: boolean) => {
+    if (withClear) {
+      store.setLevel({...defaultLevelData});
+    }
+    router.push(`/editor/${CREATE}`);
   }
 
   return (
@@ -178,8 +184,10 @@ function LevelsEditorPage(): JSX.Element {
           <TextForm type="number" name="order" value={levelData.order} placeholder="순서" onChange={onChange}/>
         </FormData>
       </FormRow>
+      <button onClick={onClickGoList}>목록으로</button>
       <button onClick={onClickSave}>저장</button>
-      <button onClick={onClickCreate}>새 레벨 만들기</button>
+      <button onClick={() => onClickCreate(true)}>새 레벨 만들기</button>
+      <button onClick={() => onClickCreate()}>현재 데이터를 유지한 채 새 레벨 만들기</button>
       <pre>{JSON.stringify(levelData, null, '\t')}</pre>
     </div>
   )

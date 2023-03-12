@@ -15,7 +15,7 @@ function LevelsIndexPage(): JSX.Element {
   return (
     <div className="level-list">
       {store.levelList.map(level => (
-        <LevelItem key={level.levelId} levelData={level} />
+        <LevelItem key={level.id} levelData={level} />
       ))}
     </div>
   );
