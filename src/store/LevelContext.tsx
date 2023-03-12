@@ -10,11 +10,13 @@ import {
   orderBy,
   query,
   QuerySnapshot,
-  setDoc, Timestamp
+  setDoc,
+  Timestamp,
+  where
 } from "firebase/firestore";
 import {db} from "database";
 import {useLocalObservable} from "mobx-react-lite";
-import {ILevel} from "interfaces/levelInterface";
+import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
 import {runInAction} from "mobx";
 import {auth} from "database";
 import {IUserData} from 'interfaces/UserInterface';
@@ -44,9 +46,11 @@ export interface ILevelContext {
 
   deleteGroupList(id: string): Promise<IResponse>;
 
-  getLevelList(): void;
+  getLevelList(params?: ILevelListParams): void;
 
   getLevel(id: string): void;
+
+  setLevel(levelData: ILevel): void;
 
   saveLevel(levelData: ILevel, isEdit: boolean): Promise<DocumentReference | unknown>;
 
@@ -100,13 +104,17 @@ const defaultState: ILevelContext = {
 
   async saveLevelGroup(levelGroup: ILevelGroup, isEdit: boolean = false) {
     try {
+      let docRef;
       if (isEdit) {
-        await setDoc(doc(db, 'levelGroups', levelGroup.id), levelGroup);
+        docRef = doc(db, 'levelGroups', levelGroup.id)
+        await setDoc(docRef, levelGroup);
+        console.log('setDoc():', docRef.id, docRef);
       } else {
-        const docRef = await addDoc(collection(db, 'levelGroups'), levelGroup);
-        console.log('docRef', docRef.id, docRef);
+        docRef = await addDoc(collection(db, 'levelGroups'), levelGroup);
+        console.log('addDoc():', docRef.id, docRef);
       }
       this.getLevelGroupList();
+      return docRef;
     } catch (error) {
       // TODO: error handling
     }
@@ -124,8 +132,15 @@ const defaultState: ILevelContext = {
   },
 
 
-  async getLevelList() {
-    const q = query(collection(db, 'levels'));//, orderBy('order')
+  async getLevelList(params?: ILevelListParams) {
+    const qc = []; // QueryConstraint(s)
+    if (params?.groupId) {
+      qc.push(where('groupId', '==', params.groupId));
+    }
+    if (params?.orderBy) {
+      qc.push(orderBy('order'));
+    }
+    const q = query(collection(db, 'levels'), ...qc);
     const querySnapshot: QuerySnapshot = await getDocs(q);
     const list: ILevel[] = [];
     querySnapshot.forEach((doc) => {
@@ -144,12 +159,18 @@ const defaultState: ILevelContext = {
     });
   },
 
+  setLevel(levelData: ILevel) {
+    runInAction(() => {
+      this.level = levelData;
+    });
+  },
+
   async saveLevel(levelData: ILevel, isEdit: boolean) {
     try {
       let docRef;
 
       if (isEdit) {
-        docRef = doc(db, 'levels', levelData.levelId);
+        docRef = await doc(db, 'levels', levelData.levelId);
         levelData.modifiedDateTime = Timestamp.now().seconds;
       } else {
         docRef = await doc(collection(db, "levels"));

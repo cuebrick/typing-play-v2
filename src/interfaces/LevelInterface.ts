@@ -13,4 +13,10 @@ export interface ILevel {
   writerEmail: string | null;
   createDateTime: number | null;
   modifiedDateTime: number | null;
+  order: number;
+}
+
+export interface ILevelListParams {
+  groupId?: string;
+  orderBy?: string;
 }

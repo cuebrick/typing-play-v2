@@ -2,7 +2,7 @@ import {observer} from "mobx-react-lite"
 import {ChangeEvent, ReactElement, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {inputType, languageOptions} from "constants/Constants";
-import {ILevel} from "interfaces/levelInterface";
+import {ILevel} from "interfaces/LevelInterface";
 import LevelGroupModal from "components/modal/LevelGroupModal";
 import {LevelContext, LevelProvider} from "store/LevelContext";
 import {
@@ -15,6 +15,10 @@ import {
   SwitchForm,
   TextForm
 } from "components/forms";
+import {DocumentReference} from 'firebase/firestore';
+import {defaultLevelData} from 'dto/Level';
+
+const CREATE = 'create';
 
 function LevelsEditorPage(): JSX.Element {
   const store = useContext(LevelContext)
@@ -24,28 +28,13 @@ function LevelsEditorPage(): JSX.Element {
 
   useEffect(() => {
     if (levelId) {
-      setIsEdit('create-level' !== levelId);
+      setIsEdit(CREATE !== levelId);
       store.getLevelGroupList()
       store.getLevel(levelId as string)
     }
   }, [levelId, store]);
 
-  const [levelData, setLevelData] = useState<ILevel>({
-    groupId: "",
-    groupTitle: "",
-    title: "",
-    subTitle: "",
-    description: "",
-    text: "",
-    inputType: "word",
-    difficulty: "1",
-    language: "ko",
-    levelId: "",
-    writerUid: null,
-    writerEmail: null,
-    createDateTime: null,
-    modifiedDateTime: null
-  })
+  const [levelData, setLevelData] = useState<ILevel>({...defaultLevelData})
 
   useEffect(() => {
     if (store.level) {
@@ -54,10 +43,11 @@ function LevelsEditorPage(): JSX.Element {
   }, [store.level])
 
   const onChange = (e: ChangeEvent): void => {
-    const {value, name} = e.target as HTMLInputElement;
+    const {value, name, type} = e.target as HTMLInputElement;
+    console.log('<<<<< ', name, type, value);
     let data = {
       ...levelData,
-      [name]: value
+      [name]: type === 'number' ? Number(value) : value
     }
     setLevelData(data);
   }
@@ -85,10 +75,10 @@ function LevelsEditorPage(): JSX.Element {
   const onClickSave = async () => {
     console.log('isEdit', isEdit)
     // debugger;
-    const response = await store.saveLevel(levelData, isEdit) as ILevel;
+    const response = await store.saveLevel(levelData, isEdit) as DocumentReference;
     console.log('<<<<response', response)
     if (!isEdit && response) {
-      router.push(`/levels/editor/${response.levelId}`)
+      router.push(`/levels/editor/${response.id}`)
     }
   }
 
@@ -100,6 +90,11 @@ function LevelsEditorPage(): JSX.Element {
   const onCloseGroupModal = () => {
     console.log('onCloseGroupModal');
     setIsShowGroupLayer(false);
+  }
+
+  const onClickCreate = () => {
+    router.push(`/levels/editor/${CREATE}`);
+    store.setLevel({...defaultLevelData});
   }
 
   return (
@@ -175,10 +170,17 @@ function LevelsEditorPage(): JSX.Element {
           <RadioFormGroup name="language" value={levelData.language} options={languageOptions} onChange={onChange}/>
         </FormData>
       </FormRow>
-      <pre>
-                {JSON.stringify(levelData, null, '\t')}
-            </pre>
+      <FormRow>
+        <FormLabel htmlFor="order">
+          order
+        </FormLabel>
+        <FormData>
+          <TextForm type="number" name="order" value={levelData.order} placeholder="순서" onChange={onChange}/>
+        </FormData>
+      </FormRow>
       <button onClick={onClickSave}>저장</button>
+      <button onClick={onClickCreate}>새 레벨 만들기</button>
+      <pre>{JSON.stringify(levelData, null, '\t')}</pre>
     </div>
   )
 }

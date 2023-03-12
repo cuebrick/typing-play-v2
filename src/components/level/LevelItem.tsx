@@ -1,5 +1,5 @@
 import TrophyBadge from "./TrophyBadge";
-import {ILevel} from 'interfaces/levelInterface';
+import {ILevel} from 'interfaces/LevelInterface';
 
 interface IProps {
   levelData: ILevel;
