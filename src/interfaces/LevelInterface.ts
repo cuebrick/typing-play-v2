@@ -10,7 +10,7 @@ export interface ILevel {
   inputType: string;
   difficulty: string;
   language: string;
-  levelId: string;
+  id: string;
   writerUid: string | null;
   writerEmail: string | null;
   createdAt: Timestamp | null;
@@ -21,4 +21,5 @@ export interface ILevel {
 export interface ILevelListParams {
   groupId?: string;
   orderBy?: string;
+  orderDirection?: 'asc' | 'desc';
 }

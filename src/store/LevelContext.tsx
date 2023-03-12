@@ -1,26 +1,25 @@
 import {Context, createContext, PropsWithChildren} from "react";
+import {useLocalObservable} from "mobx-react-lite";
+import {runInAction} from "mobx";
+import {db, auth} from "database";
+import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
+import {IUserData} from 'interfaces/UserInterface';
+import {defaultUserData} from 'dto/User';
 import {
-  addDoc,
+  DocumentReference,
+  QuerySnapshot,
+  Timestamp,
   collection,
   deleteDoc,
   doc,
-  DocumentReference, getDoc,
+  getDoc,
   getDocs,
   orderBy,
   query,
-  QuerySnapshot,
   setDoc,
-  Timestamp,
   where
 } from "firebase/firestore";
-import {db} from "database";
-import {useLocalObservable} from "mobx-react-lite";
-import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
-import {runInAction} from "mobx";
-import {auth} from "database";
-import {IUserData} from 'interfaces/UserInterface';
-import {defaultUserData} from 'dto/User';
 
 export interface IResponse {
   success: boolean;
@@ -105,14 +104,13 @@ const defaultState: ILevelContext = {
   async saveLevelGroup(levelGroup: ILevelGroup, isEdit: boolean = false) {
     try {
       let docRef;
+
       if (isEdit) {
-        docRef = doc(db, 'levelGroups', levelGroup.id)
-        await setDoc(docRef, levelGroup);
-        console.log('setDoc():', docRef.id, docRef);
+        docRef = await doc(db, 'levelGroups', levelGroup.id)
       } else {
-        docRef = await addDoc(collection(db, 'levelGroups'), levelGroup);
-        console.log('addDoc():', docRef.id, docRef);
+        docRef = await doc(collection(db, 'levelGroups'));
       }
+      await setDoc(docRef, levelGroup);
       this.getLevelGroupList();
       return docRef;
     } catch (error) {
@@ -137,8 +135,8 @@ const defaultState: ILevelContext = {
     if (params?.groupId) {
       qc.push(where('groupId', '==', params.groupId));
     }
-    if (params?.orderBy) {
-      qc.push(orderBy('order'));
+    if (params?.orderBy && params?.orderDirection) {
+      qc.push(orderBy(params?.orderBy, params.orderDirection));
     }
     const q = query(collection(db, 'levels'), ...qc);
     const querySnapshot: QuerySnapshot = await getDocs(q);
@@ -170,21 +168,19 @@ const defaultState: ILevelContext = {
       let docRef;
 
       if (isEdit) {
-        docRef = await doc(db, 'levels', levelData.levelId);
+        docRef = await doc(db, 'levels', levelData.id);
         levelData.modifiedAt = Timestamp.now();
       } else {
         docRef = await doc(collection(db, "levels"));
         levelData.createdAt = Timestamp.now();
-        levelData.levelId = docRef.id;
+        levelData.id = docRef.id;
         if (auth.currentUser) {
           levelData.writerEmail = auth.currentUser.email;
           levelData.writerUid = auth.currentUser.uid;
         }
       }
       await setDoc(docRef, levelData);
-      // const docRef = await addDoc(collection(db, "levels"), levelData)
       console.log("Document written with ID: ", docRef.id);
-      // return docRef;
       return docRef;
     } catch (error) {
       console.error("Error adding document: ", error);

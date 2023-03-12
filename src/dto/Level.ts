@@ -10,7 +10,7 @@ export const defaultLevelData: ILevel = {
   inputType: "word",
   difficulty: "1",
   language: "ko",
-  levelId: "",
+  id: "",
   writerUid: null,
   writerEmail: null,
   createdAt: null,
