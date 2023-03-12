@@ -171,10 +171,10 @@ const defaultState: ILevelContext = {
 
       if (isEdit) {
         docRef = await doc(db, 'levels', levelData.levelId);
-        levelData.modifiedDateTime = Timestamp.now().seconds;
+        levelData.modifiedAt = Timestamp.now();
       } else {
         docRef = await doc(collection(db, "levels"));
-        levelData.createDateTime = Timestamp.now().seconds;
+        levelData.createdAt = Timestamp.now();
         levelData.levelId = docRef.id;
         if (auth.currentUser) {
           levelData.writerEmail = auth.currentUser.email;

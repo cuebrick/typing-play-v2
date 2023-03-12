@@ -13,7 +13,7 @@ export const defaultLevelData: ILevel = {
   levelId: "",
   writerUid: null,
   writerEmail: null,
-  createDateTime: null,
-  modifiedDateTime: null,
+  createdAt: null,
+  modifiedAt: null,
   order: 0
 };

@@ -17,7 +17,7 @@ interface IProps {
   onClose(): void;
 }
 
-function LevelGroupModal({onChangeGroups, onClose}: IProps): JSX.Element {
+function LevelGroupModal({onClose}: IProps): JSX.Element {
 
   const store = useContext(LevelContext);
   const [isEdit, setIsEdit] = useState(false);
