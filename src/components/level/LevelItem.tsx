@@ -3,11 +3,12 @@ import {ILevel} from 'interfaces/LevelInterface';
 
 interface IProps {
   levelData: ILevel;
+  onClick?(): void;
 }
 
-function LevelItem({levelData}: IProps): JSX.Element {
+function LevelItem({levelData, onClick}: IProps): JSX.Element {
   return (
-    <div className="level-item">
+    <div className="level-item" onClick={onClick}>
       <TrophyBadge />
       <div className="level-info">
         <div className="level-num">00</div>
