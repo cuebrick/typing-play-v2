@@ -4,8 +4,6 @@ import {runInAction} from "mobx";
 import {db, auth} from "database";
 import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
 import {ILevelGroup} from 'interfaces/LevelGroupInterface';
-import {IUserData} from 'interfaces/UserInterface';
-import {defaultUserData} from 'dto/User';
 import {
   DocumentReference,
   QuerySnapshot,
@@ -27,17 +25,9 @@ export interface IResponse {
 }
 
 export interface ILevelContext {
-  userUid: string | null;
-  userData: IUserData | null;
   levelGroupList: ILevelGroup[];
   level: ILevel | null;
   levelList: ILevel[];
-
-  setUserUid(uid: string): void;
-
-  getUserData(uid: string): void;
-
-  setUserData(userData: IUserData): void;
 
   getLevelGroupList(): void;
 
@@ -58,36 +48,9 @@ export interface ILevelContext {
 
 
 const defaultState: ILevelContext = {
-  userUid: null,
-  userData: null,
   levelGroupList: [],
   level: null,
   levelList: [],
-
-  setUserUid(uid: string) {
-    this.userUid = uid;
-  },
-
-  async getUserData(uid: string) {
-    const docRef = doc(db, "userData", uid);
-    const docSnap = await getDoc(docRef);
-    console.log('user docSnap >>>', docSnap, docSnap.data());
-    // 사용자의 세이브 데이터가 있는 경우
-    if (docSnap.data()) {
-      this.setUserData(docSnap.data() as IUserData);
-    } else {
-      // 사용자 데이터 처음 (자동) 저장
-      const merged = {...defaultUserData, uid} as IUserData;
-      this.setUserData(merged);
-      await setDoc(docRef, merged);
-    }
-  },
-
-  setUserData(userData: IUserData) {
-    runInAction(() => {
-      this.userData = userData;
-    });
-  },
 
   async getLevelGroupList() {
     const q = query(collection(db, 'levelGroups'), orderBy('order'));
