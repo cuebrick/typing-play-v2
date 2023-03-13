@@ -32,6 +32,9 @@ function LevelsEditorPage(): JSX.Element {
       store.getLevelGroupList()
       store.getLevel(levelId as string)
     }
+    return () => {
+      store.setLevel({...defaultLevelData});
+    }
   }, [levelId, store]);
 
   const [levelData, setLevelData] = useState<ILevel>({...defaultLevelData})

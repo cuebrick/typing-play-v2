@@ -4,16 +4,20 @@ import {observer} from 'mobx-react-lite';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
 import LevelItem from 'components/level/LevelItem';
 import {ILevel} from 'interfaces/LevelInterface';
+import {AuthContext} from 'store/AuthContext';
 
-function LevelIndexPage(): JSX.Element {
+function EditorIndexPage(): JSX.Element {
+  const authStore = useContext(AuthContext);
   const store = useContext(LevelContext);
   const router = useRouter();
 
   useEffect(() => {
-    if (store) {
+    if (store && authStore.userData?.grade === 'admin') {
       store.getLevelList();
+    } else {
+      router.push('/');
     }
-  }, [store]);
+  }, [store, authStore.userData]);
 
   const onClickLevel = (levelData: ILevel): void => {
     router.push(`/editor/${levelData.id}`)
@@ -28,8 +32,8 @@ function LevelIndexPage(): JSX.Element {
   )
 }
 
-LevelIndexPage.getProvider = (page: ReactElement): ReactElement => {
+EditorIndexPage.getProvider = (page: ReactElement): ReactElement => {
   return <LevelProvider>{page}</LevelProvider>
 }
 
-export default observer(LevelIndexPage);
+export default observer(EditorIndexPage);
