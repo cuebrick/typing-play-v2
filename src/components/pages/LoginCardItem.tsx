@@ -5,6 +5,7 @@ import TextForm from "components/forms/TextForm";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "@firebase/auth";
 import {auth} from "database";
+import Link from 'next/link';
 
 function LoginCardItem(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -66,10 +67,13 @@ function LoginCardItem(): JSX.Element {
     <div className="login-card-item">
       로그인 카드 아이템입니다.
       <form onSubmit={onSubmit}>
-        {loginUser ? <FormRow>
+        {loginUser ? (
+          <FormRow>
             {loginUser.email}
-          <button type="button" onClick={onClickLogout}>log out</button>
-        </FormRow>
+            <button type="button" onClick={onClickLogout}>log out</button>
+            <Link href={'/editor'}>레벨 에디터</Link>
+          </FormRow>
+          )
           :
           (
             <>
