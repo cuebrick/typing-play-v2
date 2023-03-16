@@ -3,7 +3,7 @@ import {ReactElement, useContext, useEffect} from 'react';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
 import LevelItem from "components/level/LevelItem";
 import { useRouter } from "next/router";
-import {ILevel} from "../../interfaces/LevelInterface";
+import {ILevel} from "interfaces/LevelInterface";
 
 function LevelsIndexPage(): JSX.Element {
   const store = useContext(LevelContext);
