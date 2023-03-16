@@ -1,8 +1,11 @@
+@import "variables";
+
 input, textarea, select {
   outline: none;
 }
 
 .form-row{
+  width: 100%;
   min-height: 40px;
   display: flex;
   align-items: flex-start;
@@ -22,23 +25,46 @@ input, textarea, select {
   .form-data{
     width: 100%;
     height: 100%;
+    display: flex;
+    column-gap: 10px;
 
     input[type=text],
     input[type=password],
+    input[type=number],
     textarea,
     select {
       width: 100%;
       height: 40px;
       padding-right: 8px;
       padding-left: 8px;
-      border: 1px solid #aaa;
+      border: 1px solid #ccc;
       border-radius: 3px;
+      box-sizing: border-box;
+      background-color: #f8f8f8;
+
+      &:focus {
+        background-color: $DEFAULT_BUTTON_BACKGROUND;
+        border-color: $DEFAULT_BUTTON_TEXT;
+        box-shadow: 0 0 0 6px rgba(180, 222, 255, 0.2);
+      }
     }
     textarea {
       min-height: 100px;
       padding-top: 8px;
       padding-bottom: 8px;
     }
+  }
+}
+
+button {
+  white-space: nowrap;
+
+  &.default {
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    color: #234771;
+    background-color: #a8c5e6;
   }
 }
 

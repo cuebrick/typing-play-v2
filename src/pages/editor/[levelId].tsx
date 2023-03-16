@@ -147,7 +147,7 @@ function LevelsEditorPage(): JSX.Element {
         <FormData>
           <SelectForm name="groupId" value={levelData.groupId} valueKey="id" labelKey="title" placeholder="그룹 ID 선택"
                       options={store.levelGroupList} onChange={onChangeLevelGroup}/>
-          <button onClick={onClickEditGroup}>수정</button>
+          <button className="default" onClick={onClickEditGroup}>레벨 그룹 수정</button>
           {isShowGroupLayer && (
             <LevelGroupModal onClose={onCloseGroupModal}/>
           )}
@@ -187,10 +187,14 @@ function LevelsEditorPage(): JSX.Element {
           <TextForm type="number" name="order" value={levelData.order} placeholder="순서" onChange={onChange}/>
         </FormData>
       </FormRow>
-      <button onClick={onClickGoList}>목록으로</button>
-      <button onClick={onClickSave}>저장</button>
-      <button onClick={() => onClickCreate(true)}>새 레벨 만들기</button>
-      <button onClick={() => onClickCreate()}>현재 데이터를 유지한 채 새 레벨 만들기</button>
+      <FormRow>
+        <FormData>
+          <button className="default" onClick={onClickSave}>저장</button>
+          <button className="default" onClick={onClickGoList}>목록으로</button>
+          <button className="default" onClick={() => onClickCreate(true)}>새 레벨 만들기</button>
+          <button className="default" onClick={() => onClickCreate()}>현재 데이터를 유지한 채 새 레벨 만들기</button>
+        </FormData>
+      </FormRow>
       <pre>{JSON.stringify(levelData, null, '\t')}</pre>
     </div>
   )
