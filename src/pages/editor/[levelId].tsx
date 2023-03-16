@@ -78,10 +78,10 @@ function LevelsEditorPage(): JSX.Element {
   const onClickSave = async () => {
     console.log('isEdit', isEdit)
     // debugger;
-    const response = await store.saveLevel(levelData, isEdit) as DocumentReference;
-    console.log('<<<<response', response)
-    if (!isEdit && response) {
-      router.push(`/levels/editor/${response.id}`)
+    const docRef = await store.saveLevel(levelData, isEdit) as DocumentReference;
+    console.log('<<<<response', docRef)
+    if (!isEdit && docRef) {
+      router.push(`/levels/editor/${docRef.id}`)
     }
   }
 

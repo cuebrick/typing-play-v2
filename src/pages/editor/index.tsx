@@ -12,28 +12,33 @@ function EditorIndexPage(): JSX.Element {
   const router = useRouter();
 
   useEffect(() => {
-    if (store && authStore.userData?.grade === 'admin') {
-      store.getLevelList();
-    } else {
-      router.push('/');
-    }
-  }, [store, authStore.userData]);
+      if (!authStore.userData?.grade) return;
+
+      if (authStore.userData?.grade === 'admin') {
+        store.getLevelList();
+      } else {
+        router.push('/');
+      }
+    }, [store, authStore.userData?.grade]
+  );
 
   const onClickLevel = (levelData: ILevel): void => {
-    router.push(`/editor/${levelData.id}`)
-  }
+    router.push(`/editor/${levelData.id}`);
+  };
 
   return (
     <div className="editor-index-page">
       <div className="level-list">
-        {store.levelList.map(level => <LevelItem key={level.id} levelData={level} onClick={() => onClickLevel(level)} />)}
+        {store.levelList.map(level => (
+          <LevelItem key={level.id} levelData={level} onClick={() => onClickLevel(level)} />
+        ))}
       </div>
     </div>
-  )
+  );
 }
 
 EditorIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>
-}
+  return <LevelProvider>{page}</LevelProvider>;
+};
 
 export default observer(EditorIndexPage);
