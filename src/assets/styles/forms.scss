@@ -180,6 +180,10 @@ button {
   text-align: center;
   width: 160px;
 
+  &.invalidated {
+    box-shadow: 0 0 0 6px rgba(255, 180, 220, 0.4);
+  }
+
   button {
     width: 50px;
   }

@@ -3,6 +3,7 @@ import {
   FormLabel,
   FormRow,
   InputRangeForm,
+  NumberStepper,
   RadioFormGroup,
   SelectForm,
   SwitchForm,
@@ -12,7 +13,6 @@ import {inputType, languageOptions} from 'constants/Constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
 import {LevelContext} from 'store/LevelContext';
-import NumberStepper from 'components/forms/NumberStepper';
 
 interface IProps {
   levelData: ILevel;
@@ -79,6 +79,10 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
 
   const isDisableToSave = (): boolean => {
     return JSON.stringify(levelData) === JSON.stringify(data);
+  };
+
+  const isInvalidatedOrder = (): boolean => {
+    return store.levelList.some(level => level.order === data.order);
   };
 
   return (
@@ -184,7 +188,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
             order
           </FormLabel>
           <FormData>
-            <NumberStepper name="order" value={data.order} onChangeNumber={onChangeOrder} />
+            <NumberStepper name="order" value={data.order} invalidated={isInvalidatedOrder()} onStep={onChangeOrder} />
           </FormData>
         </FormRow>
         {/*<pre>{JSON.stringify(data, null, '\t')}</pre>*/}
