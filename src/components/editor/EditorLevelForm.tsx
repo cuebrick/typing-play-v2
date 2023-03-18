@@ -12,6 +12,7 @@ import {inputType, languageOptions} from 'constants/Constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
 import {LevelContext} from 'store/LevelContext';
+import NumberStepper from 'components/forms/NumberStepper';
 
 interface IProps {
   levelData: ILevel;
@@ -37,6 +38,14 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
     let merged = {
       ...data,
       [name]: type === 'number' ? Number(value) : value
+    } as ILevel;
+    setData(merged);
+  };
+
+  const onChangeOrder = (order: number): void => {
+    let merged = {
+      ...data,
+      order
     } as ILevel;
     setData(merged);
   };
@@ -77,6 +86,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
       <div className="header">
         <h3>{levelData.title || '이름 없는 레벨'}</h3>
         <div className="button-group">
+          <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>저장</button>
           <button className="default" onClick={() => onCreate(true)}>+</button>
           <button
             className="default"
@@ -110,6 +120,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormLabel>
           <FormData>
             <TextForm name="title" value={data.title} placeholder="제목" onChange={onChange} />
+            {data.id}
           </FormData>
         </FormRow>
         <FormRow>
@@ -173,12 +184,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
             order
           </FormLabel>
           <FormData>
-            <TextForm type="number" name="order" value={data.order} placeholder="순서" onChange={onChange} />
-          </FormData>
-        </FormRow>
-        <FormRow>
-          <FormData>
-            <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>저장</button>
+            <NumberStepper name="order" value={data.order} onChangeNumber={onChangeOrder} />
           </FormData>
         </FormRow>
         {/*<pre>{JSON.stringify(data, null, '\t')}</pre>*/}

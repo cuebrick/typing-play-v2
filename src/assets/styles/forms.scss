@@ -173,3 +173,14 @@ button {
     background-color: #eee;
   }
 }
+
+
+.number-stepper {
+  display: flex;
+  text-align: center;
+  width: 160px;
+
+  button {
+    width: 50px;
+  }
+}
