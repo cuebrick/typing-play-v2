@@ -2,17 +2,20 @@
 // font
 
 // reset
-body{
+body {
   margin: 0;
 }
-div, header{
+
+div, header {
   box-sizing: border-box;
 }
+
 // base style
 body {
   background-color: $APP_THEME_BACKGROUND_COLOR;
   font-size: $DEFAULT_FONT_SIZE;
 }
+
 input[type=text],
 input[type=password],
 textarea,
@@ -42,6 +45,6 @@ select {
 
 @import "level-editor";
 
-@import "level-group-modal";
+@import "category-modal";
 
 

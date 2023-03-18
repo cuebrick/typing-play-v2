@@ -1,8 +1,8 @@
 import {ILevel} from 'interfaces/LevelInterface';
 
 export const defaultLevelData: ILevel = {
-  groupId: "",
-  groupTitle: "",
+  categoryId: "",
+  categoryTitle: "",
   title: "",
   subTitle: "",
   description: "",

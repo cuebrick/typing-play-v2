@@ -3,7 +3,7 @@ import {useLocalObservable} from "mobx-react-lite";
 import {runInAction} from "mobx";
 import {db, auth} from "database";
 import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
-import {ILevelGroup} from 'interfaces/LevelGroupInterface';
+import {ICategory} from 'interfaces/CategoryInterface';
 import {
   DocumentReference,
   QuerySnapshot,
@@ -25,15 +25,15 @@ export interface IResponse {
 }
 
 export interface ILevelContext {
-  levelGroupList: ILevelGroup[];
+  categoryList: ICategory[];
   level: ILevel | null;
   levelList: ILevel[];
 
-  getLevelGroupList(): void;
+  getCategoryList(): void;
 
-  saveLevelGroup(levelGroup: ILevelGroup, isEdit: boolean): void;
+  saveCategory(category: ICategory, isEdit: boolean): void;
 
-  deleteGroupList(id: string): Promise<IResponse>;
+  deleteCategory(id: string): Promise<IResponse>;
 
   getLevelList(params?: ILevelListParams): void;
 
@@ -41,62 +41,62 @@ export interface ILevelContext {
 
   setLevel(levelData: ILevel): void;
 
-  saveLevel(levelData: ILevel, isEdit: boolean): Promise<DocumentReference | unknown>;
+  saveLevel(levelData: ILevel): Promise<DocumentReference | unknown>;
 
   deleteLevel(id: string): void;
 }
 
 
 const defaultState: ILevelContext = {
-  levelGroupList: [],
+  categoryList: [],
   level: null,
   levelList: [],
 
-  async getLevelGroupList() {
-    const q = query(collection(db, 'levelGroups'), orderBy('order'));
+  async getCategoryList() {
+    const q = query(collection(db, 'categories'), orderBy('order'));
     const querySnapshot: QuerySnapshot = await getDocs(q);
-    const groups: ILevelGroup[] = [];
+    const list: ICategory[] = [];
     querySnapshot.forEach((doc) => {
-      groups.push({...doc.data(), id: doc.id} as ILevelGroup);
+      list.push({...doc.data(), id: doc.id} as ICategory);
     });
     runInAction(() => {
-      this.levelGroupList = groups;
+      this.categoryList = list;
     });
   },
 
-  async saveLevelGroup(levelGroup: ILevelGroup, isEdit: boolean = false) {
+  async saveCategory(category: ICategory, isEdit: boolean = false) {
     try {
       let docRef;
 
       if (isEdit) {
-        docRef = await doc(db, 'levelGroups', levelGroup.id)
+        docRef = await doc(db, 'categories', category.id);
       } else {
-        docRef = await doc(collection(db, 'levelGroups'));
+        docRef = await doc(collection(db, 'categories'));
+        category.id = docRef.id;
       }
-      await setDoc(docRef, levelGroup);
-      this.getLevelGroupList();
+      await setDoc(docRef, category);
+      this.getCategoryList();
       return docRef;
     } catch (error) {
       // TODO: error handling
     }
   },
 
-  async deleteGroupList(id: string): Promise<IResponse> {
+  async deleteCategory(id: string): Promise<IResponse> {
     try {
-      await deleteDoc(doc(db, 'levelGroups', id));
-      this.getLevelGroupList();
+      await deleteDoc(doc(db, 'categories', id));
+      this.getCategoryList();
       return {success: true};
     } catch (error) {
       return {success: false, error};
     }
-
   },
 
 
   async getLevelList(params?: ILevelListParams) {
     const qc = []; // QueryConstraint(s)
-    if (params?.groupId) {
-      qc.push(where('groupId', '==', params.groupId));
+    if (params?.categoryId) {
+      qc.push(where('categoryId', '==', params.categoryId));
     }
     if (params?.orderBy && params?.orderDirection) {
       qc.push(orderBy(params?.orderBy, params.orderDirection));
@@ -126,14 +126,16 @@ const defaultState: ILevelContext = {
     });
   },
 
-  async saveLevel(levelData: ILevel, isEdit: boolean) {
+  async saveLevel(levelData: ILevel) {
     try {
       let docRef;
 
-      if (isEdit) {
+      if (levelData.id) {
+        // 수정
         docRef = await doc(db, 'levels', levelData.id);
         levelData.modifiedAt = Timestamp.now();
       } else {
+        // 생성
         docRef = await doc(collection(db, "levels"));
         levelData.createdAt = Timestamp.now();
         levelData.id = docRef.id;

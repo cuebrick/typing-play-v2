@@ -1,8 +1,8 @@
 import {Timestamp} from 'firebase/firestore';
 
 export interface ILevel {
-  groupId: string;
-  groupTitle: string;
+  categoryId: string;
+  categoryTitle: string;
   title: string;
   subTitle: string;
   description: string;
@@ -19,7 +19,7 @@ export interface ILevel {
 }
 
 export interface ILevelListParams {
-  groupId?: string;
+  categoryId?: string;
   orderBy?: string;
   orderDirection?: 'asc' | 'desc';
 }

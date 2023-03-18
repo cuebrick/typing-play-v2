@@ -4,48 +4,48 @@ import {LevelContext} from 'store/LevelContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {defaultLevelData} from 'dto/Level';
 import EditorLevelItem from 'components/level/EditorLevelItem';
-import {ILevelGroup} from 'interfaces/LevelGroupInterface';
+import {ICategory} from 'interfaces/CategoryInterface';
 
 interface IProps {
-  levelGroupData: ILevelGroup | null;
+  categoryData: ICategory | null;
+  selectedLevel: ILevel;
 
   onSelect(levelData: ILevel): void;
 }
 
-function EditorLevelList({levelGroupData, onSelect}: IProps): JSX.Element {
+function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.Element {
   const store = useContext(LevelContext);
-  const [selectedLevel, setSelectedLevel] = useState<ILevel>({...defaultLevelData});
+  const [selectedLevelData, setSelectedLevelData] = useState<ILevel>({...defaultLevelData});
 
   useEffect(() => {
-    if (levelGroupData?.id) {
-      store.getLevelList({groupId: levelGroupData.id});
+    if (categoryData?.id) {
+      const params = categoryData.id === '__ALL__' ? undefined : {categoryId: categoryData.id};
+      store.getLevelList(params);
     }
-  }, [store, levelGroupData?.id]);
+  }, [store, categoryData?.id]);
+
+  useEffect(() => {
+    if (selectedLevel) {
+      setSelectedLevelData(selectedLevel);
+    }
+  }, [selectedLevel]);
 
   const onClickLevel = (levelData: ILevel): void => {
-    setSelectedLevel(levelData);
+    setSelectedLevelData(levelData);
     onSelect(levelData);
-  };
-
-  const onClickCreate = (withClear?: boolean) => {
-    const data = withClear ? {...defaultLevelData} : {...selectedLevel, id: ''};
-    setSelectedLevel(data);
-    onSelect(data);
   };
 
   return (
     <div className="editor-level-list">
       <div className="header">
-        <h3>level group list</h3>
-        <button className="default" onClick={() => onClickCreate(true)}>새 레벨</button>
-        <button className="default" onClick={() => onClickCreate()}>선택 데이터를 이용해 새 레벨</button>
+        <h3>{categoryData?.title || '전체 카테고리'}</h3>
       </div>
       <div className="list">
         {store.levelList.map(level => (
           <EditorLevelItem
             key={level.id}
-            isActive={level.id === selectedLevel.id}
-            levelData={level}
+            isActive={level.id === selectedLevelData.id}
+            data={level}
             onClick={() => onClickLevel(level)}
           />
         ))}
