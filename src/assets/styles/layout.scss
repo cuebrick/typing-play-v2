@@ -1,4 +1,4 @@
-.default-layout-header{
+.default-layout-header {
   width: 100%;
   height: 80px;
   position: sticky;
@@ -12,6 +12,55 @@
   box-shadow: 0 5px 1px rgba(0, 0, 0, 0.2);
 }
 
-.contents-body{
+.contents-body {
   height: calc(100vh - 80px);
 }
+
+.editor-index-page {
+  display: flex;
+  column-gap: 20px;
+  padding: 20px;
+
+  .editor-level-group-list {
+    width: 200px;
+    flex-shrink: 0;
+
+    .editor-level-group-item {
+      background-color: #fff;
+      border: 1px solid #eee;
+      padding: 10px;
+      cursor: pointer;
+
+      &.active {
+        background-color: #efefef;
+      }
+    }
+  }
+
+  .editor-level-list {
+    width: 300px;
+    flex-shrink: 0;
+
+    .header {
+
+    }
+
+    .list {
+      .editor-level-item {
+        background-color: #fff;
+        border: 1px solid #eee;
+        padding: 10px;
+        cursor: pointer;
+
+        &.active {
+          background-color: #efefef;
+        }
+      }
+    }
+  }
+
+  .editor-level-form {
+    flex-grow: 1;
+  }
+}
+
