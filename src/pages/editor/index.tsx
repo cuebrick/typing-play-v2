@@ -1,15 +1,21 @@
-import {ReactElement, useContext, useEffect} from 'react';
+import {ReactElement, useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {observer} from 'mobx-react-lite';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
-import LevelItem from 'components/level/LevelItem';
 import {ILevel} from 'interfaces/LevelInterface';
 import {AuthContext} from 'store/AuthContext';
+import EditorLevelForm from 'components/editor/EditorLevelForm';
+import {defaultLevelData} from 'dto/Level';
+import EditorLevelList from 'components/editor/EditorLevelList';
+import EditorCategoryList from 'components/editor/EditorCategoryList';
+import {ICategory} from 'interfaces/CategoryInterface';
 
 function EditorIndexPage(): JSX.Element {
   const authStore = useContext(AuthContext);
   const store = useContext(LevelContext);
   const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<ILevel>({...defaultLevelData});
 
   useEffect(() => {
       if (!authStore.userData?.grade) return;
@@ -22,17 +28,44 @@ function EditorIndexPage(): JSX.Element {
     }, [store, authStore.userData?.grade]
   );
 
-  const onClickLevel = (levelData: ILevel): void => {
-    router.push(`/editor/${levelData.id}`);
+  const onSaveDetail = (): void => {
+    setSelectedCategory({...selectedCategory} as ICategory);
+
+    // console.log('isEdit', isEdit);
+    // // debugger;
+    // const docRef = await store.saveLevel(data, isEdit) as DocumentReference;
+    // console.log('<<<<response', docRef);
+    // if (!isEdit && docRef) {
+    //   await router.push(`/levels/editor/${docRef.id}`);
+    // }
+  };
+
+  useEffect(() => {
+      if (!authStore.userData?.grade) return;
+    }, [store, authStore.userData?.grade]
+  );
+
+  const onSelectCategory = (category: ICategory): void => {
+    setSelectedCategory(category);
+    console.log('onSelectCategory()', category);
+  };
+
+  const onSelectLevel = (levelData: ILevel): void => {
+    // todo:
+    setSelectedLevel(levelData);
+    console.log('onSelectLevel()', levelData);
+  };
+
+  const onCreateLevel = (withClear: boolean): void => {
+    const data = withClear ? {...defaultLevelData} : {...selectedLevel, id: ''};
+    setSelectedLevel(data);
   };
 
   return (
     <div className="editor-index-page">
-      <div className="level-list">
-        {store.levelList.map(level => (
-          <LevelItem key={level.id} levelData={level} onClick={() => onClickLevel(level)} />
-        ))}
-      </div>
+      <EditorCategoryList onSelect={onSelectCategory} />
+      <EditorLevelList onSelect={onSelectLevel} categoryData={selectedCategory} selectedLevel={selectedLevel} />
+      <EditorLevelForm levelData={selectedLevel} onSave={onSaveDetail} onCreate={onCreateLevel} />
     </div>
   );
 }

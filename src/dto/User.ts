@@ -5,5 +5,5 @@ export const defaultUserData: IUserData = {
   name: null,
   grade: null,
   levelId: null,
-  groupId: null
+  categoryId: null
 };

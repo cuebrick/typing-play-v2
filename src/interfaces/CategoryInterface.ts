@@ -1,4 +1,4 @@
-export interface ILevelGroup {
+export interface ICategory {
   id: string;
   title: string;
   order: number;
