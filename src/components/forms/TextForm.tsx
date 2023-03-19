@@ -7,7 +7,7 @@ type Props = {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-  onChange?(e: ChangeEvent): void;
+  onChange(e: ChangeEvent): void;
 }
 
 function TextForm({type, name, value, placeholder, required, disabled, onChange}: Props): JSX.Element {

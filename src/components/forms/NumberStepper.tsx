@@ -1,5 +1,5 @@
 import {TextForm} from 'components/forms/index';
-import {useEffect, useState} from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 
 interface IProps {
   name: string;
@@ -31,10 +31,21 @@ function NumberStepper({name, value, invalidated, disabled, onStep}: IProps): JS
     onStep(num, name);
   };
 
+  const onChange = (e: ChangeEvent) => {
+    const {value} = e.target as HTMLInputElement;
+    setSelectedValue(Number(value));
+  };
+
   return (
     <div className={`number-stepper ${invalidated ? 'invalidated' : ''}`}>
       <button onClick={onClickDecrease}>-</button>
-      <TextForm name={name} value={selectedValue} disabled={disabled} />
+      <TextForm
+        type="text"
+        name={name}
+        value={selectedValue}
+        disabled={disabled}
+        onChange={onChange}
+      />
       <button onClick={onClickIncrease}>+</button>
     </div>
   );

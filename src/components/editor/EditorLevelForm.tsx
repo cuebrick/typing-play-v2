@@ -82,7 +82,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   };
 
   const isInvalidatedOrder = (): boolean => {
-    return store.levelList.some(level => level.order === data.order);
+    return store.levelList.some(level => level.id !== data.id && level.order === data.order);
   };
 
   return (
