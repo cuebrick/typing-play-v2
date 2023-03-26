@@ -1,0 +1,31 @@
+.typing-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  width: 600px;
+  font-size: 32px;
+
+  .practice-text-line {
+    width: 540px;
+    .token {
+      color: #666;
+      &.correct {
+        color: #000;
+      }
+      &.incorrect {
+        color: #f00
+      }
+    }
+  }
+
+  .input-typing-line {
+    width: 540px;
+    height: 40px;
+    font-size: 32px;
+    padding: 8px;
+    border: 2px solid #dc7cb5;
+    border-radius: 5px;
+  }
+}
