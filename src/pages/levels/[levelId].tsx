@@ -5,13 +5,12 @@ import {LevelContext, LevelProvider} from "store/LevelContext";
 import {observer} from "mobx-react-lite";
 import TypingStage from 'components/level/TypingStage';
 import Keyboard from 'components/level/Keyboard';
+import useKeyboardInput from "hooks/useKeyboardInput";
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId}: any = router.query;
   const store = useContext(LevelContext);
-
-
   const [levelData, setLevelData] = useState<ILevel>();
 
   // use getLevel fn
@@ -27,37 +26,16 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [store.level]);
 
-  // find in store.levelList
-  // useEffect(() => {
-  //   if (store.levelList.length === 0) {
-  //     store.getLevelList()
-  //   }
-  // }, [store])
-  //
-  // useEffect(() => {
-  //   if (levelId) {
-  //     let found = store.levelList.find((item) =>
-  //       item.id === levelId
-  //     )
-  //     setLevelData(found)
-  //   }
-  // }, [levelId, store.levelList])
+  const [letterList, keyboardEvent] = useKeyboardInput()
+
+  useEffect(() => {
+    console.log('letterList >>', letterList)
+  }, [letterList])
 
   return (
     <div className="typing-level">
-      <TypingStage text={levelData.text} />
-      <Keyboard keyCode={12} />
-      <div className="wrap">
-        <p>params : {levelId}</p>
-      </div>
-      <div>
-        <p>그룹 ID : {levelData?.categoryId}</p>
-        <p>그룹 타이틀 : {levelData?.categoryTitle}</p>
-        <p>제목 : {levelData?.title}</p>
-        <p>부제목 : {levelData?.subTitle}</p>
-        <p>설명 : {levelData?.description}</p>
-        <p>타자 데이터 : {levelData?.text}</p>
-      </div>
+      <TypingStage text={levelData?.text} />
+      <Keyboard keyCode={81} isShift={true}/>
     </div>
   );
 }
