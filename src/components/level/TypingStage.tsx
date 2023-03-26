@@ -1,3 +1,4 @@
+import Hangul from 'korean-js/src/hangul'
 interface IProps {
   text: string;
 }
