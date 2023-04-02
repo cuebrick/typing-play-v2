@@ -30,7 +30,7 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [store.level]);
 
-  const [letterList, keyboardEvent] = useKeyboardInput()
+  const [keyInputList, keyInput] = useKeyboardInput()
 
   useEffect(() => {
     if (nextLetter) {
