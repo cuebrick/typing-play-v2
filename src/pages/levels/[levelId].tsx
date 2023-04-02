@@ -6,12 +6,16 @@ import {observer} from "mobx-react-lite";
 import TypingStage from 'components/level/TypingStage';
 import Keyboard from 'components/level/Keyboard';
 import useKeyboardInput from "hooks/useKeyboardInput";
+import useNextLetter from "hooks/useNextLetter";
+import Keymap from "sample/json/keymap.json";
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId}: any = router.query;
   const store = useContext(LevelContext);
   const [levelData, setLevelData] = useState<ILevel>();
+  const [nextLetter] = useNextLetter()
+  const [nextCode, setNextCode] = useState<string>('')
 
   // use getLevel fn
   useEffect(() => {
@@ -29,13 +33,26 @@ function LevelsIdPage(): JSX.Element {
   const [letterList, keyboardEvent] = useKeyboardInput()
 
   useEffect(() => {
-    console.log('letterList >>', letterList)
-  }, [letterList])
+    if (nextLetter) {
+      setNextCode(getCode(nextLetter))
+    }
+  }, [nextLetter])
+
+  function getCode(alphabet: string) {
+    for (let key in Keymap) {
+      let keymap = Keymap as any
+      if (keymap[key].krn === alphabet) {
+        console.log('keymap에서 >>', key, keymap[key].enn)
+        return keymap[key].enn
+      }
+    }
+    return ''
+  }
 
   return (
     <div className="typing-level">
       <TypingStage text={levelData?.text} />
-      <Keyboard keyCode={81} isShift={true}/>
+      <Keyboard keyCap={nextCode} keyCode={81} isShift={false}/>
     </div>
   );
 }
