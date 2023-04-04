@@ -6,7 +6,7 @@ import Hangul from "korean-js/src/hangul";
 function useNextLetter() {
   const [typingText, setTypingText] = useState<string[] | string[][]>()
   const [nextLetter, setNextLetter] = useState<string>()
-  const [letterList] = useKeyboardInput()
+  const [keyInputList] = useKeyboardInput()
   const store = useContext(LevelContext)
   let nextIndex
 
@@ -19,11 +19,11 @@ function useNextLetter() {
 
   useEffect(() => {
     if (typingText) {
-      nextIndex = letterList.length
+      nextIndex = keyInputList.length
       let found = typingText as string[] | string[][]
       setNextLetter(found[nextIndex] as string)
     }
-  }, [typingText, letterList])
+  }, [typingText, keyInputList])
 
   return [nextLetter]
 }
