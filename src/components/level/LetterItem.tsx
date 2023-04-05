@@ -1,23 +1,32 @@
 import {useEffect, useState} from "react";
 import Hangul from "korean-js/src/hangul";
+import {ILetter} from "interfaces/LevelInterface";
 
-interface IProps {
-  letter: any;
-}
+function LetterItem({sampleText, typingText}: ILetter): JSX.Element {
+  const [assembledSampleText, setAssembledSampleText] = useState<string>()
+  const [assembledTypingText, setAssembledTypingText] = useState<string>()
 
-function LetterItem({letter}: IProps): JSX.Element {
-
-  const [assembledText, setAssembledText] = useState<any>()
   useEffect(() => {
-    if (letter) {
-      let assembled = Hangul.assemble(letter)
-      console.log('assembled >>', assembled)
-      setAssembledText(assembled)
+    if (sampleText) {
+      let assembled = Hangul.assemble(sampleText as string[])
+      setAssembledSampleText(assembled)
     }
-  }, letter)
+  })
+
+  useEffect(() => {
+    if (typingText) {
+      let assembled = Hangul.assemble(typingText as string[])
+      setAssembledTypingText(assembled)
+    }
+  })
+
+  // todo:
 
   return (
-      <span className="token">{assembledText}</span>
+      <div className="letter-item">
+        <span className="token">{assembledSampleText}</span>
+        <span className="typing">{assembledTypingText}</span>
+      </div>
   )
 }
 
