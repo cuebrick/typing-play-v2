@@ -30,3 +30,8 @@ export interface IKeyInput {
   shiftKey: boolean;
   timestamp: Timestamp;
 }
+
+export interface ILetter {
+  sampleText: string | string[];
+  typingText?: string[] | string[][];
+}
