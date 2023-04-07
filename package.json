@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "firebase": "^9.13.0",
+    "korean-js": "^0.8.2",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "next": "12.3.1",

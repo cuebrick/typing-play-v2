@@ -23,3 +23,15 @@ export interface ILevelListParams {
   orderBy?: string;
   orderDirection?: 'asc' | 'desc';
 }
+
+export interface IKeyInput {
+  code: string;
+  key: string;
+  shiftKey: boolean;
+  timestamp: Timestamp;
+}
+
+export interface ILetter {
+  sampleText: string | string[];
+  typingText?: string[] | string[][];
+}

@@ -1,0 +1,56 @@
+.typing-stage {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  width: 600px;
+  min-height: 130px;
+  font-size: 32px;
+
+  .text-line {
+    width: 540px;
+    display: flex;
+    flex-direction: row;
+
+    .letter-item {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.4em;
+
+      .token {
+        color: #666;
+        min-width: 0.325em;
+        flex-shrink: 1;
+        flex-basis: 1.4em;
+
+        &.correct {
+          color: #000;
+        }
+
+        &.incorrect {
+          color: #f00
+        }
+      }
+
+      .typing {
+        min-width: 0.325em;
+        flex-shrink: 1;
+        flex-basis: 1.4em;
+      }
+    }
+  }
+
+  .typing-line-highlighter {
+    width: 550px;
+    height: 50px;
+    position: absolute;
+    top: 62px;
+    font-size: 32px;
+    line-height: 46px;
+    padding: 3px;
+    border: 2px solid #dc7cb5;
+    border-radius: 5px;
+  }
+}
