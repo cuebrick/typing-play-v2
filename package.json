@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "clsx": "^1.2.1",
     "firebase": "^9.13.0",
     "korean-js": "^0.8.2",
     "mobx": "^6.6.2",
