@@ -7,6 +7,17 @@ interface IProps {
   isShift: boolean;
 }
 
+interface IKeyCap {
+  code: string,
+  keyCode: number,
+  text: string,
+  width?: number,
+  height?: number,
+  x: number,
+  y: number
+}
+
+
 function Keyboard({keyCode, keyCap, isShift}: IProps): JSX.Element {
 
   useEffect(() => {
@@ -24,73 +35,444 @@ function Keyboard({keyCode, keyCap, isShift}: IProps): JSX.Element {
 
   let isShiftKey = isShift ? "next-key" : '';
 
+  const keyCapData: IKeyCap[] = [
+    {
+      code: 'Backquote',
+      keyCode: 192,
+      text: '`',
+      x: 10.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit1',
+      keyCode: 49,
+      text: '1',
+      x: 65.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit2',
+      keyCode: 50,
+      text: '2',
+      x: 120.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit3',
+      keyCode: 51,
+      text: '3',
+      x: 175.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit4',
+      keyCode: 52,
+      text: '4',
+      x: 230.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit5',
+      keyCode: 53,
+      text: '5',
+      x: 285.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit6',
+      keyCode: 54,
+      text: '6',
+      x: 340.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit7',
+      keyCode: 55,
+      text: '7',
+      x: 395.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit8',
+      keyCode: 56,
+      text: '8',
+      x: 450.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit9',
+      keyCode: 57,
+      text: '9',
+      x: 505.5,
+      y: 10.5
+    },
+    {
+      code: 'Digit0',
+      keyCode: 48,
+      text: '0',
+      x: 560.5,
+      y: 10.5
+    },
+    {
+      code: 'Minus',
+      keyCode: 189,
+      text: '-',
+      x: 615.5,
+      y: 10.5
+    },
+    {
+      code: 'Equal',
+      keyCode: 187,
+      text: '=',
+      x: 670.5,
+      y: 10.5
+    },
+    {
+      code: 'Backspace',
+      keyCode: 8,
+      text: 'Backspace',
+      x: 725.5,
+      y: 10.5,
+      width: 69
+    },
+    {
+      code: 'Tab',
+      keyCode: 9,
+      text: 'Tab',
+      x: 10.5,
+      y: 63.5,
+      width: 69
+    },
+    {
+      code: 'KeyQ',
+      keyCode: 81,
+      text: 'q',
+      x: 87.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyW',
+      keyCode: 87,
+      text: 'w',
+      x: 142.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyE',
+      keyCode: 69,
+      text: 'e',
+      x: 197.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyR',
+      keyCode: 82,
+      text: 'r',
+      x: 252.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyT',
+      keyCode: 84,
+      text: 't',
+      x: 307.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyY',
+      keyCode: 89,
+      text: 'y',
+      x: 362.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyU',
+      keyCode: 85,
+      text: 'y',
+      x: 417.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyI',
+      keyCode: 73,
+      text: 'i',
+      x: 472.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyO',
+      keyCode: 79,
+      text: 'o',
+      x: 527.5,
+      y: 63.5
+    },
+    {
+      code: 'KeyP',
+      keyCode: 80,
+      text: 'p',
+      x: 582.5,
+      y: 63.5
+    },
+    {
+      code: 'BracketLeft',
+      keyCode: 219,
+      text: '[',
+      x: 637.5,
+      y: 63.5
+    },
+    {
+      code: 'BracketRight',
+      keyCode: 221,
+      text: ']',
+      x: 692.5,
+      y: 63.5
+    },
+    {
+      code: 'Backslash',
+      keyCode: 220,
+      text: '\\',
+      x: 747.5,
+      y: 63.5
+    },
+    {
+      code: 'CapsLock',
+      keyCode: 20,
+      text: 'CapsLock',
+      x: 10.5,
+      y: 116.5,
+      width: 82
+    },
+    {
+      code: 'KeyA',
+      keyCode: 80,
+      text: 'a',
+      x: 100.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyS',
+      keyCode: 83,
+      text: 's',
+      x: 155.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyD',
+      keyCode: 68,
+      text: 'd',
+      x: 210.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyF',
+      keyCode: 70,
+      text: 'f',
+      x: 265.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyG',
+      keyCode: 71,
+      text: 'g',
+      x: 320.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyH',
+      keyCode: 72,
+      text: 'h',
+      x: 375.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyJ',
+      keyCode: 74,
+      text: 'j',
+      x: 430.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyK',
+      keyCode: 75,
+      text: 'k',
+      x: 485.5,
+      y: 116.5
+    },
+    {
+      code: 'KeyL',
+      keyCode: 76,
+      text: 'l',
+      x: 540.5,
+      y: 116.5
+    },
+    {
+      code: 'Semicolon',
+      keyCode: 186,
+      text: ';',
+      x: 595.5,
+      y: 116.5
+    },
+    {
+      code: 'Quote',
+      keyCode: 222,
+      text: "'",
+      x: 650.5,
+      y: 116.5
+    },
+    {
+      code: 'Enter',
+      keyCode: 13,
+      text: 'Enter',
+      x: 705.5,
+      y: 116.5,
+      width: 89
+    },
+    {
+      code: 'ShiftLeft',
+      keyCode: 16,
+      text: 'Shift',
+      x: 10.5,
+      y: 169.5,
+      width: 114
+    },
+    {
+      code: 'KeyZ',
+      keyCode: 90,
+      text: 'z',
+      x: 132.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyX',
+      keyCode: 88,
+      text: 'x',
+      x: 187.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyC',
+      keyCode: 67,
+      text: 'c',
+      x: 242.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyV',
+      keyCode: 86,
+      text: 'v',
+      x: 297.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyB',
+      keyCode: 66,
+      text: 'b',
+      x: 352.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyN',
+      keyCode: 78,
+      text: 'n',
+      x: 407.5,
+      y: 169.5
+    },
+    {
+      code: 'KeyM',
+      keyCode: 77,
+      text: 'm',
+      x: 462.5,
+      y: 169.5
+    },
+    {
+      code: 'Comma',
+      keyCode: 188,
+      text: ',',
+      x: 517.5,
+      y: 169.5
+    },
+    {
+      code: 'Period',
+      keyCode: 190,
+      text: '.',
+      x: 572.5,
+      y: 169.5
+    },
+    {
+      code: 'Slash',
+      keyCode: 191,
+      text: '/',
+      x: 627.5,
+      y: 169.5
+    },
+    {
+      code: 'ShiftRight',
+      keyCode: 16,
+      text: 'Shift',
+      x: 682.5,
+      y: 169.5,
+      width: 112
+    },
+    {
+      code: 'ControlLeft',
+      keyCode: 17,
+      text: 'Control',
+      x: 10.5,
+      y: 222.5,
+      width: 59
+    },
+    {
+      code: 'AltLeft',
+      keyCode: 18,
+      text: 'Alt',
+      x: 77.5,
+      y: 222.5,
+      width: 59
+    },
+    {
+      code: 'Space',
+      keyCode: 32,
+      text: ' ',
+      x: 144.5,
+      y: 222.5,
+      width: 516
+    },
+    {
+      code: 'AltRight',
+      keyCode: 21,
+      text: 'HangulMode',
+      x: 668.5,
+      y: 222.5,
+      width: 59
+    },
+    {
+      code: 'ControlRight',
+      keyCode: 25,
+      text: 'HanjaMode',
+      x: 682.5,
+      y: 735.5,
+      width: 59
+    }
+  ];
+
   return (
     <div className="keyboard">
       <svg width="805" height="280" viewBox="0 0 805 280" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g className="layout">
           <rect width="805" height="280" rx="10" fill="white"/>
-          <rect data-key="`" data-key-code={192} x="10.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="1" data-key-code={49} x="65.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="2" data-key-code={50} x="120.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="3" data-key-code={51} x="175.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="4" data-key-code={52} x="230.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="5" data-key-code={53} x="285.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="6" data-key-code={54} x="340.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="7" data-key-code={55} x="395.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="8" data-key-code={56} x="450.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="9" data-key-code={57} x="505.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="0" data-key-code={48} x="560.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="-" data-key-code={189} x="615.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="=" data-key-code={187} x="670.5" y="10.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="Backspace" data-key-code={8} x="725.5" y="10.5" width="69" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-
-          <rect data-key="Tab" data-key-code={9} x="10.5" y="63.5" width="69" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="q" data-key-code={81} x="87.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="w" data-key-code={87} x="142.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="e" data-key-code={69} x="197.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="r" data-key-code={82} x="252.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="t" data-key-code={84} x="307.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="y" data-key-code={89} x="362.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="u" data-key-code={85} x="417.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="i" data-key-code={73} x="472.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="o" data-key-code={79} x="527.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="p" data-key-code={80} x="582.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="[" data-key-code={219} x="637.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="]" data-key-code={221} x="692.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="\\" data-key-code={220} x="747.5" y="63.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-
-          <rect data-key="CapsLock" data-key-code={20} x="10.5" y="116.5" width="82" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="a" data-key-code={65} x="100.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="s" data-key-code={83} x="155.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="d" data-key-code={68} x="210.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="f" data-key-code={70} x="265.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="g" data-key-code={71} x="320.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="h" data-key-code={72} x="375.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="j" data-key-code={74} x="430.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="k" data-key-code={75} x="485.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="l" data-key-code={76} x="540.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key=";" data-key-code={186} x="595.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="'" data-key-code={222} x="650.5" y="116.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="Enter" data-key-code={13} x="705.5" y="116.5" width="89" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-
-          <rect data-key="Shift" data-key-code={16} className={isShiftKey} x="10.5" y="169.5" width="114" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="z" data-key-code={90} x="132.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="x" data-key-code={88} x="187.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="c" data-key-code={67} x="242.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="v" data-key-code={86} x="297.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="b" data-key-code={66} x="352.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="n" data-key-code={78} x="407.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="m" data-key-code={77} x="462.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="," data-key-code={188} x="517.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="." data-key-code={190} x="572.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="/" data-key-code={191} x="627.5" y="169.5" width="47" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="Shift" data-key-code={16} className={isShiftKey} x="682.5" y="169.5" width="112" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-
-          <rect data-key="Control" data-key-code={17} x="10.5" y="222.5" width="59" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="Alt" data-key-code={18} x="77.5" y="222.5" width="59" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key=" " data-key-code={32} x="144.5" y="222.5" width="516" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="HangulMode" data-key-code={21} x="668.5" y="222.5" width="59" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
-          <rect data-key="HanjaMode" data-key-code={25} x="735.5" y="222.5" width="59" height="47" rx="3.5" fill="white" stroke="#ACB0B8"/>
+          {keyCapData.map(item => (
+            <rect
+              key={item.code}
+              x={item.x}
+              y={item.y}
+              className={clsx({'next-key': item.text === keyCap})}
+              width={item?.width || 47}
+              height={item?.height || 47}
+              rx="3.5"
+              fill="white"
+              stroke="#ACB0B8"
+            />
+          ))}
         </g>
         <g className="letter">
           <text transform="matrix(1, 0, 0, 1, 29.04, 23.93)" dx="0" dy="7">~</text>
