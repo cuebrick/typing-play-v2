@@ -449,8 +449,8 @@ function Keyboard({keyCode, keyCap, isShift}: IProps): JSX.Element {
       code: 'ControlRight',
       keyCode: 25,
       text: 'HanjaMode',
-      x: 682.5,
-      y: 735.5,
+      x: 735.5,
+      y: 222.5,
       width: 59
     }
   ];
