@@ -28,7 +28,7 @@ export interface IKeyInput {
   code: string;
   key: string;
   shiftKey: boolean;
-  timestamp: Timestamp;
+  timestamp: Timestamp | null;
 }
 
 export interface ILetter {

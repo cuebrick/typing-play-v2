@@ -1,9 +1,12 @@
-import {useEffect} from "react";
 import clsx from "clsx";
 
 interface IProps {
   keyCode: number;
-  keyCap: string;
+  nextKeyCap: string;
+  keyInput: {
+    key: string;
+    shiftKey: boolean;
+  };
   isShift: boolean;
 }
 
@@ -18,21 +21,7 @@ interface IKeyCap {
 }
 
 
-function Keyboard({keyCode, keyCap, isShift}: IProps): JSX.Element {
-
-  useEffect(() => {
-    if (keyCap) {
-      let elements = Array.from(document.querySelectorAll('[data-key]'))
-      elements.map((element) => {
-        if ((element as HTMLElement).dataset.key === keyCap) {
-          element.classList.add("next-key")
-        } else {
-          element.classList.remove("next-key")
-        }
-      })
-    }
-  }, [keyCap])
-
+function Keyboard({keyCode, nextKeyCap, keyInput, isShift}: IProps): JSX.Element {
   let isShiftKey = isShift ? "next-key" : '';
 
   const keyCapData: IKeyCap[] = [
@@ -465,7 +454,7 @@ function Keyboard({keyCode, keyCap, isShift}: IProps): JSX.Element {
               key={item.code}
               x={item.x}
               y={item.y}
-              className={clsx({'next-key': item.text === keyCap})}
+              className={clsx({'next-key': item.text === nextKeyCap, 'pressed-key': item.text === keyInput.key})}
               width={item?.width || 47}
               height={item?.height || 47}
               rx="3.5"

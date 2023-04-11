@@ -13,8 +13,8 @@ function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId}: any = router.query;
   const store = useContext(LevelContext);
-  const [levelData, setLevelData] = useState<ILevel>();
-  const [nextLetter] = useNextLetter()
+  // const [levelData, setLevelData] = useState<ILevel>();
+  const [nextLetter, onChangeKeyInputList] = useNextLetter()
   const [nextCode, setNextCode] = useState<string>('')
 
   // use getLevel fn
@@ -24,11 +24,11 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [levelId, store]);
 
-  useEffect(() => {
-    if (store.level) {
-      setLevelData({...store.level});
-    }
-  }, [store.level]);
+  // useEffect(() => {
+  //   if (store.level) {
+  //     setLevelData({...store.level});
+  //   }
+  // }, [store.level]);
 
   const [keyInputList, keyInput] = useKeyboardInput()
 
@@ -38,11 +38,14 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [nextLetter])
 
+  useEffect(() => {
+    onChangeKeyInputList(keyInputList)
+  }, [keyInputList]);
+
   function getCode(alphabet: string) {
     for (let key in Keymap) {
       let keymap = Keymap as any
       if (keymap[key].krn === alphabet) {
-        console.log('keymap에서 >>', key, keymap[key].enn)
         return keymap[key].enn
       }
     }
@@ -51,8 +54,8 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={levelData?.text} />
-      <Keyboard keyCap={nextCode} keyCode={81} isShift={false}/>
+      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={store.level?.text} />
+      <Keyboard keyInput={keyInput} nextKeyCap={nextCode} keyCode={81} isShift={false}/>
     </div>
   );
 }
