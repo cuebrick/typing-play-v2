@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import {IKeyInput} from "interfaces/LevelInterface";
 import {Timestamp} from "firebase/firestore";
 import {defaultKeyInputData} from "dto/KeyInput";
+import KeyInputFilter from "modules/KeyInputFilter";
 
 function useKeyboardInput(): [IKeyInput[], IKeyInput | undefined] {
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
@@ -10,8 +11,13 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | undefined] {
     const {key, code, shiftKey} = e;
     console.log('e>>>', code, e.keyCode, key)
     const obj = {key, code, shiftKey, timestamp: Timestamp.now()}
-    setKeyInputList([...keyInputList, obj])
-    setKeyInput(obj)
+    if (KeyInputFilter(e.code)) {
+      setKeyInputList([...keyInputList, obj])
+      setKeyInput(obj)
+      e.preventDefault()
+    } else {
+      e.preventDefault()
+    }
   }, [keyInputList])
 
   const onKeyUp = useCallback(() => {
