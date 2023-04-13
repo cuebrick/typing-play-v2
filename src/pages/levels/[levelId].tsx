@@ -16,6 +16,7 @@ function LevelsIdPage(): JSX.Element {
   // const [levelData, setLevelData] = useState<ILevel>();
   const [nextLetter, onChangeKeyInputList] = useNextLetter()
   const [nextCode, setNextCode] = useState<string>('')
+  const [hangulMode, setHangulMode] = useState<boolean>(true)
 
   // use getLevel fn
   useEffect(() => {
@@ -42,6 +43,12 @@ function LevelsIdPage(): JSX.Element {
     onChangeKeyInputList(keyInputList)
   }, [keyInputList]);
 
+  useEffect(() => {
+    if (keyInput?.key === 'HangulMode') {
+      setHangulMode(!hangulMode)
+    }
+  }, [keyInput])
+
   function getCode(alphabet: string) {
     for (let key in Keymap) {
       let keymap = Keymap as any
@@ -54,8 +61,8 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={store.level?.text} />
-      <Keyboard keyInput={keyInput} nextKeyCap={nextCode} keyCode={81} isShift={false}/>
+      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={store.level?.text} hangulMode={hangulMode} />
+      <Keyboard keyInput={keyInput} nextKeyCap={nextCode} keyCode={81} isShift={false} />
     </div>
   );
 }

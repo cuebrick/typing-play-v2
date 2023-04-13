@@ -8,9 +8,10 @@ interface IProps {
   text: string | undefined;
   keyInput: IKeyInput | undefined;
   keyInputList: IKeyInput[];
+  hangulMode: boolean;
 }
 
-function TypingStage({text, keyInput, keyInputList}: IProps): JSX.Element {
+function TypingStage({text, keyInput, keyInputList, hangulMode}: IProps): JSX.Element {
   // const [practiceText, setPracticeText] = useState<string>()
   const [inputText, setInputText] = useState<string[]>()
   // const [disassembledFlatText, setDisassembledFlatText] = useState<string[] | string[][]>()
@@ -20,19 +21,28 @@ function TypingStage({text, keyInput, keyInputList}: IProps): JSX.Element {
 
   useEffect(() => {
     const keyList = keyInputList.filter(input => input.key !== 'Shift').map((input) => {
+      // handle key and check HangulMode
       if (input.key === ' ') {
         return ' '
       } else if (input.key === 'Enter') {
         // todo: enter key 처리
-        return ' '
-        // } else if (anotherKey) {
-        // todo: 숫자/특문, tab, ctrl, fn 등 키 처리
-      } else {
+        return '↵'
+      } else if (input.key === 'Backspace') {
+        // todo: backspace key 처리
+        return '←'
+      }  else if (input.key === 'HangulMode') {
+        // todo: enter key 처리
+        return ''
+      } else if (hangulMode) {
         return KeyMap.get(input)
+      } else {
+        return input.key
       }
+      // todo: keyInputList 모두를 변환하기 때문에 한영 변환 시 기존 텍스트도 모두 영어로 변경됨.
+      // todo: keyInput에만 적용하고 배열에 넣는 방식으로 변경해야 함.
     })
     setInputText([...keyList])
-  }, [keyInputList])
+  }, [keyInputList, hangulMode])
 
   useEffect(() => {
     if (text) {
