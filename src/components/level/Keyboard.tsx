@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import {IKeyInput} from 'interfaces/LevelInterface';
+import {IKeyInput, IKeyMap} from 'interfaces/LevelInterface';
 
 interface IProps {
   keyCode: number;
-  nextKey: IKeyInput;
+  nextKey: IKeyMap;
   keyInput: IKeyInput;
   isShift: boolean;
 }

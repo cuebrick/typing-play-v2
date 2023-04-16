@@ -1,4 +1,4 @@
-import {IKeyInput} from "interfaces/LevelInterface";
+import {IKeyInput, IKeyMap} from "interfaces/LevelInterface";
 
 
 const mapData: {[key: string]: string} = {

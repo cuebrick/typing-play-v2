@@ -2,11 +2,12 @@ import {useContext, useEffect, useState} from "react";
 import {LevelContext} from "store/LevelContext";
 // import useKeyboardInput from "hooks/useKeyboardInput";
 import Hangul from "korean-js/src/hangul";
-import {IKeyInput} from "interfaces/LevelInterface";
+import {IKeyInput, IKeyMap} from "interfaces/LevelInterface";
+import KeyMap from "modules/KeyMap";
 
-function useNextLetter(): [string | undefined, (list: IKeyInput[]) => void] {
+function useNextLetter(): [IKeyMap, (list: IKeyInput[]) => void] {
   const [typingText, setTypingText] = useState<string[] | string[][]>()
-  const [nextLetter, setNextLetter] = useState<string>()
+  const [nextLetter, setNextLetter] = useState<IKeyMap>({} as IKeyMap)
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
   const store = useContext(LevelContext)
   // let nextIndex
