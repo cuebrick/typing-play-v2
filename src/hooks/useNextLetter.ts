@@ -13,17 +13,19 @@ function useNextLetter(): [IKeyMap, (list: IKeyInput[]) => void] {
   // let nextIndex
 
   useEffect(() => {
-    if (store.level) {
+    if (store.level.text) {
       let disassembleText = Hangul.disassemble(store.level.text)
       setTypingText(disassembleText)
     }
-  }, [store.level])
+  }, [store.level.text])
 
   useEffect(() => {
     if (typingText) {
-      const nextIndex = keyInputList.length
-      let found = typingText as string[] | string[][]
-      setNextLetter(found[nextIndex] as string)
+      const found = KeyMap.getKeyMapByHangulKey(typingText[keyInputList.length] as string)
+      if (found) {
+        // let found = typingText as string[] | string[][]
+        setNextLetter(found)
+      }
       // todo: KeyMap.ts에서 한글 자소를 찾은 후 해당하는 key(알파벳)을 전달.
     }
   }, [typingText, keyInputList])
