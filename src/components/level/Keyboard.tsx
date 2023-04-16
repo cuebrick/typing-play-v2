@@ -1,12 +1,10 @@
 import clsx from "clsx";
+import {IKeyInput} from 'interfaces/LevelInterface';
 
 interface IProps {
   keyCode: number;
-  nextKeyCap: string;
-  keyInput: {
-    key: string;
-    shiftKey: boolean;
-  };
+  nextKey: IKeyInput;
+  keyInput: IKeyInput;
   isShift: boolean;
 }
 
@@ -21,7 +19,7 @@ interface IKeyCap {
 }
 
 
-function Keyboard({keyCode, nextKeyCap, keyInput, isShift}: IProps): JSX.Element {
+function Keyboard({keyCode, nextKey, keyInput, isShift}: IProps): JSX.Element {
   let isShiftKey = isShift ? "next-key" : '';
 
   const keyCapData: IKeyCap[] = [
@@ -448,13 +446,13 @@ function Keyboard({keyCode, nextKeyCap, keyInput, isShift}: IProps): JSX.Element
     <div className="keyboard">
       <svg width="805" height="280" viewBox="0 0 805 280" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g className="layout">
-          <rect width="805" height="280" rx="10" fill="white"/>
+          <rect width="805" height="280" rx="10" fill="white" />
           {keyCapData.map(item => (
             <rect
               key={item.code}
               x={item.x}
               y={item.y}
-              className={clsx({'next-key': item.text === nextKeyCap, 'pressed-key': item.text === keyInput.key})}
+              className={clsx({'next-key': item.text === nextKey.key, 'pressed-key': item.text === keyInput.key})}
               width={item?.width || 47}
               height={item?.height || 47}
               rx="3.5"

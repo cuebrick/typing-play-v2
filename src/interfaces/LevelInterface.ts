@@ -31,6 +31,13 @@ export interface IKeyInput {
   timestamp: Timestamp | null;
 }
 
+export interface IKeyMap {
+  code: string;
+  key: string;
+  han: string;
+  shiftKey: boolean;
+}
+
 export interface ILetter {
   sampleText: string | string[];
   typingText?: string[] | string[][];

@@ -1,4 +1,4 @@
-const checkTypingKey = (code: string): boolean => {
+export const checkTypingKey = (code: string): boolean => {
   switch (code) {
     case 'Escape':
     case 'F1':
@@ -88,12 +88,12 @@ const checkTypingKey = (code: string): boolean => {
     case 'Space':
     case 'AltRight':
     case 'NumLock':
-      return true
+      return true;
 
     default:
-      return false
+      return false;
   }
-}
+};
 
 /*const checkTypingKey = (key: string): boolean => {
   switch (key) {
@@ -237,4 +237,4 @@ const checkTypingKey = (code: string): boolean => {
   }
 }*/
 
-export default checkTypingKey
+// export default {checkTypingKey}

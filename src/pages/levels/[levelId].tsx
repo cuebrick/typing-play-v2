@@ -14,9 +14,9 @@ function LevelsIdPage(): JSX.Element {
   const {levelId}: any = router.query;
   const store = useContext(LevelContext);
   // const [levelData, setLevelData] = useState<ILevel>();
-  const [nextLetter, onChangeKeyInputList] = useNextLetter()
-  const [nextCode, setNextCode] = useState<string>('')
-  const [hangulMode, setHangulMode] = useState<boolean>(true)
+  const [nextKey, onChangeKeyInputList] = useNextLetter();
+  const [nextCode, setNextCode] = useState<string>('');
+  const [hangulMode, setHangulMode] = useState<boolean>(true);
 
   // use getLevel fn
   useEffect(() => {
@@ -31,38 +31,39 @@ function LevelsIdPage(): JSX.Element {
   //   }
   // }, [store.level]);
 
-  const [keyInputList, keyInput] = useKeyboardInput()
+  const [keyInputList, keyInput] = useKeyboardInput();
 
   useEffect(() => {
-    if (nextLetter) {
-      setNextCode(getCode(nextLetter))
+    if (nextKey) {
+      setNextCode(getCode(nextKey));
     }
-  }, [nextLetter])
+  }, [nextKey]);
 
   useEffect(() => {
-    onChangeKeyInputList(keyInputList)
+    onChangeKeyInputList(keyInputList);
   }, [keyInputList]);
 
   useEffect(() => {
     if (keyInput?.key === 'HangulMode') {
-      setHangulMode(!hangulMode)
+      setHangulMode(!hangulMode);
     }
-  }, [keyInput])
+  }, [keyInput]);
 
   function getCode(alphabet: string) {
     for (let key in Keymap) {
-      let keymap = Keymap as any
+      let keymap = Keymap as any;
       if (keymap[key].krn === alphabet) {
-        return keymap[key].enn
+        return keymap[key].enn;
       }
     }
-    return ''
+    return '';
   }
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={store.level?.text} hangulMode={hangulMode} />
-      <Keyboard keyInput={keyInput} nextKeyCap={nextCode} keyCode={81} isShift={false} />
+      <TypingStage keyInput={keyInput} keyInputList={keyInputList} level={store.level} text={store.level?.text}
+                   hangulMode={hangulMode} />
+      <Keyboard keyInput={keyInput} nextKey={nextKey} keyCode={81} isShift={false} />
     </div>
   );
 }
