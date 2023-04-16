@@ -26,7 +26,7 @@ export interface IResponse {
 
 export interface ILevelContext {
   categoryList: ICategory[];
-  level: ILevel | null;
+  level: ILevel;
   levelList: ILevel[];
 
   getCategoryList(): void;
@@ -49,7 +49,7 @@ export interface ILevelContext {
 
 const defaultState: ILevelContext = {
   categoryList: [],
-  level: null,
+  level: {} as ILevel,
   levelList: [],
 
   async getCategoryList() {

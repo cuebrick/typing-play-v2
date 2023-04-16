@@ -61,7 +61,7 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} level={store.level} text={store.level?.text}
+      <TypingStage keyInput={keyInput} keyInputList={keyInputList} level={store.level} text={store.level.text}
                    hangulMode={hangulMode} />
       <Keyboard keyInput={keyInput} nextKey={nextKey} keyCode={81} isShift={false} />
     </div>

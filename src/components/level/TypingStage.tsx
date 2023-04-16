@@ -6,7 +6,7 @@ import KeyMap from "modules/KeyMap";
 
 interface IProps {
   level: ILevel | null;
-  text: string | undefined;
+  text: string;
   keyInput: IKeyInput | undefined;
   keyInputList: IKeyInput[];
   hangulMode: boolean;
