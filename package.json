@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "clsx": "^1.2.1",
     "firebase": "^9.13.0",
     "korean-js": "^0.8.2",
     "mobx": "^6.6.2",
@@ -23,7 +24,11 @@
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "eslint": "8.24.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-config-next": "12.3.1",
+    "prettier": "^2.8.7",
     "typescript": "4.8.3"
   }
 }

@@ -1,7 +1,7 @@
 import {IKeyInput} from "interfaces/LevelInterface";
 
 
-const mapData: { [key: string]: string } = {
+const mapData: {[key: string]: string} = {
   q: 'ㅂ',
   Q: 'ㅃ',
   w: 'ㅈ',
@@ -54,12 +54,26 @@ const mapData: { [key: string]: string } = {
   N: 'ㅜ',
   m: 'ㅡ',
   M: 'ㅡ'
-}
+};
+
+const mapDataByHangulKey = {
+  'ㅂ': {code: 'KeyQ', key: 'q', han: 'ㅂ', shiftKey: false},
+  'ㅃ': {code: 'KeyQ', key: 'Q', han: 'ㅃ', shiftKey: true},
+  'ㅈ': {code: 'KeyW', key: 'w', han: 'ㅈ', shiftKey: false},
+  'ㅉ': {code: 'KeyW', key: 'W', han: 'ㅉ', shiftKey: true}
+};
+
+const mapDataByEnglishKey = {
+  q: {code: 'KeyQ', key: 'q', han: 'ㅂ', shiftKey: false},
+  Q: {code: 'KeyQ', key: 'Q', han: 'ㅃ', shiftKey: true},
+  w: {code: 'KeyW', key: 'w', han: 'ㅈ', shiftKey: false},
+  W: {code: 'KeyW', key: 'W', han: 'ㅉ', shiftKey: true}
+};
 
 const KeyMap = {
   get(keyInput: IKeyInput): string {
-    console.log('check >>', keyInput, mapData[keyInput.key])
-    return mapData[keyInput.key]
+    console.log('check >>', keyInput, mapData[keyInput.key]);
+    return mapData[keyInput.key];
   }
-}
+};
 export default KeyMap;

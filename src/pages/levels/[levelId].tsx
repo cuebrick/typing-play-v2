@@ -13,9 +13,10 @@ function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId}: any = router.query;
   const store = useContext(LevelContext);
-  const [levelData, setLevelData] = useState<ILevel>();
-  const [nextLetter] = useNextLetter()
-  const [nextCode, setNextCode] = useState<string>('')
+  // const [levelData, setLevelData] = useState<ILevel>();
+  const [nextKey, onChangeKeyInputList] = useNextLetter();
+  const [nextCode, setNextCode] = useState<string>('');
+  const [hangulMode, setHangulMode] = useState<boolean>(true);
 
   // use getLevel fn
   useEffect(() => {
@@ -24,35 +25,45 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [levelId, store]);
 
-  useEffect(() => {
-    if (store.level) {
-      setLevelData({...store.level});
-    }
-  }, [store.level]);
+  // useEffect(() => {
+  //   if (store.level) {
+  //     setLevelData({...store.level});
+  //   }
+  // }, [store.level]);
 
-  const [keyInputList, keyInput] = useKeyboardInput()
+  const [keyInputList, keyInput] = useKeyboardInput();
 
   useEffect(() => {
-    if (nextLetter) {
-      setNextCode(getCode(nextLetter))
+    if (nextKey) {
+      setNextCode(getCode(nextKey));
     }
-  }, [nextLetter])
+  }, [nextKey]);
+
+  useEffect(() => {
+    onChangeKeyInputList(keyInputList);
+  }, [keyInputList]);
+
+  useEffect(() => {
+    if (keyInput?.key === 'HangulMode') {
+      setHangulMode(!hangulMode);
+    }
+  }, [keyInput]);
 
   function getCode(alphabet: string) {
     for (let key in Keymap) {
-      let keymap = Keymap as any
+      let keymap = Keymap as any;
       if (keymap[key].krn === alphabet) {
-        console.log('keymap에서 >>', key, keymap[key].enn)
-        return keymap[key].enn
+        return keymap[key].enn;
       }
     }
-    return ''
+    return '';
   }
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} text={levelData?.text} />
-      <Keyboard keyCap={nextCode} keyCode={81} isShift={false}/>
+      <TypingStage keyInput={keyInput} keyInputList={keyInputList} level={store.level} text={store.level?.text}
+                   hangulMode={hangulMode} />
+      <Keyboard keyInput={keyInput} nextKey={nextKey} keyCode={81} isShift={false} />
     </div>
   );
 }
