@@ -1,17 +1,17 @@
-import {useRouter} from "next/router";
-import {ILevel} from "interfaces/LevelInterface";
-import {ReactElement, useContext, useEffect, useState} from "react";
-import {LevelContext, LevelProvider} from "store/LevelContext";
-import {observer} from "mobx-react-lite";
+import {useRouter} from 'next/router';
+import {ILevel} from 'interfaces/LevelInterface';
+import {ReactElement, useContext, useEffect, useState} from 'react';
+import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {observer} from 'mobx-react-lite';
 import TypingStage from 'components/level/TypingStage';
 import Keyboard from 'components/level/Keyboard';
-import useKeyboardInput from "hooks/useKeyboardInput";
-import useNextLetter from "hooks/useNextLetter";
-import Keymap from "sample/json/keymap.json";
+import useKeyboardInput from 'hooks/useKeyboardInput';
+import useNextLetter from 'hooks/useNextLetter';
+import Keymap from 'sample/json/keymap.json';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
-  const {levelId}: any = router.query;
+  const {levelId} = router.query;
   const store = useContext(LevelContext);
   // const [levelData, setLevelData] = useState<ILevel>();
   const [nextKey, onChangeKeyInputList] = useNextLetter();
@@ -60,17 +60,14 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} keyInputList={keyInputList} level={store.level} text={store.level.text}
-                   hangulMode={hangulMode} />
+      <TypingStage keyInputList={keyInputList} level={store.level} text={store.level.text} hangulMode={hangulMode} />
       <Keyboard keyInput={keyInput} nextKey={nextKey} keyCode={81} isShift={false} />
     </div>
   );
 }
 
 LevelsIdPage.getProvider = (page: ReactElement): ReactElement => {
-  return (
-    <LevelProvider>{page}</LevelProvider>
-  );
+  return <LevelProvider>{page}</LevelProvider>;
 };
 
 export default observer(LevelsIdPage);

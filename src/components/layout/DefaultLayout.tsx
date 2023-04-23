@@ -1,11 +1,11 @@
-import {ReactNode, useContext} from "react";
+import {ReactNode, useContext} from 'react';
 import {observer} from 'mobx-react-lite';
-import Image from "next/image";
-import logo from "assets/images/logo.svg";
-import userIcon from "assets/images/user-icon.svg";
+import Image from 'next/image';
+import logo from 'assets/images/logo.svg';
+import userIcon from 'assets/images/user-icon.svg';
 import {AuthContext} from 'store/AuthContext';
 
-type Props = {children: ReactNode}
+type Props = {children: ReactNode};
 
 function DefaultLayout({children}: Props): JSX.Element {
   const authStore = useContext(AuthContext);
@@ -22,9 +22,7 @@ function DefaultLayout({children}: Props): JSX.Element {
           <Image src={userIcon} alt="User Icon" />
         </div>
       </header>
-      <div className="contents-body">
-        {children}
-      </div>
+      <div className="contents-body">{children}</div>
     </>
   );
 }

@@ -47,18 +47,20 @@
         "avoidEscape": true
       }
     ],
-    "no-console": "off",
     "react/button-has-type": "off",
     "react/jsx-no-useless-fragment": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/no-danger": "off",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "no-console": "off",
     "no-param-reassign": "off",
+    "no-plusplus": ["error", {"allowForLoopAfterthoughts": true}],
     "jsx-a11y/anchor-is-valid": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "jsx-a11y/click-events-have-key-events": "off",
-    "react/no-danger": "off",
     "@next/next/no-img-element": "off"
   }
 }

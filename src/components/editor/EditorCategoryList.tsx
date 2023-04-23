@@ -32,7 +32,9 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
     <div className="editor-category-list">
       <div className="header">
         <h3>카테고리 목록</h3>
-        <button className="default" onClick={() => setIsShowCategoryModal(true)}>수정</button>
+        <button className="default" onClick={() => setIsShowCategoryModal(true)}>
+          수정
+        </button>
       </div>
       <div className="list">
         <EditorCategoryItem
@@ -40,7 +42,7 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
           isActive={Boolean(selected) && categoryAll.id === selected?.id}
           onClick={() => onClickCategory(categoryAll)}
         />
-        {store.categoryList?.map(category => (
+        {store.categoryList?.map((category) => (
           <EditorCategoryItem
             key={category.id}
             data={category}
@@ -49,9 +51,7 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
           />
         ))}
       </div>
-      {isShowCategoryModal && (
-        <CategoryModal onClose={() => setIsShowCategoryModal(false)} />
-      )}
+      {isShowCategoryModal && <CategoryModal onClose={() => setIsShowCategoryModal(false)} />}
     </div>
   );
 }

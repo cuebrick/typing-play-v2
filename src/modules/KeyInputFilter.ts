@@ -95,7 +95,7 @@ export const checkTypingKey = (code: string): boolean => {
   }
 };
 
-/*const checkTypingKey = (key: string): boolean => {
+/* const checkTypingKey = (key: string): boolean => {
   switch (key) {
     case 'Escape':
     case 'F1':
@@ -235,6 +235,6 @@ export const checkTypingKey = (code: string): boolean => {
     default:
       return false
   }
-}*/
+} */
 
 // export default {checkTypingKey}

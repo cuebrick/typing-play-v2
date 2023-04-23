@@ -35,7 +35,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   const onChange = (e: ChangeEvent): void => {
     const {value, name, type} = e.target as HTMLInputElement;
     console.log('<<<<< ', name, type, value);
-    let merged = {
+    const merged = {
       ...data,
       [name]: type === 'number' ? Number(value) : value
     } as ILevel;
@@ -43,7 +43,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   };
 
   const onChangeOrder = (order: number): void => {
-    let merged = {
+    const merged = {
       ...data,
       order
     } as ILevel;
@@ -53,7 +53,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   const onChangeCategory = (e: ChangeEvent): void => {
     const {value, name, selectedIndex, options} = e.target as HTMLSelectElement;
     const categoryTitle = selectedIndex > 0 ? options[selectedIndex].label : '';
-    let merged = {
+    const merged = {
       ...data,
       [name]: value,
       categoryTitle
@@ -63,7 +63,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
 
   const onChangeInputType = (e: ChangeEvent): void => {
     const {checked, name} = e.target as HTMLInputElement;
-    let merged = {
+    const merged = {
       ...data,
       [name]: checked ? inputType.word.value : inputType.letter.value
     } as ILevel;
@@ -82,7 +82,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   };
 
   const isInvalidatedOrder = (): boolean => {
-    return store.levelList.some(level => level.id !== data.id && level.order === data.order);
+    return store.levelList.some((level) => level.id !== data.id && level.order === data.order);
   };
 
   return (
@@ -90,22 +90,20 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
       <div className="header">
         <h3>{levelData.title || '이름 없는 레벨'}</h3>
         <div className="button-group">
-          <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>저장</button>
-          <button className="default" onClick={() => onCreate(true)}>+</button>
-          <button
-            className="default"
-            disabled={levelData.id === ''}
-            onClick={() => onCreate(false)}
-          >
+          <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>
+            저장
+          </button>
+          <button className="default" onClick={() => onCreate(true)}>
+            +
+          </button>
+          <button className="default" disabled={levelData.id === ''} onClick={() => onCreate(false)}>
             현재 데이터를 이용해 새 레벨
           </button>
         </div>
       </div>
       <div className="detail-form">
         <FormRow>
-          <FormLabel htmlFor="categoryId">
-            카테고리
-          </FormLabel>
+          <FormLabel htmlFor="categoryId">카테고리</FormLabel>
           <FormData>
             <SelectForm
               name="categoryId"
@@ -128,33 +126,25 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="subTitle">
-            부제목
-          </FormLabel>
+          <FormLabel htmlFor="subTitle">부제목</FormLabel>
           <FormData>
             <TextForm name="subTitle" value={data.subTitle} placeholder="부제목" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="description">
-            설명
-          </FormLabel>
+          <FormLabel htmlFor="description">설명</FormLabel>
           <FormData>
             <TextForm name="description" value={data.description} placeholder="설명" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="text">
-            타자 데이터
-          </FormLabel>
+          <FormLabel htmlFor="text">타자 데이터</FormLabel>
           <FormData>
             <TextForm type="textarea" name="text" value={data.text} placeholder="타자 데이터" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="inputType">
-            유형
-          </FormLabel>
+          <FormLabel htmlFor="inputType">유형</FormLabel>
           <FormData>
             <SwitchForm
               onChange={onChangeInputType}
@@ -168,30 +158,24 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="difficulty">
-            난이도
-          </FormLabel>
+          <FormLabel htmlFor="difficulty">난이도</FormLabel>
           <FormData>
             <InputRangeForm name="difficulty" value={data.difficulty} onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="language">
-            언어
-          </FormLabel>
+          <FormLabel htmlFor="language">언어</FormLabel>
           <FormData>
             <RadioFormGroup name="language" value={data.language} options={languageOptions} onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="order">
-            order
-          </FormLabel>
+          <FormLabel htmlFor="order">order</FormLabel>
           <FormData>
             <NumberStepper name="order" value={data.order} invalidated={isInvalidatedOrder()} onStep={onChangeOrder} />
           </FormData>
         </FormRow>
-        {/*<pre>{JSON.stringify(data, null, '\t')}</pre>*/}
+        {/* <pre>{JSON.stringify(data, null, '\t')}</pre> */}
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import {IKeyInput} from "interfaces/LevelInterface";
+import {IKeyInput} from 'interfaces/LevelInterface';
 
 export const defaultKeyInputData: IKeyInput = {
-  key: "",
-  code: "",
+  key: '',
+  code: '',
   shiftKey: false,
   timestamp: null
-}
+};

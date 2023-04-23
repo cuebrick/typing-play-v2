@@ -1,6 +1,4 @@
 function AboutPage(): JSX.Element {
-  return (
-    <>About</>
-  )
+  return <>About</>;
 }
 export default AboutPage;

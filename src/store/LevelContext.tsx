@@ -1,8 +1,8 @@
-import {Context, createContext, PropsWithChildren} from "react";
-import {useLocalObservable} from "mobx-react-lite";
-import {runInAction} from "mobx";
-import {db, auth} from "database";
-import {ILevel, ILevelListParams} from "interfaces/LevelInterface";
+import {Context, createContext, PropsWithChildren} from 'react';
+import {useLocalObservable} from 'mobx-react-lite';
+import {runInAction} from 'mobx';
+import {db, auth} from 'database';
+import {ILevel, ILevelListParams} from 'interfaces/LevelInterface';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {
   DocumentReference,
@@ -17,7 +17,7 @@ import {
   query,
   setDoc,
   where
-} from "firebase/firestore";
+} from 'firebase/firestore';
 
 export interface IResponse {
   success: boolean;
@@ -46,7 +46,6 @@ export interface ILevelContext {
   deleteLevel(id: string): void;
 }
 
-
 const defaultState: ILevelContext = {
   categoryList: [],
   level: {} as ILevel,
@@ -56,15 +55,15 @@ const defaultState: ILevelContext = {
     const q = query(collection(db, 'categories'), orderBy('order'));
     const querySnapshot: QuerySnapshot = await getDocs(q);
     const list: ICategory[] = [];
-    querySnapshot.forEach((doc) => {
-      list.push({...doc.data(), id: doc.id} as ICategory);
+    querySnapshot.forEach((docObj) => {
+      list.push({...docObj.data(), id: docObj.id} as ICategory);
     });
     runInAction(() => {
       this.categoryList = list;
     });
   },
 
-  async saveCategory(category: ICategory, isEdit: boolean = false) {
+  async saveCategory(category: ICategory, isEdit = false) {
     try {
       let docRef;
 
@@ -79,6 +78,7 @@ const defaultState: ILevelContext = {
       return docRef;
     } catch (error) {
       // TODO: error handling
+      return error;
     }
   },
 
@@ -92,7 +92,6 @@ const defaultState: ILevelContext = {
     }
   },
 
-
   async getLevelList(params?: ILevelListParams) {
     const qc = []; // QueryConstraint(s)
     if (params?.categoryId) {
@@ -104,8 +103,8 @@ const defaultState: ILevelContext = {
     const q = query(collection(db, 'levels'), ...qc);
     const querySnapshot: QuerySnapshot = await getDocs(q);
     const list: ILevel[] = [];
-    querySnapshot.forEach((doc) => {
-      list.push(doc.data() as ILevel);
+    querySnapshot.forEach((docObj) => {
+      list.push(docObj.data() as ILevel);
     });
     runInAction(() => {
       this.levelList = list;
@@ -113,7 +112,7 @@ const defaultState: ILevelContext = {
   },
 
   async getLevel(id: string) {
-    const docRef = doc(db, "levels", id);
+    const docRef = doc(db, 'levels', id);
     const docSnap = await getDoc(docRef);
     runInAction(() => {
       this.level = docSnap.data() as ILevel;
@@ -136,7 +135,7 @@ const defaultState: ILevelContext = {
         levelData.modifiedAt = Timestamp.now();
       } else {
         // 생성
-        docRef = await doc(collection(db, "levels"));
+        docRef = await doc(collection(db, 'levels'));
         levelData.createdAt = Timestamp.now();
         levelData.id = docRef.id;
         if (auth.currentUser) {
@@ -145,10 +144,10 @@ const defaultState: ILevelContext = {
         }
       }
       await setDoc(docRef, levelData);
-      console.log("Document written with ID: ", docRef.id);
+      console.log('Document written with ID: ', docRef.id);
       return docRef;
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error('Error adding document: ', error);
       return error;
     }
     // return false

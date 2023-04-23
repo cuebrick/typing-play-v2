@@ -18,15 +18,14 @@ function EditorIndexPage(): JSX.Element {
   const [selectedLevel, setSelectedLevel] = useState<ILevel>({...defaultLevelData});
 
   useEffect(() => {
-      if (!authStore.userData?.grade) return;
+    if (!authStore.userData?.grade) return;
 
-      if (authStore.userData?.grade === 'admin') {
-        store.getLevelList();
-      } else {
-        router.push('/');
-      }
-    }, [store, authStore.userData?.grade]
-  );
+    if (authStore.userData?.grade === 'admin') {
+      store.getLevelList();
+    } else {
+      router.push('/');
+    }
+  }, [store, authStore.userData?.grade]);
 
   const onSaveDetail = (): void => {
     setSelectedCategory({...selectedCategory} as ICategory);
@@ -41,9 +40,10 @@ function EditorIndexPage(): JSX.Element {
   };
 
   useEffect(() => {
-      if (!authStore.userData?.grade) return;
-    }, [store, authStore.userData?.grade]
-  );
+    if (!authStore.userData?.grade) return;
+    // todo:
+    console.log('>>>>>');
+  }, [store, authStore.userData?.grade]);
 
   const onSelectCategory = (category: ICategory): void => {
     setSelectedCategory(category);

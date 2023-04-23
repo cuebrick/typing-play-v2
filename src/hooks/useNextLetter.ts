@@ -1,40 +1,40 @@
-import {useContext, useEffect, useState} from "react";
-import {LevelContext} from "store/LevelContext";
+import {useContext, useEffect, useState} from 'react';
+import {LevelContext} from 'store/LevelContext';
 // import useKeyboardInput from "hooks/useKeyboardInput";
-import Hangul from "korean-js/src/hangul";
-import {IKeyInput, IKeyMap} from "interfaces/LevelInterface";
-import KeyMap from "modules/KeyMap";
+import Hangul from 'korean-js/src/hangul';
+import {IKeyInput, IKeyMap} from 'interfaces/LevelInterface';
+import KeyMap from 'modules/KeyMap';
 
 function useNextLetter(): [IKeyMap, (list: IKeyInput[]) => void] {
-  const [typingText, setTypingText] = useState<string[] | string[][]>()
-  const [nextLetter, setNextLetter] = useState<IKeyMap>({} as IKeyMap)
+  const [typingText, setTypingText] = useState<string[] | string[][]>();
+  const [nextLetter, setNextLetter] = useState<IKeyMap>({} as IKeyMap);
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
-  const store = useContext(LevelContext)
+  const store = useContext(LevelContext);
   // let nextIndex
 
   useEffect(() => {
     if (store.level.text) {
-      let disassembleText = Hangul.disassemble(store.level.text)
-      setTypingText(disassembleText)
+      const disassembleText = Hangul.disassemble(store.level.text);
+      setTypingText(disassembleText);
     }
-  }, [store.level.text])
+  }, [store.level.text]);
 
   useEffect(() => {
     if (typingText) {
-      const found = KeyMap.getKeyMapByHangulKey(typingText[keyInputList.length] as string)
+      const found = KeyMap.getKeyMapByHangulKey(typingText[keyInputList.length] as string);
       if (found) {
         // let found = typingText as string[] | string[][]
-        setNextLetter(found)
+        setNextLetter(found);
       }
       // todo: KeyMap.ts에서 한글 자소를 찾은 후 해당하는 key(알파벳)을 전달.
     }
-  }, [typingText, keyInputList])
+  }, [typingText, keyInputList]);
 
   const onChangeKeyInputList = (list: IKeyInput[]): void => {
     setKeyInputList(list);
-  }
+  };
 
-  return [nextLetter, onChangeKeyInputList]
+  return [nextLetter, onChangeKeyInputList];
 }
 
-export default useNextLetter
+export default useNextLetter;

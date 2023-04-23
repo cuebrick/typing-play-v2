@@ -16,14 +16,13 @@ export const inputType = {
   },
   letter: {
     value: 'letter',
-    label:'자소'
+    label: '자소'
   }
-}
-
+};
 
 const Constants = {
   key: 'some key',
-  langOpt: languageOptions,
-}
+  langOpt: languageOptions
+};
 
 export default Constants;
