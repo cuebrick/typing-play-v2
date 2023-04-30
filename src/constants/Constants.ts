@@ -20,6 +20,22 @@ export const inputType = {
   }
 };
 
+interface IInputType {
+  value: 'word' | 'letter';
+  label: string;
+}
+
+export const arr: IInputType[] = [
+  {
+    value: 'word',
+    label: '단어'
+  },
+  {
+    value: 'letter',
+    label: '자소'
+  }
+];
+
 const Constants = {
   key: 'some key',
   langOpt: languageOptions

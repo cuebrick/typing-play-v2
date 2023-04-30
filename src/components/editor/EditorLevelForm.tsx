@@ -13,6 +13,7 @@ import {inputType, languageOptions} from 'constants/Constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
 import {LevelContext} from 'store/LevelContext';
+import {ICategory} from 'interfaces/CategoryInterface';
 
 interface IProps {
   levelData: ILevel;
@@ -105,7 +106,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
         <FormRow>
           <FormLabel htmlFor="categoryId">카테고리</FormLabel>
           <FormData>
-            <SelectForm
+            <SelectForm<ICategory>
               name="categoryId"
               value={data.categoryId}
               valueKey="id"
