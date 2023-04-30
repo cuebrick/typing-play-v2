@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import {IKeyInput, IKeyMap} from 'interfaces/LevelInterface';
+import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 
 interface IProps {
   keyCode: number;
-  nextKey: IKeyMap;
+  nextKey: IKeyData;
   keyInput: IKeyInput;
   isShift: boolean;
 }
@@ -711,10 +711,10 @@ function Keyboard({keyCode, nextKey, keyInput, isShift}: IProps): JSX.Element {
             ;
           </text>
           <text transform="matrix(1, 0, 0, 1, 669.81, 123.71)" dx="0" dy="12">
-            &quot;
+            "
           </text>
           <text transform="matrix(1, 0, 0, 1, 671.8, 142.8)" dx="0" dy="12">
-            &apos;
+            '
           </text>
           <text className="small-letter" transform="matrix(1, 0, 0, 1, 765.5, 142.4)" dx="0" dy="12">
             Enter

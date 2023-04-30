@@ -2,24 +2,20 @@ import Hangul from 'korean-js/src/hangul';
 import {useEffect, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
-import KeyMap from 'modules/KeyMap';
-import StringUtils from 'modules/StringUtils';
 
 interface IProps {
   level: ILevel | null;
-  text: string;
   keyInputList: IKeyInput[];
-  hangulMode: boolean;
 }
 
-function TypingStage({text, keyInputList, hangulMode}: IProps): JSX.Element {
+function TypingStage({level, keyInputList}: IProps): JSX.Element {
   // const [practiceText, setPracticeText] = useState<string>()
-
   const [inputText, setInputText] = useState<string[]>();
   // const [disassembledFlatText, setDisassembledFlatText] = useState<string[] | string[][]>()
   // const [disassembledText, setDisassembledText] = useState<string[] | string[][]>()
   // const [assembledInputText, setAssembledInputText] = useState<string>()
   const [arrangedTextList, setArrangedTextList] = useState<ILetter[]>([]);
+  const [isHangulMod, setIsHangulMode] = useState(false);
 
   useEffect(() => {
     const keyList = keyInputList
@@ -41,26 +37,24 @@ function TypingStage({text, keyInputList, hangulMode}: IProps): JSX.Element {
           // todo: enter key 처리
           return '';
         }
-        if (hangulMode) {
-          return KeyMap.get(input);
-        }
         return input.key;
 
         // todo: keyInputList 모두를 변환하기 때문에 한영 변환 시 기존 텍스트도 모두 영어로 변경됨.
         // todo: keyInput에만 적용하고 배열에 넣는 방식으로 변경해야 함.
       });
     setInputText([...keyList]);
-  }, [keyInputList, hangulMode]);
+  }, [keyInputList]);
 
   useEffect(() => {
-    if (text) {
+    if (level?.text) {
       // let disassembled = Hangul.disassemble(text, true)
       // setDisassembledText([...disassembled] as string[])
       // setDisassembledFlatText(Hangul.disassemble(text));
-      const sampleTextList = Hangul.disassemble(text, true).map((letter) => ({sampleText: letter}));
+      const sampleTextList = Hangul.disassemble(level.text, true).map((letter) => ({sampleText: letter}));
       setArrangedTextList(sampleTextList);
+      console.log(' 여기는 한번이지', level.text, sampleTextList, level);
     }
-  }, [text]);
+  }, [level?.text]);
 
   useEffect(() => {
     if (inputText) {
@@ -77,8 +71,8 @@ function TypingStage({text, keyInputList, hangulMode}: IProps): JSX.Element {
   return (
     <div className="typing-stage">
       <div className="text-line">
-        {arrangedTextList?.map((letter) => (
-          <LetterItem sampleText={letter.sampleText} typingText={letter.typingText} key={StringUtils.getUniqueKey()} />
+        {arrangedTextList?.map((letter, index) => (
+          <LetterItem sampleText={letter.sampleText} typingText={letter.typingText} key={index} />
         ))}
       </div>
       <div className="typing-line-highlighter" />

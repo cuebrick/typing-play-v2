@@ -1,4 +1,4 @@
-import {IKeyInput, IKeyMap} from 'interfaces/LevelInterface';
+import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 
 const mapData: {[key: string]: string} = {
   q: 'ㅂ',
@@ -55,7 +55,7 @@ const mapData: {[key: string]: string} = {
   M: 'ㅡ'
 };
 
-const mapDataByHangulKey: {[key: string]: IKeyMap} = {
+const mapDataByHangulKey: {[key: string]: IKeyData} = {
   // 이하 주석은 키가 중복되는 값임.
   '`': {code: 'Backquote', key: '`', han: '`', shiftKey: false},
   '~': {code: 'Backquote', key: '~', han: '~', shiftKey: true},
@@ -164,7 +164,7 @@ const mapDataByHangulKey: {[key: string]: IKeyMap} = {
   HanjaMode: {code: 'ControlRight', key: 'HanjaMode', han: 'HanjaMode', shiftKey: false}
 };
 
-const mapDataByEnglishKey = {
+const mapDataByEnglishKey: {[key: string]: IKeyData} = {
   '`': {code: 'Backquote', key: '`', han: '`', shiftKey: false},
   '~': {code: 'Backquote', key: '~', han: '~', shiftKey: true},
   1: {code: 'Digit1', key: '1', han: '1', shiftKey: false},
@@ -277,8 +277,11 @@ const KeyMap = {
     console.log('check >>', keyInput, mapData[keyInput.key]);
     return mapData[keyInput.key];
   },
-  getKeyMapByHangulKey(han: string): IKeyMap {
-    return mapDataByHangulKey[han] as IKeyMap;
+  getKeyDataByHangulKey(han: string): IKeyData {
+    return mapDataByHangulKey[han] as IKeyData;
+  },
+  getKeyDataByEnglishKey(eng: string): IKeyData {
+    return mapDataByEnglishKey[eng] as IKeyData;
   }
 };
 export default KeyMap;

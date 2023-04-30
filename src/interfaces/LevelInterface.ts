@@ -7,7 +7,7 @@ export interface ILevel {
   subTitle: string;
   description: string;
   text: string;
-  inputType: string;
+  inputType: 'letter' | 'word';
   difficulty: string;
   language: string;
   id: string;
@@ -31,7 +31,7 @@ export interface IKeyInput {
   timestamp: Timestamp | null;
 }
 
-export interface IKeyMap {
+export interface IKeyData {
   code: string;
   key: string;
   han: string;
