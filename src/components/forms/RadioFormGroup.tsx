@@ -1,23 +1,24 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent} from 'react';
+import {ILanguage} from 'interfaces/LanguageInterface';
 
-type Props = {
+type Props<T> = {
   name: string;
   value: string;
-  options: Array<any>;
+  options: T[];
   onChange(e: ChangeEvent): void;
-}
+};
 
-function RadioFormGroup({name, value, options, onChange}: Props):JSX.Element {
+function RadioFormGroup<T extends ILanguage>({name, value, options, onChange}: Props<T>): JSX.Element {
   return (
-      <div className="radio-form-group">
-        {options?.map((item:any) => (
-            <label key={item.value}>
-              <input type="radio" name={name} value={item.value} checked={item.value === value} onChange={onChange} />
-              {item.label}
-            </label>
-        ))}
-      </div>
-  )
+    <div className="radio-form-group">
+      {options?.map((item) => (
+        <label key={item.value} htmlFor={name}>
+          <input type="radio" name={name} value={item.value} checked={item.value === value} onChange={onChange} />
+          {item.label}
+        </label>
+      ))}
+    </div>
+  );
 }
 
-export default RadioFormGroup
+export default RadioFormGroup;

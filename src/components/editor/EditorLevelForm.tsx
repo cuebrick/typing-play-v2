@@ -14,6 +14,7 @@ import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
 import {LevelContext} from 'store/LevelContext';
 import {ICategory} from 'interfaces/CategoryInterface';
+import {ILanguage} from 'interfaces/LanguageInterface';
 
 interface IProps {
   levelData: ILevel;
@@ -167,7 +168,12 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
         <FormRow>
           <FormLabel htmlFor="language">언어</FormLabel>
           <FormData>
-            <RadioFormGroup name="language" value={data.language} options={languageOptions} onChange={onChange} />
+            <RadioFormGroup<ILanguage>
+              name="language"
+              value={data.language}
+              options={languageOptions}
+              onChange={onChange}
+            />
           </FormData>
         </FormRow>
         <FormRow>
