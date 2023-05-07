@@ -2,9 +2,8 @@ import clsx from 'clsx';
 import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 
 interface IProps {
-  keyCode: number;
   nextKey: IKeyData;
-  keyInput: IKeyInput;
+  keyInput: IKeyInput | null;
   isShift: boolean;
 }
 
@@ -18,7 +17,7 @@ interface IKeyCap {
   y: number;
 }
 
-function Keyboard({keyCode, nextKey, keyInput, isShift}: IProps): JSX.Element {
+function Keyboard({nextKey, keyInput, isShift}: IProps): JSX.Element {
   const isShiftKey = isShift ? 'next-key' : '';
 
   const keyCapData: IKeyCap[] = [
@@ -451,7 +450,7 @@ function Keyboard({keyCode, nextKey, keyInput, isShift}: IProps): JSX.Element {
               key={item.code}
               x={item.x}
               y={item.y}
-              className={clsx({'next-key': item.text === nextKey.key, 'pressed-key': item.text === keyInput.key})}
+              className={clsx({'next-key': item.text === nextKey.key, 'pressed-key': item.text === keyInput?.key})}
               width={item?.width || 47}
               height={item?.height || 47}
               rx="3.5"

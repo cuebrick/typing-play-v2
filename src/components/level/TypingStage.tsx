@@ -2,6 +2,7 @@ import Hangul from 'korean-js/src/hangul';
 import {useEffect, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
+import KeyMap from 'modules/KeyMap';
 
 interface IProps {
   level: ILevel | null;
@@ -9,70 +10,71 @@ interface IProps {
 }
 
 function TypingStage({level, keyInputList}: IProps): JSX.Element {
-  // const [practiceText, setPracticeText] = useState<string>()
-  const [inputText, setInputText] = useState<string[]>();
-  // const [disassembledFlatText, setDisassembledFlatText] = useState<string[] | string[][]>()
-  // const [disassembledText, setDisassembledText] = useState<string[] | string[][]>()
-  // const [assembledInputText, setAssembledInputText] = useState<string>()
-  const [arrangedTextList, setArrangedTextList] = useState<ILetter[]>([]);
-  const [isHangulMod, setIsHangulMode] = useState(false);
-
-  useEffect(() => {
-    const keyList = keyInputList
-      .filter((input) => input.key !== 'Shift')
-      .map((input) => {
-        // handle key and check HangulMode
-        if (input.key === ' ') {
-          return ' ';
-        }
-        if (input.key === 'Enter') {
-          // todo: enter key 처리
-          return '↵';
-        }
-        if (input.key === 'Backspace') {
-          // todo: backspace key 처리
-          return '←';
-        }
-        if (input.key === 'HangulMode') {
-          // todo: enter key 처리
-          return '';
-        }
-        return input.key;
-
-        // todo: keyInputList 모두를 변환하기 때문에 한영 변환 시 기존 텍스트도 모두 영어로 변경됨.
-        // todo: keyInput에만 적용하고 배열에 넣는 방식으로 변경해야 함.
-      });
-    setInputText([...keyList]);
-  }, [keyInputList]);
+  const [inputTextList, setInputTextList] = useState<string[]>();
+  const [letterObjectList, setLetterObjectList] = useState<ILetter[]>([]);
+  const [letterList, setLetterList] = useState<ILetter[]>([]);
 
   useEffect(() => {
     if (level?.text) {
-      // let disassembled = Hangul.disassemble(text, true)
-      // setDisassembledText([...disassembled] as string[])
-      // setDisassembledFlatText(Hangul.disassemble(text));
-      const sampleTextList = Hangul.disassemble(level.text, true).map((letter) => ({sampleText: letter}));
-      setArrangedTextList(sampleTextList);
-      console.log(' 여기는 한번이지', level.text, sampleTextList, level);
+      const disassembled = Hangul.disassemble(level.text, true);
+      const list = disassembled.map((sampleText, index) => {
+        return {
+          id: `letter${index}`,
+          sampleText // : Hangul.assemble(sampleText as string[])
+        } as ILetter;
+      });
+      setLetterObjectList(list);
+
+      // setIsHangulMode(level.language === 'ko');
+      console.log('>>>>>>>>', level.text, list);
     }
-  }, [level?.text]);
+  }, [level]);
 
   useEffect(() => {
-    if (inputText) {
-      const assembled = Hangul.assemble(inputText);
-      const letterList = [];
-      for (let i = 0; i < assembled.length; i++) {
-        letterList.push(assembled.substring(i, i + 1));
+    // 한글모드 지정은 여기
+    let isHangulMode = level?.language === 'ko';
+
+    const keyList = keyInputList.reduce((prev: string[], curr) => {
+      switch (curr.key) {
+        case 'Shift':
+          return prev; // shift 키 입력은 글자를 입력하지 않음.
+        case 'Enter':
+          prev.push('↵');
+          break;
+        case 'Backspace':
+          prev.pop(); // Backspace 키 입력은 마지막에 입력한 글자를 빼줌
+          break;
+        case 'HangulMode': // 한글모드를 변경
+          isHangulMode = !isHangulMode;
+          break;
+        default: {
+          const keyData = KeyMap.getKeyDataByEnglishKey(curr.key);
+          prev.push(isHangulMode ? keyData.han : keyData.key);
+        }
       }
-      const result = letterList.map((letter) => ({typingText: Hangul.disassemble(letter)}));
-      setArrangedTextList((p) => p.map((obj, i) => ({...obj, ...result[i]})));
+      return prev;
+    }, []);
+
+    setInputTextList(keyList);
+  }, [keyInputList]);
+
+  useEffect(() => {
+    if (inputTextList) {
+      const assembled = Hangul.disassemble(Hangul.assemble(inputTextList), true);
+      const list = letterObjectList.map((letter, index) => {
+        letter.typingText = assembled[index] as string[];
+        return letter;
+      });
+
+      setLetterList(list);
     }
-  }, [inputText]);
+  }, [letterObjectList, inputTextList]);
 
   return (
     <div className="typing-stage">
       <div className="text-line">
-        {arrangedTextList?.map((letter, index) => (
-          <LetterItem sampleText={letter.sampleText} typingText={letter.typingText} key={index} />
+        {letterList?.map((letter) => (
+          <LetterItem data={letter} key={letter.id} />
         ))}
       </div>
       <div className="typing-line-highlighter" />

@@ -1,18 +1,18 @@
 export const checkTypingKey = (code: string): boolean => {
   switch (code) {
-    case 'Escape':
-    case 'F1':
-    case 'F2':
-    case 'F3':
-    case 'F4':
-    case 'F5':
-    case 'F6':
-    case 'F7':
-    case 'F8':
-    case 'F9':
-    case 'F10':
-    case 'F11':
-    case 'F12':
+    // case 'Escape':
+    // case 'F1':
+    // case 'F2':
+    // case 'F3':
+    // case 'F4':
+    // case 'F5':
+    // case 'F6':
+    // case 'F7':
+    // case 'F8':
+    // case 'F9':
+    // case 'F10':
+    // case 'F11':
+    // case 'F12':
     case 'Tab':
     case 'ControlLeft':
     case 'MetaLeft':
