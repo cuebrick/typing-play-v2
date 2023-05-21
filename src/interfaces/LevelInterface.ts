@@ -9,7 +9,7 @@ export interface ILevel {
   text: string;
   inputType: 'letter' | 'word';
   difficulty: string;
-  language: string;
+  language: 'ko' | 'en';
   id: string;
   writerUid: string | null;
   writerEmail: string | null;
@@ -25,6 +25,7 @@ export interface ILevelListParams {
 }
 
 export interface IKeyInput {
+  id: string;
   code: string;
   key: string;
   shiftKey: boolean;
@@ -39,6 +40,7 @@ export interface IKeyData {
 }
 
 export interface ILetter {
-  sampleText: string | string[];
-  typingText?: string[] | string[][];
+  id: string;
+  sampleText: string[];
+  typingText?: string[];
 }

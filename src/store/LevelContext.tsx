@@ -37,7 +37,7 @@ export interface ILevelContext {
 
   getLevelList(params?: ILevelListParams): void;
 
-  getLevel(id: string): void;
+  getLevel(id: string): Promise<ILevel>;
 
   setLevel(levelData: ILevel): void;
 
@@ -111,12 +111,14 @@ const defaultState: ILevelContext = {
     });
   },
 
-  async getLevel(id: string) {
+  async getLevel(id: string): Promise<ILevel> {
     const docRef = doc(db, 'levels', id);
     const docSnap = await getDoc(docRef);
+    const level = docSnap.data() as ILevel;
     runInAction(() => {
-      this.level = docSnap.data() as ILevel;
+      this.level = level;
     });
+    return level;
   },
 
   setLevel(levelData: ILevel) {

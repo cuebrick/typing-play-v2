@@ -1,58 +1,56 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {IKeyData, IKeyInput} from 'interfaces/LevelInterface';
 import {Timestamp} from 'firebase/firestore';
-import {defaultKeyInputData} from 'dto/KeyInput';
 import {checkTypingKey} from 'modules/KeyInputFilter';
 import KeyMap from 'modules/KeyMap';
 import Hangul from 'korean-js/src/hangul';
 
-function useKeyboardInput(): [IKeyInput[], IKeyInput, IKeyData, (text: string) => void] {
+function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: string) => void] {
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
-  const [keyInput, setKeyInput] = useState<IKeyInput>(defaultKeyInputData);
+  const [keyInput, setKeyInput] = useState<IKeyInput | null>(null);
   const [nextKeyData, setNextKeyData] = useState<IKeyData>({} as IKeyData);
   const [typingText, setTypingText] = useState<string[]>([]);
 
   const setLevelTypingText = (text: string): void => {
     if (text) {
-      setTypingText(Hangul.disassemble(text) as string[]);
+      const arr = Hangul.disassemble(text) as string[];
+      setTypingText(arr);
+      const [first] = arr;
+      if (first) {
+        setNextKeyData(KeyMap.getKeyDataByHangulKey(first));
+      }
     }
   };
 
-  const onKeydown = useCallback(
-    (e: KeyboardEvent) => {
-      e.preventDefault();
+  useEffect(() => {
+    const onKeydown = (e: KeyboardEvent): void => {
       const {key, code, shiftKey} = e;
-      console.log('e>>>', code, e.keyCode, key);
-      const obj = {key, code, shiftKey, timestamp: Timestamp.now()};
-      if (checkTypingKey(e.code)) {
-        const list = [...keyInputList, obj];
-
-        setKeyInputList(list);
+      if (checkTypingKey(code)) {
+        const timestamp = Timestamp.now();
+        const id = `${code}_${timestamp.toMillis()}`;
+        const obj = {id, key, code, shiftKey, timestamp} as IKeyInput;
         setKeyInput(obj);
 
-        const found = KeyMap.getKeyDataByHangulKey(typingText[list.length]);
-        console.log('found', found, list.length, list);
-        if (found) {
-          // let found = typingText as string[] | string[][]
-          setNextKeyData(found);
+        const list = [...keyInputList, obj];
+        setKeyInputList(list);
+        const next = KeyMap.getKeyDataByHangulKey(typingText[list.length]);
+        if (next) {
+          setNextKeyData(next);
         }
+        console.log(id, code, key, '\nKEY', obj, '\nNEXT', next, '\nLIST', list);
       }
-    },
-    [keyInputList]
-  );
+    };
+    const onKeyUp = (): void => {
+      // setKeyInput(null);
+    };
 
-  const onKeyUp = useCallback(() => {
-    setKeyInput(defaultKeyInputData);
-  }, [keyInput]);
-
-  useEffect(() => {
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('keyup', onKeyUp);
     return () => {
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyUp);
     };
-  }, [onKeydown, onKeyUp]);
+  }, [keyInputList, typingText]);
   // return {letters: letterList, e: keyboardEvent}
   return [keyInputList, keyInput, nextKeyData, setLevelTypingText];
 }

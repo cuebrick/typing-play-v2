@@ -2,23 +2,27 @@ import {useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {ILetter} from 'interfaces/LevelInterface';
 
-function LetterItem({sampleText, typingText}: ILetter): JSX.Element {
+interface IProps {
+  data: ILetter;
+}
+
+function LetterItem({data}: IProps): JSX.Element {
   const [assembledSampleText, setAssembledSampleText] = useState<string>();
   const [assembledTypingText, setAssembledTypingText] = useState<string>();
 
   useEffect(() => {
-    if (sampleText) {
-      const assembled = Hangul.assemble(sampleText as string[]);
+    if (data.sampleText) {
+      const assembled = Hangul.assemble(data.sampleText as string[]);
       setAssembledSampleText(assembled);
     }
-  }, [sampleText]);
+  }, [data.sampleText]);
 
   useEffect(() => {
-    if (typingText) {
-      const assembled = Hangul.assemble(typingText as string[]);
+    if (data.typingText) {
+      const assembled = Hangul.assemble(data.typingText as string[]);
       setAssembledTypingText(assembled);
     }
-  }, [typingText]);
+  }, [data.typingText]);
 
   // todo:
 
