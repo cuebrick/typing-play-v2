@@ -20,12 +20,13 @@ function LevelsIdPage(): JSX.Element {
         setTypingText(level.text);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store, levelId]);
 
   return (
     <div className="typing-level">
       <TypingStage keyInputList={keyInputList} level={store.level} />
-      <Keyboard keyInput={keyInput} nextKey={nextKey} isShift={false} />
+      <Keyboard keyInput={keyInput} nextKey={nextKey} />
     </div>
   );
 }

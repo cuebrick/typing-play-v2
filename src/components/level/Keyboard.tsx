@@ -4,7 +4,7 @@ import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 interface IProps {
   nextKey: IKeyData;
   keyInput: IKeyInput | null;
-  isShift: boolean;
+  // isShift: boolean;
 }
 
 interface IKeyCap {
@@ -17,8 +17,8 @@ interface IKeyCap {
   y: number;
 }
 
-function Keyboard({nextKey, keyInput, isShift}: IProps): JSX.Element {
-  const isShiftKey = isShift ? 'next-key' : '';
+function Keyboard({nextKey, keyInput}: IProps): JSX.Element {
+  // const isShiftKey = isShift ? 'next-key' : '';
 
   const keyCapData: IKeyCap[] = [
     {
