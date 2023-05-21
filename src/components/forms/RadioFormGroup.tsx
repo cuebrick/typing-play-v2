@@ -1,5 +1,4 @@
 import {ChangeEvent} from 'react';
-import {ILanguage} from 'interfaces/LanguageInterface';
 
 type Props<T> = {
   name: string;
@@ -8,7 +7,12 @@ type Props<T> = {
   onChange(e: ChangeEvent): void;
 };
 
-function RadioFormGroup<T extends ILanguage>({name, value, options, onChange}: Props<T>): JSX.Element {
+interface IConstraint {
+  value: string;
+  label: string;
+}
+
+function RadioFormGroup<T extends IConstraint>({name, value, options, onChange}: Props<T>): JSX.Element {
   return (
     <div className="radio-form-group">
       {options?.map((item) => (
