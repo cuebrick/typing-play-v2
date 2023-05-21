@@ -1,5 +1,14 @@
 import {Timestamp} from 'firebase/firestore';
 
+// export enum OrderDirection {
+//   asc = 'asc',
+//   desc = 'desc'
+// }
+
+export type InputTypes = 'letter' | 'word';
+export type OrderDirections = 'asc' | 'desc';
+export type Languages = 'ko' | 'en';
+
 export interface ILevel {
   categoryId: string;
   categoryTitle: string;
@@ -7,9 +16,9 @@ export interface ILevel {
   subTitle: string;
   description: string;
   text: string;
-  inputType: 'letter' | 'word';
+  inputType: InputTypes;
   difficulty: string;
-  language: 'ko' | 'en';
+  language: Languages;
   id: string;
   writerUid: string | null;
   writerEmail: string | null;
@@ -21,7 +30,7 @@ export interface ILevel {
 export interface ILevelListParams {
   categoryId?: string;
   orderBy?: string;
-  orderDirection?: 'asc' | 'desc';
+  orderDirection?: OrderDirections;
 }
 
 export interface IKeyInput {
