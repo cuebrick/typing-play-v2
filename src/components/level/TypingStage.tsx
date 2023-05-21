@@ -22,7 +22,7 @@ function TypingStage({level, keyInputList}: IProps): JSX.Element {
           id: `letter${index}`,
           sampleText // : Hangul.assemble(sampleText as string[])
         } as ILetter;
-      });
+      }) as ILetter[];
       setLetterObjectList(list);
 
       // setIsHangulMode(level.language === 'ko');
@@ -31,32 +31,39 @@ function TypingStage({level, keyInputList}: IProps): JSX.Element {
   }, [level]);
 
   useEffect(() => {
+    if (keyInputList.length === 0 || !level?.language) return;
+
     // 한글모드 지정은 여기
     let isHangulMode = level?.language === 'ko';
 
-    const keyList = keyInputList.reduce((prev: string[], curr) => {
+    const keyList = keyInputList.reduce((acc: string[], curr) => {
       switch (curr.key) {
         case 'Shift':
-          return prev; // shift 키 입력은 글자를 입력하지 않음.
-        case 'Enter':
-          prev.push('↵');
+          // do nothing... // shift 키 입력은 글자를 입력하지 않음.
           break;
-        case 'Backspace':
-          prev.pop(); // Backspace 키 입력은 마지막에 입력한 글자를 빼줌
+        case 'Enter': {
+          acc.push('↵');
           break;
-        case 'HangulMode': // 한글모드를 변경
+        }
+        case 'Backspace': {
+          acc.pop(); // Backspace 키 입력은 마지막에 입력한 글자를 빼줌
+          break;
+        }
+        case 'HangulMode': {
+          // 한글모드를 변경
           isHangulMode = !isHangulMode;
           break;
+        }
         default: {
           const keyData = KeyMap.getKeyDataByEnglishKey(curr.key);
-          prev.push(isHangulMode ? keyData.han : keyData.key);
+          acc.push(isHangulMode ? keyData.han : keyData.key);
         }
       }
-      return prev;
+      return acc;
     }, []);
 
     setInputTextList(keyList);
-  }, [keyInputList]);
+  }, [keyInputList, level?.language]);
 
   useEffect(() => {
     if (inputTextList) {
