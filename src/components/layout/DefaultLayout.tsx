@@ -4,6 +4,7 @@ import Image from 'next/image';
 import logo from 'assets/images/logo.svg';
 import userIcon from 'assets/images/user-icon.svg';
 import {AuthContext} from 'store/AuthContext';
+import Modeless from 'components/modeless/Modeless';
 
 type Props = {children: ReactNode};
 
@@ -23,6 +24,7 @@ function DefaultLayout({children}: Props): JSX.Element {
         </div>
       </header>
       <div className="contents-body">{children}</div>
+      <Modeless />
     </>
   );
 }
