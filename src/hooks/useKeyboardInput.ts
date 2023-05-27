@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {IKeyData, IKeyInput} from 'interfaces/LevelInterface';
 import {Timestamp} from 'firebase/firestore';
 import {checkTypingKey} from 'modules/KeyInputFilter';
@@ -11,19 +11,8 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: st
   const [nextKeyData, setNextKeyData] = useState<IKeyData>({} as IKeyData);
   const [typingText, setTypingText] = useState<string[]>([]);
 
-  const setLevelTypingText = (text: string): void => {
-    if (text) {
-      const arr = Hangul.disassemble(text) as string[];
-      setTypingText(arr);
-      const [first] = arr;
-      if (first) {
-        setNextKeyData(KeyMap.getKeyDataByHangulKey(first));
-      }
-    }
-  };
-
-  useEffect(() => {
-    const onKeydown = (e: KeyboardEvent): void => {
+  const onKeydown = useCallback(
+    (e: KeyboardEvent): void => {
       const {key, code, shiftKey} = e;
       if (checkTypingKey(code)) {
         const timestamp = Timestamp.now();
@@ -39,18 +28,34 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: st
         }
         console.log(id, code, key, '\nKEY', obj, '\nNEXT', next, '\nLIST', list);
       }
-    };
+    },
+    [keyInputList, typingText]
+  );
+
+  const setLevelTypingText = useCallback((text: string): void => {
+    if (text) {
+      const arr = Hangul.disassemble(text) as string[];
+      setTypingText(arr);
+      const [first] = arr;
+      if (first) {
+        setNextKeyData(KeyMap.getKeyDataByHangulKey(first));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const onKeyUp = (): void => {
       // setKeyInput(null);
     };
 
     document.addEventListener('keydown', onKeydown);
     document.addEventListener('keyup', onKeyUp);
+
     return () => {
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyUp);
     };
-  }, [keyInputList, typingText]);
+  }, [onKeydown]);
   // return {letters: letterList, e: keyboardEvent}
   return [keyInputList, keyInput, nextKeyData, setLevelTypingText];
 }

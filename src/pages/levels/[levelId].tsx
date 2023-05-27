@@ -20,8 +20,7 @@ function LevelsIdPage(): JSX.Element {
         setTypingText(level.text);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store, levelId]);
+  }, [store, levelId, setTypingText]);
 
   return (
     <div className="typing-level">
