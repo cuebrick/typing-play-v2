@@ -6,6 +6,7 @@ import 'assets/styles/index.scss';
 
 import {AuthProvider} from 'store/AuthContext';
 import DefaultLayout from 'components/layout/DefaultLayout';
+import {CommonProvider} from 'store/CommonContext';
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?(page: ReactElement): ReactElement;
@@ -20,7 +21,11 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 
   const getProvider = Component.getProvider ?? ((page: ReactElement) => page);
 
-  return <AuthProvider>{getProvider(getLayout(<Component {...pageProps} />))}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <CommonProvider>{getProvider(getLayout(<Component {...pageProps} />))}</CommonProvider>
+    </AuthProvider>
+  );
   // return <Component {...pageProps} />
 }
 

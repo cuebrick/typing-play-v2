@@ -17,6 +17,12 @@ const defaultState: ICommonContext = {
       text
     };
     this.modeless = [...this.modeless, obj];
+    setTimeout(() => {
+      this.removeModeless(obj.id);
+    }, 5000);
+    // setTimeout(() => {
+    //   this.modeless.shift();
+    // }, 5000);
     return obj;
   },
   removeModeless(id: string) {
