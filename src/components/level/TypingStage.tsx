@@ -7,9 +7,10 @@ import KeyMap from 'modules/KeyMap';
 interface IProps {
   level: ILevel | null;
   keyInputList: IKeyInput[];
+  onProgress(letterObjectList: ILetter[]): void;
 }
 
-function TypingStage({level, keyInputList}: IProps): JSX.Element {
+function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
   const [inputTextList, setInputTextList] = useState<string[]>();
   const [letterObjectList, setLetterObjectList] = useState<ILetter[]>([]);
   const [letterList, setLetterList] = useState<ILetter[]>([]);
@@ -64,7 +65,6 @@ function TypingStage({level, keyInputList}: IProps): JSX.Element {
 
     setInputTextList(keyList);
   }, [keyInputList, level?.language]);
-
   useEffect(() => {
     if (inputTextList) {
       const assembled = Hangul.disassemble(Hangul.assemble(inputTextList), true);
@@ -72,8 +72,10 @@ function TypingStage({level, keyInputList}: IProps): JSX.Element {
         letter.typingText = assembled[index] as string[];
         return letter;
       });
-
       setLetterList(list);
+      onProgress(list);
+      // if (lastItem.typingText?.length > lastItem.sampleText.length) {
+      // }
     }
   }, [letterObjectList, inputTextList]);
 

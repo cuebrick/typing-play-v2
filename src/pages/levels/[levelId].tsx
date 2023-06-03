@@ -1,10 +1,12 @@
 import {useRouter} from 'next/router';
-import {ReactElement, useContext, useEffect} from 'react';
+import {ReactElement, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
+import {ILetter} from 'interfaces/LevelInterface';
+import ScoreBoard from 'components/level/ScoreBoard';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
@@ -12,6 +14,24 @@ function LevelsIdPage(): JSX.Element {
   const store = useContext(LevelContext);
 
   const [keyInputList, keyInput, nextKey, setTypingText] = useKeyboardInput();
+  const [isReadyToFinish, setIsReadyToFinish] = useState(false);
+  // const [isFinished, setIsFinished] = useState(false);
+  const [letterList, setLetterList] = useState<ILetter[] | null>(null);
+
+  const onProgress = (list: ILetter[]) => {
+    console.log('<<<<<', list);
+    const lastItem = list[list.length - 1];
+    const isEqual = lastItem.sampleText === lastItem.typingText;
+    // 완료조건
+    if (isReadyToFinish && isEqual) {
+      // todo: 완료 후 결과 계산해서 표시
+      // setIsFinished(true);
+      setLetterList(list);
+    } else if (isEqual) {
+      // 완료대기
+      setIsReadyToFinish(true);
+    }
+  };
 
   useEffect(() => {
     if (levelId) {
@@ -24,8 +44,10 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInputList={keyInputList} level={store.level} />
+      <TypingStage keyInputList={keyInputList} level={store.level} onProgress={onProgress} />
       <Keyboard keyInput={keyInput} nextKey={nextKey} />
+
+      {letterList && <ScoreBoard letterList={letterList} keyInputList={keyInputList} />}
     </div>
   );
 }
