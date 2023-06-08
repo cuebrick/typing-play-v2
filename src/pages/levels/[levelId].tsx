@@ -21,7 +21,7 @@ function LevelsIdPage(): JSX.Element {
   const onProgress = (list: ILetter[]) => {
     console.log('<<<<<', list);
     const lastItem = list[list.length - 1];
-    const isEqual = lastItem.sampleText === lastItem.typingText;
+    const isEqual = JSON.stringify(lastItem.sampleText) === JSON.stringify(lastItem.typingText);
     // 완료조건
     if (isReadyToFinish && isEqual) {
       // todo: 완료 후 결과 계산해서 표시

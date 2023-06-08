@@ -1,20 +1,21 @@
-import {IKeyInput, ILetter} from 'interfaces/LevelInterface';
-import {useCallback, useContext, useEffect} from 'react';
+import {IKeyInput, ILetter, IScoreData} from 'interfaces/LevelInterface';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import {LevelContext} from 'store/LevelContext';
-import Hangul from 'korean-js/types/hangul';
+import Hangul from 'korean-js/src/hangul';
 
 interface IProps {
   letterList: ILetter[] | null;
   keyInputList: IKeyInput[];
 }
 function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
+  const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
   const store = useContext(LevelContext);
   const calculate = useCallback(() => {
     if (!letterList) return;
 
-    // 분당 타수 계산 => 타자수 * 60 / 걸린시간
     const typingList = Hangul.disassemble(store.level.text);
-    // ['ㄱ', 'ㅏ']
+    // 단어 기준 오타율 계산 시 사용
+    // const typingGroupedList = Hangul.disassemble(store.level.text, true);
     const inputList = letterList.reduce((acc: string[], curr: ILetter) => {
       if (curr.typingText) {
         acc = acc.concat(curr.typingText);
@@ -22,7 +23,43 @@ function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
       return acc;
     }, []);
 
-    // 오타율 계산
+    // 타자 시간 계산 부분
+    const typingDuration =
+      (keyInputList[keyInputList.length - 1].timestamp?.seconds as number) -
+      (keyInputList[0].timestamp?.seconds as number);
+
+    // 오타율 계산 부분
+    // 자소 기준 오타율 계산
+    const letterLength = typingList.length;
+    let checkCorrectLetter = 0;
+    typingList.forEach((letter, index) => {
+      if (letter === inputList[index]) {
+        checkCorrectLetter += 1;
+      }
+    });
+    const typingAccuracy = Math.floor((checkCorrectLetter / letterLength) * 100);
+
+    // 단어 기준 오타율 계산
+    // const textLength = typingGroupedList.length;
+    // let checkCorrectText = 0;
+    // typingGroupedList.forEach((text, index) => {
+    //   if (JSON.stringify(text) === JSON.stringify(letterList[index].typingText)) {
+    //     checkCorrectText += 1;
+    //   }
+    // });
+    // const typingAccuracy = Math.floor((checkCorrectText / textLength) * 100);
+
+    // 타자 속도 계산 부분
+    // 공식 => 타자 데이터의 자소 개수 * (60 / 걸린시간) * 정확도
+    const typingSpeed = Math.floor(((typingList.length * 60) / typingDuration) * (typingAccuracy / 100));
+
+    setScoreData({
+      accuracy: typingAccuracy,
+      realAccuracy: 0,
+      speed: typingSpeed,
+      duration: typingDuration,
+      score: 0
+    });
   }, [letterList, keyInputList, store]);
 
   useEffect(() => {
@@ -32,6 +69,15 @@ function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
     }
   }, [letterList, calculate]);
 
-  return <div>some</div>;
+  return (
+    <div>
+      <span>Scoreboard is here!</span>
+      <span>정확도 : {scoreData.accuracy}</span>
+      <span>실제 정확도 : {scoreData.realAccuracy}</span>
+      <span>타수 : {scoreData.speed}</span>
+      <span>진행시간 : {scoreData.duration}</span>
+      <span>점수 : {scoreData.score}</span>
+    </div>
+  );
 }
 export default ScoreBoard;

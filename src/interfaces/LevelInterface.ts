@@ -53,3 +53,11 @@ export interface ILetter {
   sampleText: string[];
   typingText?: string[];
 }
+
+export interface IScoreData {
+  accuracy: number;
+  realAccuracy: number;
+  speed: number;
+  duration: number;
+  score: number;
+}

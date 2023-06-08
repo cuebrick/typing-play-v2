@@ -68,6 +68,7 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
   useEffect(() => {
     if (inputTextList) {
       const assembled = Hangul.disassemble(Hangul.assemble(inputTextList), true);
+      console.log('letterObjectList >>', letterObjectList);
       const list = letterObjectList.map((letter, index) => {
         letter.typingText = assembled[index] as string[];
         return letter;
