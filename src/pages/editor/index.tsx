@@ -9,10 +9,12 @@ import {defaultLevelData} from 'dto/Level';
 import EditorLevelList from 'components/editor/EditorLevelList';
 import EditorCategoryList from 'components/editor/EditorCategoryList';
 import {ICategory} from 'interfaces/CategoryInterface';
+import {CommonContext} from 'store/CommonContext';
 
 function EditorIndexPage(): JSX.Element {
   const authStore = useContext(AuthContext);
   const store = useContext(LevelContext);
+  const commonStore = useContext(CommonContext);
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>({...defaultLevelData});
@@ -27,8 +29,9 @@ function EditorIndexPage(): JSX.Element {
     }
   }, [store, authStore.userData?.grade]);
 
-  const onSaveDetail = (): void => {
+  const onSaveDetail = (levelData: ILevel): void => {
     setSelectedCategory({...selectedCategory} as ICategory);
+    commonStore.addModeless(`${levelData.title}의 변경 내용이 저장되었습니다.`);
 
     // console.log('isEdit', isEdit);
     // // debugger;

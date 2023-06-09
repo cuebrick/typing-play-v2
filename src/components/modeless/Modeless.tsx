@@ -9,10 +9,13 @@ function Modeless(): JSX.Element {
     <div className="modeless">
       {commonStore.modeless.map((item) => (
         <div key={item.id} className="modeless-item">
-          {item.text}
+          <span>{item.text}</span>
+          <button onClick={() => commonStore.removeModeless(item.id)} className="btn-close">
+            ×
+          </button>
         </div>
       ))}
-      <button
+      {/*       <button
         onClick={() => {
           commonStore.addModeless(`hello ${Math.random()}`);
           console.log('in page >>', commonStore.modeless);
@@ -20,7 +23,7 @@ function Modeless(): JSX.Element {
         className="add-modeless"
       >
         add
-      </button>
+      </button> */}
     </div>
   );
 }
