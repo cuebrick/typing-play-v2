@@ -17,6 +17,7 @@ function LevelsIdPage(): JSX.Element {
   const [isReadyToFinish, setIsReadyToFinish] = useState(false);
   // const [isFinished, setIsFinished] = useState(false);
   const [letterList, setLetterList] = useState<ILetter[] | null>(null);
+  const [isLetter, setIsLetter] = useState(false);
 
   const onProgress = (list: ILetter[]) => {
     console.log('<<<<<', list);
@@ -38,13 +39,14 @@ function LevelsIdPage(): JSX.Element {
       store.getLevel(levelId as string).then((level) => {
         // useKeyboardInput 에게 알려줌
         setTypingText(level.text);
+        setIsLetter(level.inputType === 'letter');
       });
     }
   }, [store, levelId, setTypingText]);
 
   return (
     <div className="typing-level">
-      <TypingStage keyInputList={keyInputList} level={store.level} onProgress={onProgress} />
+      <TypingStage keyInputList={keyInputList} level={store.level} onProgress={onProgress} isLetter={isLetter} />
       <Keyboard keyInput={keyInput} nextKey={nextKey} />
 
       {letterList && <ScoreBoard letterList={letterList} keyInputList={keyInputList} />}

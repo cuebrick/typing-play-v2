@@ -8,9 +8,10 @@ interface IProps {
   level: ILevel | null;
   keyInputList: IKeyInput[];
   onProgress(letterObjectList: ILetter[]): void;
+  isLetter: boolean;
 }
 
-function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
+function TypingStage({level, keyInputList, onProgress, isLetter}: IProps): JSX.Element {
   const [inputTextList, setInputTextList] = useState<string[]>();
   const [letterObjectList, setLetterObjectList] = useState<ILetter[]>([]);
   const [letterList, setLetterList] = useState<ILetter[]>([]);
@@ -67,7 +68,7 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
   }, [keyInputList, level?.language]);
   useEffect(() => {
     if (inputTextList) {
-      const assembled = Hangul.disassemble(Hangul.assemble(inputTextList), true);
+      const assembled = isLetter ? inputTextList : Hangul.disassemble(Hangul.assemble(inputTextList), true);
       console.log('letterObjectList >>', letterObjectList);
       const list = letterObjectList.map((letter, index) => {
         letter.typingText = assembled[index] as string[];
