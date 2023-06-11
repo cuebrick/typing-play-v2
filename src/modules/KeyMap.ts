@@ -284,4 +284,33 @@ const KeyMap = {
     return mapDataByEnglishKey[eng] as IKeyData;
   }
 };
+
+export const arrangeKeyList = (keyInputList: IKeyInput[], isHangulMode: boolean): string[] => {
+  return keyInputList.reduce((acc: string[], curr) => {
+    switch (curr.key) {
+      case 'Shift':
+        // do nothing... // shift 키 입력은 글자를 입력하지 않음.
+        break;
+      case 'Enter': {
+        acc.push('↵');
+        break;
+      }
+      case 'Backspace': {
+        acc.pop(); // Backspace 키 입력은 마지막에 입력한 글자를 빼줌
+        break;
+      }
+      case 'HangulMode': {
+        // 한글모드를 변경
+        isHangulMode = !isHangulMode;
+        break;
+      }
+      default: {
+        const keyData = KeyMap.getKeyDataByEnglishKey(curr.key);
+        acc.push(isHangulMode ? keyData.han : keyData.key);
+      }
+    }
+    return acc;
+  }, []);
+};
+
 export default KeyMap;
