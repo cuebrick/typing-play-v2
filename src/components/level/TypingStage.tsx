@@ -38,10 +38,10 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
     let list: ILetter[] = [];
     setLetterList((prev) => {
       list = prev.map((letter, index) => {
+        // 이 부분에서 assembled 될 글자가 없으면 undefined로 들어감.
         letter.typingText = assembled[index] as string[];
         return letter;
       });
-      console.log('setLetterList working');
       return list;
     });
     onProgress(list);

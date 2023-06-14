@@ -1,15 +1,19 @@
-import {IKeyInput, ILetter, IScoreData} from 'interfaces/LevelInterface';
+import {IKeyInput, ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {LevelContext} from 'store/LevelContext';
 import Hangul from 'korean-js/src/hangul';
+import {useRouter} from 'next/router';
 
 interface IProps {
   letterList: ILetter[] | null;
   keyInputList: IKeyInput[];
+  nextLevel: ILevel;
+  clearKeyInputData(): void;
 }
-function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
+function ScoreBoard({letterList, keyInputList, nextLevel, clearKeyInputData}: IProps): JSX.Element {
   const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
   const store = useContext(LevelContext);
+  const router = useRouter();
   const calculate = useCallback(() => {
     if (!letterList) return;
 
@@ -63,11 +67,21 @@ function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
   }, [letterList, keyInputList, store]);
 
   useEffect(() => {
-    if (letterList) {
+    if (letterList?.length !== 0) {
       // 점수계산 및 서버에 저장 후 다음 행동 선택(목록 or 다음레벨)
       calculate();
     }
   }, [letterList, calculate]);
+
+  const onClickNextLevelBtn = (level: ILevel): void => {
+    clearKeyInputData();
+    router.push(`/levels/${level.id}`);
+  };
+
+  const onClickLevelListBtn = (): void => {
+    clearKeyInputData();
+    router.push('/levels');
+  };
 
   return (
     <div>
@@ -77,6 +91,16 @@ function ScoreBoard({letterList, keyInputList}: IProps): JSX.Element {
       <span>타수 : {scoreData.speed}</span>
       <span>진행시간 : {scoreData.duration}</span>
       <span>점수 : {scoreData.score}</span>
+      <button onClick={onClickLevelListBtn}>목록으로 이동</button>
+      {nextLevel && (
+        <button
+          onClick={() => {
+            onClickNextLevelBtn(nextLevel);
+          }}
+        >
+          다음 레벨로 이동
+        </button>
+      )}
     </div>
   );
 }

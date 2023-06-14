@@ -21,6 +21,9 @@ function LetterItem({data}: IProps): JSX.Element {
     if (data.typingText) {
       const assembled = Hangul.assemble(data.typingText as string[]);
       setAssembledTypingText(assembled);
+    } else {
+      // undefined로 내려와서 else로 state 초기화
+      setAssembledTypingText('');
     }
   }, [data.typingText]);
 

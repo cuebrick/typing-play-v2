@@ -5,7 +5,7 @@ import {checkTypingKey} from 'modules/KeyInputFilter';
 import KeyMap from 'modules/KeyMap';
 import Hangul from 'korean-js/src/hangul';
 
-function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: string) => void] {
+function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: string) => void, () => void] {
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
   const [keyInput, setKeyInput] = useState<IKeyInput | null>(null);
   const [nextKeyData, setNextKeyData] = useState<IKeyData>({} as IKeyData);
@@ -43,6 +43,11 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: st
     }
   }, []);
 
+  const clearAllKeyInputData = (): void => {
+    setKeyInput({} as IKeyInput);
+    setKeyInputList([]);
+  };
+
   useEffect(() => {
     const onKeyUp = (): void => {
       // setKeyInput(null);
@@ -57,7 +62,7 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: st
     };
   }, [onKeydown]);
   // return {letters: letterList, e: keyboardEvent}
-  return [keyInputList, keyInput, nextKeyData, setLevelTypingText];
+  return [keyInputList, keyInput, nextKeyData, setLevelTypingText, clearAllKeyInputData];
 }
 
 export default useKeyboardInput;
