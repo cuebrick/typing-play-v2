@@ -8,12 +8,6 @@ interface IProps {
   onSelect(levelData: ICategory): void;
 }
 
-const categoryAll = {
-  id: '__ALL__',
-  title: '모든 카테고리 >>',
-  order: 0
-};
-
 function EditorCategoryList({onSelect}: IProps): JSX.Element {
   const store = useContext(LevelContext);
   const [selected, setSelected] = useState<ICategory | null>(null);
@@ -37,11 +31,6 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
         </button>
       </div>
       <div className="list">
-        <EditorCategoryItem
-          data={categoryAll}
-          isActive={Boolean(selected) && categoryAll.id === selected?.id}
-          onClick={() => onClickCategory(categoryAll)}
-        />
         {store.categoryList?.map((category) => (
           <EditorCategoryItem
             key={category.id}

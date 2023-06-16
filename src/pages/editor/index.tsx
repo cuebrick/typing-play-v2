@@ -32,6 +32,7 @@ function EditorIndexPage(): JSX.Element {
   const onSaveDetail = (levelData: ILevel): void => {
     setSelectedCategory({...selectedCategory} as ICategory);
     commonStore.addModeless(`${levelData.title}의 변경 내용이 저장되었습니다.`);
+    setSelectedLevel(levelData);
 
     // console.log('isEdit', isEdit);
     // // debugger;

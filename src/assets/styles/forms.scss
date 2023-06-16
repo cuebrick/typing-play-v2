@@ -67,10 +67,12 @@ button {
     padding: 0 20px;
     color: #234771;
     background-color: #a8c5e6;
+    cursor: pointer;
   }
 
   &:disabled {
     opacity: 0.5;
+    cursor: inherit;
   }
 }
 
