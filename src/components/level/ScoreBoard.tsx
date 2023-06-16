@@ -9,8 +9,15 @@ interface IProps {
   keyInputList: IKeyInput[];
   nextLevel: ILevel;
   clearKeyInputData(): void;
+  onSaveUserTypingData(data: IScoreData): void;
 }
-function ScoreBoard({letterList, keyInputList, nextLevel, clearKeyInputData}: IProps): JSX.Element {
+function ScoreBoard({
+  letterList,
+  keyInputList,
+  nextLevel,
+  clearKeyInputData,
+  onSaveUserTypingData
+}: IProps): JSX.Element {
   const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
   const store = useContext(LevelContext);
   const router = useRouter();
@@ -56,14 +63,15 @@ function ScoreBoard({letterList, keyInputList, nextLevel, clearKeyInputData}: IP
     // 타자 속도 계산 부분
     // 공식 => 타자 데이터의 자소 개수 * (60 / 걸린시간) * 정확도
     const typingSpeed = Math.floor(((typingList.length * 60) / typingDuration) * (typingAccuracy / 100));
-
-    setScoreData({
+    const data = {
       accuracy: typingAccuracy,
       realAccuracy: 0,
       speed: typingSpeed,
       duration: typingDuration,
       score: 0
-    });
+    };
+    setScoreData(data);
+    onSaveUserTypingData(data);
   }, [letterList, keyInputList, store]);
 
   useEffect(() => {

@@ -5,13 +5,16 @@ import {LevelContext, LevelProvider} from 'store/LevelContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {ILetter, ILevel} from 'interfaces/LevelInterface';
+import {ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
+import {defaultUserTypingData} from 'dto/Level';
+import {AuthContext} from 'store/AuthContext';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId} = router.query;
   const store = useContext(LevelContext);
+  const authStore = useContext(AuthContext);
 
   const [keyInputList, keyInput, nextKey, setTypingText, clearAllKeyInputData] = useKeyboardInput();
   const [isReadyToFinish, setIsReadyToFinish] = useState(false);
@@ -65,6 +68,17 @@ function LevelsIdPage(): JSX.Element {
     }
   }, [store, levelId, setTypingText]);
 
+  const onSaveUserTypingData = (scoreData: IScoreData) => {
+    const data = {
+      ...defaultUserTypingData,
+      ...scoreData,
+      userId: authStore.userData?.uid,
+      levelId: levelId as string,
+      keyInputList
+    };
+    store.saveUserTypingData(data);
+  };
+
   return (
     <div className="typing-level">
       <TypingStage keyInputList={keyInputList} level={store.level} onProgress={onProgress} />
@@ -76,6 +90,7 @@ function LevelsIdPage(): JSX.Element {
           keyInputList={keyInputList}
           nextLevel={nextLevel}
           clearKeyInputData={clearKeyInputData}
+          onSaveUserTypingData={onSaveUserTypingData}
         />
       )}
     </div>

@@ -61,3 +61,11 @@ export interface IScoreData {
   duration: number;
   score: number;
 }
+
+export interface IUserTypingData extends IScoreData {
+  id: string;
+  userId: string | null | undefined;
+  levelId: string;
+  keyInputList: IKeyInput[];
+  createdAt: Timestamp | null;
+}

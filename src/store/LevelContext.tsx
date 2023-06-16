@@ -2,7 +2,7 @@ import {Context, createContext, PropsWithChildren} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {runInAction} from 'mobx';
 import {db, auth} from 'database';
-import {ILevel, ILevelListParams} from 'interfaces/LevelInterface';
+import {ILevel, ILevelListParams, IUserTypingData} from 'interfaces/LevelInterface';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {
   DocumentReference,
@@ -44,6 +44,7 @@ export interface ILevelContext {
   saveLevel(levelData: ILevel): Promise<DocumentReference | unknown>;
 
   deleteLevel(id: string): void;
+  saveUserTypingData(userTypingData: IUserTypingData): void;
 }
 
 const defaultState: ILevelContext = {
@@ -162,6 +163,21 @@ const defaultState: ILevelContext = {
       return {success: true};
     } catch (error) {
       return {success: false, error};
+    }
+  },
+
+  async saveUserTypingData(userTypingData: IUserTypingData) {
+    if (!userTypingData.userId) return {};
+
+    try {
+      const docRef = await doc(collection(db, 'userTypingData'));
+      userTypingData.createdAt = Timestamp.now();
+      userTypingData.id = docRef.id;
+      await setDoc(docRef, userTypingData);
+      return docRef;
+    } catch (error) {
+      console.error('failed save userTypingData');
+      return error;
     }
   }
 };
