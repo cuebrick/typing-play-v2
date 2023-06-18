@@ -1,12 +1,14 @@
 import {useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {ILetter} from 'interfaces/LevelInterface';
+import clsx from 'clsx';
 
 interface IProps {
   data: ILetter;
+  active: boolean;
 }
 
-function LetterItem({data}: IProps): JSX.Element {
+function LetterItem({data, active}: IProps): JSX.Element {
   const [assembledSampleText, setAssembledSampleText] = useState<string>();
   const [assembledTypingText, setAssembledTypingText] = useState<string>();
 
@@ -30,7 +32,7 @@ function LetterItem({data}: IProps): JSX.Element {
   // todo:
 
   return (
-    <div className="letter-item">
+    <div className={clsx('letter-item', {active})}>
       <span className="token">{assembledSampleText}</span>
       <span className="typing">{assembledTypingText}</span>
     </div>

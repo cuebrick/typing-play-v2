@@ -12,12 +12,17 @@
   .text-line {
     width: 540px;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: 20px;
 
     .letter-item {
       display: flex;
       flex-direction: column;
       line-height: 1.4em;
+
+      &.active {
+        border: 2px solid magenta;
+      }
 
       .token {
         color: #666;

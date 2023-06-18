@@ -12,6 +12,7 @@ interface IProps {
 
 function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
   const [letterList, setLetterList] = useState<ILetter[]>([]);
+  const [letterIndex, setLetterIndex] = useState(0);
 
   // entry point
   useEffect(() => {
@@ -35,6 +36,9 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
 
     const keyList = arrangeKeyList(keyInputList, isHangulMode);
     const assembled = level.inputType === 'letter' ? keyList : Hangul.disassemble(Hangul.assemble(keyList), true);
+    setLetterIndex(() => {
+      return assembled.length === 0 ? 0 : assembled.length - 1;
+    });
     let list: ILetter[] = [];
     setLetterList((prev) => {
       list = prev.map((letter, index) => {
@@ -51,11 +55,10 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
   return (
     <div className="typing-stage">
       <div className="text-line">
-        {letterList?.map((letter) => (
-          <LetterItem data={letter} key={letter.id} />
+        {letterList?.map((letter, index) => (
+          <LetterItem data={letter} key={letter.id} active={index === letterIndex} />
         ))}
       </div>
-      <div className="typing-line-highlighter" />
     </div>
   );
 }
