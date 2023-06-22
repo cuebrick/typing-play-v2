@@ -5,7 +5,7 @@ import {useLocalObservable} from 'mobx-react-lite';
 
 export interface ICommonContext {
   modeless: IModeless[];
-  addModeless(id?: string): IModeless;
+  addModeless(text: string, id?: string): IModeless;
   removeModeless(id: string): void;
 }
 

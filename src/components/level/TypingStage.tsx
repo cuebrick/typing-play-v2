@@ -36,6 +36,9 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
 
     const keyList = arrangeKeyList(keyInputList, isHangulMode);
     const assembled = level.inputType === 'letter' ? keyList : Hangul.disassemble(Hangul.assemble(keyList), true);
+    setLetterIndex(() => {
+      return assembled.length === 0 ? 0 : assembled.length - 1;
+    });
     let list: ILetter[] = [];
     setLetterList((prev) => {
       list = prev.map((letter, index) => {

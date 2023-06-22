@@ -9,12 +9,14 @@ import {ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
+import {CommonContext} from 'store/CommonContext';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId} = router.query;
   const store = useContext(LevelContext);
   const authStore = useContext(AuthContext);
+  const commonStore = useContext(CommonContext);
 
   const [keyInputList, keyInput, nextKey, setTypingText, clearAllKeyInputData] = useKeyboardInput();
   const [isReadyToFinish, setIsReadyToFinish] = useState(false);
@@ -77,6 +79,8 @@ function LevelsIdPage(): JSX.Element {
       keyInputList
     };
     store.saveUserTypingData(data);
+    commonStore.addModeless('타자 결과가 서버에 저장되었습니다.');
+    console.log('타자 결과 저장 완료');
   };
 
   return (
