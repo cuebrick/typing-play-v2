@@ -11,6 +11,7 @@ interface IProps {
 function LetterItem({data, active}: IProps): JSX.Element {
   const [assembledSampleText, setAssembledSampleText] = useState<string>();
   const [assembledTypingText, setAssembledTypingText] = useState<string>();
+  const [correctTypo, setCorrectTypo] = useState<string>();
 
   useEffect(() => {
     if (data.sampleText) {
@@ -27,12 +28,21 @@ function LetterItem({data, active}: IProps): JSX.Element {
       // undefined로 내려와서 else로 state 초기화
       setAssembledTypingText('');
     }
-  }, [data.typingText]);
+    const result = JSON.stringify(data.sampleText) === JSON.stringify(data.typingText) ? 'correct' : 'incorrect';
+    if (data.typingText?.length || (data.typingText?.length && !active)) {
+      setCorrectTypo(result);
+    }
+  }, [data.typingText, active, data.sampleText]);
 
   // todo:
 
   return (
-    <div className={clsx('letter-item', {active})}>
+    <div
+      className={clsx('letter-item', {active}, [
+        {correct: correctTypo === 'correct'},
+        {incorrect: correctTypo === 'incorrect'}
+      ])}
+    >
       <span className="token">{assembledSampleText}</span>
       <span className="typing">{assembledTypingText}</span>
     </div>
