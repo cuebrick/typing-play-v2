@@ -37,25 +37,20 @@ function TypingStage({level, keyInputList, onProgress}: IProps): JSX.Element {
     const keyList = arrangeKeyList(keyInputList, isHangulMode);
     const assembled = level.inputType === 'letter' ? keyList : Hangul.disassemble(Hangul.assemble(keyList), true);
     setLetterIndex(() => {
-      return assembled.length === 0 ? 0 : assembled.length - 1;
-    });
-    let list: ILetter[] = [];
-    setLetterList((prev) => {
-      list = prev.map((letter, index) => {
-        // 이 부분에서 assembled 될 글자가 없으면 undefined로 들어감.
-        letter.typingText = assembled[index] as string[];
-        return letter;
-      });
-      return list;
-    });
-    // setState 함수가 여러개면 뒤 함수가 늦게 작동
-    setLetterIndex(() => {
       // 띄어쓰기는 assembled.length로 바꿔야 입력 위치와 일치함.
       return assembled.length === 0 || JSON.stringify(assembled[assembled.length - 1]) === JSON.stringify([' '])
         ? assembled.length
         : assembled.length - 1;
     });
-    onProgress(list);
+    setLetterList((prev) => {
+      const list = prev.map((letter, index) => {
+        // 이 부분에서 assembled 될 글자가 없으면 undefined로 들어감.
+        letter.typingText = assembled[index] as string[];
+        return letter;
+      });
+      onProgress(list);
+      return list;
+    });
     // }, [keyInputList, level?.language, level?.inputType, onProgress]);
   }, [keyInputList, level, onProgress]);
 

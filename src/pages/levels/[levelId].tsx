@@ -1,11 +1,11 @@
 import {useRouter} from 'next/router';
-import {ReactElement, useContext, useEffect, useState} from 'react';
+import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
+import {ILetter, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
@@ -19,38 +19,23 @@ function LevelsIdPage(): JSX.Element {
   const commonStore = useContext(CommonContext);
 
   const [keyInputList, keyInput, nextKey, setTypingText, clearAllKeyInputData] = useKeyboardInput();
-  const [isReadyToFinish, setIsReadyToFinish] = useState(false);
-  // const [isFinished, setIsFinished] = useState(false);
   const [letterList, setLetterList] = useState<ILetter[] | null>(null);
-  const [nextLevel, setNextLevel] = useState<ILevel>({} as ILevel);
+  // `while rendering a different component` error 해결 위해 여기에 isFinished 작성
+  const [isFinished, setIsFinished] = useState(false);
 
-  const getNextLevelId = () => {
-    const currentCategory = store.levelList.filter((item) => {
-      return item.categoryId === store.level.categoryId;
-    });
-    const currentLevelIndex = currentCategory.findIndex((item) => {
-      return item.id === store.level.id;
-    });
-    setNextLevel(currentCategory[currentLevelIndex + 1]);
-  };
+  const onProgress = useCallback(
+    (list: ILetter[]) => {
+      if (list.length === 0) return;
+      const lastItem = list[list.length - 1];
+      const isEqual = JSON.stringify(lastItem.sampleText) === JSON.stringify(lastItem.typingText);
 
-  const onProgress = (list: ILetter[]) => {
-    if (list.length === 0) return;
-    console.log('<<<<<', list);
-    const lastItem = list[list.length - 1];
-    const isEqual = JSON.stringify(lastItem.sampleText) === JSON.stringify(lastItem.typingText);
-    // 완료조건
-    if (isReadyToFinish && isEqual) {
-      // setIsFinished(true);
-      setLetterList(list);
-      setIsReadyToFinish(false);
-      // todo: score db에 저장
-    } else if (isEqual) {
-      // 완료대기
-      setIsReadyToFinish(true);
-      getNextLevelId();
-    }
-  };
+      // 완료조건
+      if (isEqual && !isFinished) {
+        setLetterList(list);
+      }
+    },
+    [isFinished]
+  );
 
   const clearKeyInputData = () => {
     setLetterList([]);
@@ -80,7 +65,6 @@ function LevelsIdPage(): JSX.Element {
     };
     store.saveUserTypingData(data);
     commonStore.addModeless('타자 결과가 서버에 저장되었습니다.');
-    console.log('타자 결과 저장 완료');
   };
 
   return (
@@ -88,15 +72,14 @@ function LevelsIdPage(): JSX.Element {
       <TypingStage keyInputList={keyInputList} level={store.level} onProgress={onProgress} />
       <Keyboard keyInput={keyInput} nextKey={nextKey} />
 
-      {letterList && (
-        <ScoreBoard
-          letterList={letterList}
-          keyInputList={keyInputList}
-          nextLevel={nextLevel}
-          clearKeyInputData={clearKeyInputData}
-          onSaveUserTypingData={onSaveUserTypingData}
-        />
-      )}
+      <ScoreBoard
+        letterList={letterList}
+        keyInputList={keyInputList}
+        clearKeyInputData={clearKeyInputData}
+        onSaveUserTypingData={onSaveUserTypingData}
+        isFinished={isFinished}
+        setIsFinished={setIsFinished}
+      />
     </div>
   );
 }

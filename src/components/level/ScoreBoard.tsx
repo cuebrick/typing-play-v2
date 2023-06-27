@@ -7,26 +7,29 @@ import {useRouter} from 'next/router';
 interface IProps {
   letterList: ILetter[] | null;
   keyInputList: IKeyInput[];
-  nextLevel: ILevel;
   clearKeyInputData(): void;
   onSaveUserTypingData(data: IScoreData): void;
+  isFinished: boolean;
+  setIsFinished(boolean: boolean): void;
 }
 function ScoreBoard({
   letterList,
   keyInputList,
-  nextLevel,
   clearKeyInputData,
-  onSaveUserTypingData
+  onSaveUserTypingData,
+  isFinished,
+  setIsFinished
 }: IProps): JSX.Element {
   const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
+  const [nextLevel, setNextLevel] = useState<ILevel>({} as ILevel);
   const store = useContext(LevelContext);
   const router = useRouter();
+
   const calculate = useCallback(() => {
-    if (!letterList) return;
+    if (!letterList || isFinished) return;
 
     const typingList = Hangul.disassemble(store.level.text);
     // 단어 기준 오타율 계산 시 사용
-    // const typingGroupedList = Hangul.disassemble(store.level.text, true);
     const inputList = letterList.reduce((acc: string[], curr: ILetter) => {
       if (curr.typingText) {
         acc = acc.concat(curr.typingText);
@@ -72,14 +75,34 @@ function ScoreBoard({
     };
     setScoreData(data);
     onSaveUserTypingData(data);
-  }, [letterList, keyInputList, store]);
+  }, [letterList, isFinished, store.level.text, keyInputList, onSaveUserTypingData]);
+
+  // const getNextLevelId = () => {
+  //   const currentCategory = store.levelList.filter((item) => {
+  //     return item.categoryId === store.level.categoryId;
+  //   });
+  //   const currentLevelIndex = currentCategory.findIndex((item) => {
+  //     return item.id === store.level.id;
+  //   });
+  //   setNextLevel(currentCategory[currentLevelIndex + 1]);
+  // };
 
   useEffect(() => {
-    if (letterList?.length !== 0) {
+    if (letterList) {
       // 점수계산 및 서버에 저장 후 다음 행동 선택(목록 or 다음레벨)
+      // getNextLevel;
+      const currentCategory = store.levelList.filter((item) => {
+        return item.categoryId === store.level.categoryId;
+      });
+      const currentLevelIndex = currentCategory.findIndex((item) => {
+        return item.id === store.level.id;
+      });
+      setNextLevel(currentCategory[currentLevelIndex + 1]);
+
       calculate();
+      setIsFinished(true);
     }
-  }, [letterList, calculate]);
+  }, [letterList, calculate, setIsFinished, store.levelList, store.level.categoryId, store.level.id]);
 
   const onClickNextLevelBtn = (level: ILevel): void => {
     clearKeyInputData();
@@ -90,6 +113,10 @@ function ScoreBoard({
     clearKeyInputData();
     router.push('/levels');
   };
+
+  if (!isFinished) {
+    return <>계산 중</>;
+  }
 
   return (
     <div>
