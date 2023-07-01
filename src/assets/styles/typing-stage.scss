@@ -47,6 +47,10 @@
         background-color: #F8A1AB;
       }
 
+      &.isModify .token {
+        background-color: #FFD47E;
+      }
+
       .token {
         color: #666;
         //min-width: 0.325em;

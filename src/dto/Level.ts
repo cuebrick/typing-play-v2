@@ -1,4 +1,4 @@
-import {ILevel, IUserTypingData} from 'interfaces/LevelInterface';
+import {IBuffer, ILevel, IUserTypingData} from 'interfaces/LevelInterface';
 
 export const defaultLevelData: ILevel = {
   categoryId: '',
@@ -29,4 +29,9 @@ export const defaultUserTypingData: IUserTypingData = {
   speed: -1,
   duration: -1,
   score: -1
+};
+
+export const defaultBuffer: IBuffer = {
+  typingText: [],
+  isModify: false
 };
