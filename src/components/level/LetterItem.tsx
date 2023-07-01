@@ -39,8 +39,9 @@ function LetterItem({data, active}: IProps): JSX.Element {
   return (
     <div
       className={clsx('letter-item', {active}, [
-        {correct: correctTypo === 'correct'},
-        {incorrect: correctTypo === 'incorrect'}
+        {incorrect: correctTypo === 'incorrect'},
+        {isModify: data.isModify && correctTypo === 'correct'},
+        {correct: !data.isModify && correctTypo === 'correct'}
       ])}
     >
       <span className="token">{assembledSampleText}</span>

@@ -48,10 +48,16 @@ export interface IKeyData {
   shiftKey: boolean;
 }
 
-export interface ILetter {
+export interface IBuffer {
+  // id: string;
+  typingText: string[];
+  isModify: boolean;
+}
+
+export interface ILetter extends IBuffer {
   id: string;
   sampleText: string[];
-  typingText?: string[];
+  // typingText?: string[];
 }
 
 export interface IScoreData {

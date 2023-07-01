@@ -285,6 +285,35 @@ const KeyMap = {
   }
 };
 
+export const arrangeKey = (keyInput: IKeyInput, isHangulMode: boolean): string | undefined => {
+  let text;
+  switch (keyInput.key) {
+    case 'Shift':
+      // do nothing... // shift 키 입력은 글자를 입력하지 않음.
+      // text = 'SHIFT_KEY';
+      break;
+    case 'Enter': {
+      text = '↵';
+      break;
+    }
+    case 'Backspace': {
+      text = 'BACKSPACE_KEY';
+      break;
+    }
+    case 'HangulMode': {
+      // 한글모드를 변경
+      isHangulMode = !isHangulMode;
+      // text = 'HANGUL_MODE';
+      break;
+    }
+    default: {
+      const keyData = KeyMap.getKeyDataByEnglishKey(keyInput.key);
+      text = isHangulMode ? keyData.han : keyData.key;
+    }
+  }
+  return text;
+};
+
 export const arrangeKeyList = (keyInputList: IKeyInput[], isHangulMode: boolean): string[] => {
   return keyInputList.reduce((acc: string[], curr) => {
     switch (curr.key) {
