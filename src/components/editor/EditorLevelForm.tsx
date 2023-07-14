@@ -12,7 +12,7 @@ import {
 import {inputType, languageOptions} from 'constants/Constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {ILanguage} from 'interfaces/LanguageInterface';
 
@@ -25,7 +25,7 @@ interface IProps {
 }
 
 function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const [data, setData] = useState<ILevel>(levelData);
 
   useEffect(() => {

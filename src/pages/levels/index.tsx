@@ -1,12 +1,12 @@
 import {observer} from 'mobx-react-lite';
 import {ReactElement, useContext, useEffect} from 'react';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {EditorContext, LevelProvider} from 'store/EditorContext';
 import LevelItem from 'components/level/LevelItem';
 import {useRouter} from 'next/router';
 import {ILevel} from 'interfaces/LevelInterface';
 
 function LevelsIndexPage(): JSX.Element {
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const router = useRouter();
 
   useEffect(() => {

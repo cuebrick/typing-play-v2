@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 import Hangul from 'korean-js/src/hangul';
 import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 import KeyMap from 'modules/KeyMap';
@@ -8,7 +8,7 @@ function useNextLetter(): [IKeyData, (list: IKeyInput[]) => void] {
   const [typingText, setTypingText] = useState<string[] | string[][]>();
   const [nextLetter, setNextLetter] = useState<IKeyData>({} as IKeyData);
   const [keyInputList, setKeyInputList] = useState<IKeyInput[]>([]);
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   // let nextIndex
 
   useEffect(() => {

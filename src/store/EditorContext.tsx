@@ -24,7 +24,7 @@ export interface IResponse {
   error?: unknown;
 }
 
-export interface ILevelContext {
+export interface IEditorContext {
   categoryList: ICategory[];
   level: ILevel;
   levelList: ILevel[];
@@ -47,7 +47,7 @@ export interface ILevelContext {
   saveUserTypingData(userTypingData: IUserTypingData): void;
 }
 
-const defaultState: ILevelContext = {
+const defaultState: IEditorContext = {
   categoryList: [],
   level: {} as ILevel,
   levelList: [],
@@ -182,9 +182,9 @@ const defaultState: ILevelContext = {
   }
 };
 
-export const LevelContext: Context<ILevelContext> = createContext<ILevelContext>(defaultState);
+export const EditorContext: Context<IEditorContext> = createContext<IEditorContext>(defaultState);
 
-export function LevelProvider({children}: PropsWithChildren) {
-  const store: ILevelContext = useLocalObservable(() => defaultState);
-  return <LevelContext.Provider value={store}>{children}</LevelContext.Provider>;
+export function EditorProvider({children}: PropsWithChildren) {
+  const store: IEditorContext = useLocalObservable(() => defaultState);
+  return <EditorContext.Provider value={store}>{children}</EditorContext.Provider>;
 }

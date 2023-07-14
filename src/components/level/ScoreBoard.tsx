@@ -1,6 +1,6 @@
 import {IKeyInput, ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 import Hangul from 'korean-js/src/hangul';
 import {useRouter} from 'next/router';
 
@@ -22,7 +22,7 @@ function ScoreBoard({
 }: IProps): JSX.Element {
   const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
   const [nextLevel, setNextLevel] = useState<ILevel>({} as ILevel);
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const router = useRouter();
 
   const calculate = useCallback(() => {

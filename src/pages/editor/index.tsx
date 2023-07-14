@@ -1,7 +1,7 @@
 import {ReactElement, useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {observer} from 'mobx-react-lite';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {EditorContext, EditorProvider} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {AuthContext} from 'store/AuthContext';
 import EditorLevelForm from 'components/editor/EditorLevelForm';
@@ -13,7 +13,7 @@ import {CommonContext} from 'store/CommonContext';
 
 function EditorIndexPage(): JSX.Element {
   const authStore = useContext(AuthContext);
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const commonStore = useContext(CommonContext);
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
@@ -75,7 +75,7 @@ function EditorIndexPage(): JSX.Element {
 }
 
 EditorIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
+  return <EditorProvider>{page}</EditorProvider>;
 };
 
 export default observer(EditorIndexPage);

@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router';
 import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {EditorContext, LevelProvider} from 'store/EditorContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
@@ -14,7 +14,7 @@ import {CommonContext} from 'store/CommonContext';
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId} = router.query;
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const authStore = useContext(AuthContext);
   const commonStore = useContext(CommonContext);
 

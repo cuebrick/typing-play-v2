@@ -1,19 +1,19 @@
 import {useRouter} from 'next/router';
 import {useContext} from 'react';
 import {observer} from 'mobx-react-lite';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 
 function WelcomeCardItem(): JSX.Element {
-  const levelStore = useContext(LevelContext);
+  const levelStore = useContext(EditorContext);
   const router = useRouter();
 
   const onClickLevelList = (): void => {
-    router.push('/levels')
+    router.push('/levels');
   };
 
   const onClickStart = (): void => {
     // TODO: 사용자 정보로부터 이전 레벨 정보를 가져와 -> router 이동
-  }
+  };
 
   return (
     <div className="welcome-card-item">

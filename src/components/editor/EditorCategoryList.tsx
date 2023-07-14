@@ -1,7 +1,7 @@
 import {ICategory} from 'interfaces/CategoryInterface';
 import CategoryModal from 'components/modal/CategoryModal';
 import {useContext, useEffect, useState} from 'react';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 import EditorCategoryItem from 'components/editor/EditorCategoryItem';
 
 interface IProps {
@@ -9,7 +9,7 @@ interface IProps {
 }
 
 function EditorCategoryList({onSelect}: IProps): JSX.Element {
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const [selected, setSelected] = useState<ICategory | null>(null);
   const [isShowCategoryModal, setIsShowCategoryModal] = useState(false);
 
