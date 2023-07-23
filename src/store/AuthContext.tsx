@@ -61,7 +61,7 @@ export function AuthProvider({children}: PropsWithChildren) {
       }
       store.setUser(user);
     });
-  }, [auth]);
+  }, [store]);
 
   return <AuthContext.Provider value={store}>{children}</AuthContext.Provider>;
 }
