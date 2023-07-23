@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import {ReactElement, useContext, useEffect} from 'react';
-import {EditorContext, LevelProvider} from 'store/EditorContext';
+import {EditorContext, EditorProvider} from 'store/EditorContext';
 import LevelItem from 'components/level/LevelItem';
 import {useRouter} from 'next/router';
 import {ILevel} from 'interfaces/LevelInterface';
@@ -29,7 +29,7 @@ function LevelsIndexPage(): JSX.Element {
 }
 
 LevelsIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
+  return <EditorProvider>{page}</EditorProvider>;
 };
 
 export default observer(LevelsIndexPage);

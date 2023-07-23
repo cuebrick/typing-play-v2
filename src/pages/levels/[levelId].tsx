@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router';
 import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
-import {EditorContext, LevelProvider} from 'store/EditorContext';
+import {EditorContext, EditorProvider} from 'store/EditorContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
@@ -48,10 +48,12 @@ function LevelsIdPage(): JSX.Element {
     }
 
     if (levelId) {
-      store.getLevel(levelId as string).then((level) => {
-        // useKeyboardInput 에게 알려줌
-        setTypingText(level.text);
-      });
+      // store.getLevel(levelId as string).then((level) => {
+      //   // useKeyboardInput 에게 알려줌
+      //   setTypingText(level.text);
+      // });
+      const level = store.getLevel(levelId as string);
+      setTypingText(level.text);
     }
   }, [store, levelId, setTypingText]);
 
@@ -85,7 +87,7 @@ function LevelsIdPage(): JSX.Element {
 }
 
 LevelsIdPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
+  return <EditorProvider>{page}</EditorProvider>;
 };
 
 export default observer(LevelsIdPage);
