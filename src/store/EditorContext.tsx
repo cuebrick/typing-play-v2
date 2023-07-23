@@ -1,22 +1,20 @@
 import {Context, createContext, PropsWithChildren} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {runInAction} from 'mobx';
-import {db, auth} from 'database';
+import {auth, db} from 'database';
 import {ILevel, ILevelListParams, IUserTypingData} from 'interfaces/LevelInterface';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {
-  DocumentReference,
-  QuerySnapshot,
-  Timestamp,
   collection,
   deleteDoc,
   doc,
-  getDoc,
+  DocumentReference,
   getDocs,
   orderBy,
   query,
+  QuerySnapshot,
   setDoc,
-  where
+  Timestamp
 } from 'firebase/firestore';
 
 export interface IResponse {
@@ -37,20 +35,24 @@ export interface IEditorContext {
 
   getLevelList(params?: ILevelListParams): void;
 
-  getLevel(id: string): Promise<ILevel>;
-
-  setLevel(levelData: ILevel): void;
+  getLevel(id: string): ILevel;
 
   saveLevel(levelData: ILevel): Promise<DocumentReference | unknown>;
 
   deleteLevel(id: string): void;
   saveUserTypingData(userTypingData: IUserTypingData): void;
+
+  updateLocalStorage(key: string, data: ILevel[] | ICategory[]): void;
 }
 
 const defaultState: IEditorContext = {
   categoryList: [],
   level: {} as ILevel,
   levelList: [],
+
+  updateLocalStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+  },
 
   async getCategoryList() {
     const q = query(collection(db, 'categories'), orderBy('order'));
@@ -87,67 +89,73 @@ const defaultState: IEditorContext = {
     try {
       await deleteDoc(doc(db, 'categories', id));
       this.getCategoryList();
+      // todo: app version update
       return {success: true};
     } catch (error) {
       return {success: false, error};
     }
   },
 
-  async getLevelList(params?: ILevelListParams) {
-    const qc = []; // QueryConstraint(s)
-    if (params?.categoryId) {
-      qc.push(where('categoryId', '==', params.categoryId));
+  getLevelList(params?: ILevelListParams) {
+    const list = localStorage.getItem('levelList');
+    let parsedList = [] as ILevel[];
+    if (list) {
+      parsedList = JSON.parse(list);
     }
-    if (params?.orderBy && params?.orderDirection) {
-      qc.push(orderBy(params?.orderBy, params.orderDirection));
-    }
-    const q = query(collection(db, 'levels'), ...qc);
-    const querySnapshot: QuerySnapshot = await getDocs(q);
-    const list: ILevel[] = [];
-    querySnapshot.forEach((docObj) => {
-      list.push(docObj.data() as ILevel);
-    });
-    runInAction(() => {
-      this.levelList = list;
+    // const list: ILevel[] = JSON.parse(localStorage.getItem('levelList') || '[]');
+    this.levelList = parsedList.filter((item) => {
+      if (params?.categoryId) {
+        return item.categoryId === params.categoryId;
+      }
+      // todo: add orderBy, orderDirection
+      return item;
     });
   },
 
-  async getLevel(id: string): Promise<ILevel> {
-    const docRef = doc(db, 'levels', id);
-    const docSnap = await getDoc(docRef);
-    const level = docSnap.data() as ILevel;
-    runInAction(() => {
+  // getLevel(id: string) {
+  //   const list = JSON.parse(localStorage.getItem('levelList') || '{}');
+  //   const level = list.find((item: ILevel) => item.id === id);
+  //   this.level = level;
+  //   return level;
+  // },
+
+  getLevel(id: string) {
+    const list = localStorage.getItem('levelList');
+    let parsedList = [] as ILevel[];
+    if (list) {
+      parsedList = JSON.parse(list);
+    }
+    const level = parsedList.find((item: ILevel) => item.id === id);
+    if (level) {
       this.level = level;
-    });
-    return level;
-  },
-
-  setLevel(levelData: ILevel) {
-    runInAction(() => {
-      this.level = levelData;
-    });
+    }
+    return level as ILevel;
   },
 
   async saveLevel(levelData: ILevel) {
     try {
       let docRef;
-
       if (levelData.id) {
         // 수정
         docRef = await doc(db, 'levels', levelData.id);
         levelData.modifiedAt = Timestamp.now();
+        const list = this.levelList.filter((item) => item.id !== levelData.id);
+        this.levelList = [...list, levelData];
       } else {
         // 생성
         docRef = await doc(collection(db, 'levels'));
         levelData.createdAt = Timestamp.now();
         levelData.id = docRef.id;
+        this.levelList.push(levelData);
         if (auth.currentUser) {
           levelData.writerEmail = auth.currentUser.email;
           levelData.writerUid = auth.currentUser.uid;
         }
       }
+      this.updateLocalStorage('levelList', this.levelList);
       await setDoc(docRef, levelData);
       console.log('Document written with ID: ', docRef.id);
+      // todo: app version update
       return docRef;
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -160,6 +168,9 @@ const defaultState: IEditorContext = {
     try {
       await deleteDoc(doc(db, 'levels', id));
       this.getLevelList();
+      const list = JSON.parse(localStorage.getItem('levelList') || '{}');
+      const result = list.pop((item: ILevel) => item.id === id);
+      this.updateLocalStorage('levelList', result);
       return {success: true};
     } catch (error) {
       return {success: false, error};
