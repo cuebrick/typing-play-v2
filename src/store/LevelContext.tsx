@@ -1,4 +1,4 @@
-import {Context, createContext, PropsWithChildren} from 'react';
+import {Context, createContext, PropsWithChildren, useContext, useEffect} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, where} from 'firebase/firestore';
 import {runInAction} from 'mobx';
@@ -6,6 +6,8 @@ import {db} from '../database';
 import {IAppInfo} from '../interfaces/AppInfo';
 import {ILevel, ILevelListParams} from '../interfaces/LevelInterface';
 import {ICategory} from '../interfaces/CategoryInterface';
+import {AuthContext} from './AuthContext';
+import {IUserData} from '../interfaces/UserInterface';
 
 export interface ILevelContext {
   // appInfo: IAppInfo;
@@ -14,7 +16,7 @@ export interface ILevelContext {
   getAppInfo(): Promise<IAppInfo>;
   getLevelList(params?: ILevelListParams): void;
   getCategoryList(): void;
-  checkAppVersion(): void;
+  checkAppVersion(grade: IUserData['grade']): void;
 }
 
 const defaultState: ILevelContext = {
@@ -64,7 +66,7 @@ const defaultState: ILevelContext = {
     });
   },
 
-  async checkAppVersion() {
+  async checkAppVersion(grade) {
     let appLocalInfo = {} as IAppInfo;
     const appServerInfo = await this.getAppInfo();
     const foundLocalInfo = localStorage.getItem('appInfo');
@@ -74,7 +76,9 @@ const defaultState: ILevelContext = {
     // const appLocalInfo: IAppInfo = JSON.parse(localStorage.getItem('appInfo') || '{}');
     if (appServerInfo.version !== appLocalInfo.version) {
       this.getLevelList();
-      // todo: if (user.grade === 'admin') this.getCategoryList();
+      if (grade === 'admin') {
+        this.getCategoryList();
+      }
       localStorage.setItem('appInfo', JSON.stringify(appServerInfo));
     }
   }
@@ -84,5 +88,12 @@ export const LevelContext: Context<ILevelContext> = createContext<ILevelContext>
 
 export function LevelProvider({children}: PropsWithChildren) {
   const store: ILevelContext = useLocalObservable(() => defaultState);
+  const authStore = useContext(AuthContext);
+  useEffect(() => {
+    console.log('check userData >>', authStore.userData);
+    if (authStore.userData) {
+      store.checkAppVersion(authStore.userData.grade);
+    }
+  }, [authStore.userData, store]);
   return <LevelContext.Provider value={store}>{children}</LevelContext.Provider>;
 }

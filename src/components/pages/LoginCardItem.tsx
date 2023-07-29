@@ -1,10 +1,10 @@
-import FormLabel from "components/forms/FormLabel";
-import FormRow from "components/forms/FormRow";
-import FormData from "components/forms/FormData";
-import TextForm from "components/forms/TextForm";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "@firebase/auth";
-import {auth} from "database";
+import FormLabel from 'components/forms/FormLabel';
+import FormRow from 'components/forms/FormRow';
+import FormData from 'components/forms/FormData';
+import TextForm from 'components/forms/TextForm';
+import {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from '@firebase/auth';
+import {auth} from 'database';
 import Link from 'next/link';
 import {LevelContext} from '../../store/LevelContext';
 
@@ -22,7 +22,6 @@ function LoginCardItem(): JSX.Element {
       if (user) {
         setLoginUser(user);
         console.log('login 성공', user);
-        levelStore.checkAppVersion();
       } else {
         setLoginUser(user);
         console.log('logout 성공', user);
