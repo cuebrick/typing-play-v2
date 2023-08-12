@@ -1,7 +1,7 @@
-import {Context, createContext, PropsWithChildren, useContext, useEffect} from 'react';
+import {Context, createContext, PropsWithChildren, useContext} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, where} from 'firebase/firestore';
-import {runInAction} from 'mobx';
+import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
 import {IAppInfo} from '../interfaces/AppInfo';
 import {ILevel, ILevelListParams} from '../interfaces/LevelInterface';
@@ -73,7 +73,6 @@ const defaultState: ILevelContext = {
     if (foundLocalInfo) {
       appLocalInfo = JSON.parse(foundLocalInfo);
     }
-    // const appLocalInfo: IAppInfo = JSON.parse(localStorage.getItem('appInfo') || '{}');
     if (appServerInfo.version !== appLocalInfo.version) {
       this.getLevelList();
       if (grade === 'admin') {
@@ -89,11 +88,16 @@ export const LevelContext: Context<ILevelContext> = createContext<ILevelContext>
 export function LevelProvider({children}: PropsWithChildren) {
   const store: ILevelContext = useLocalObservable(() => defaultState);
   const authStore = useContext(AuthContext);
-  useEffect(() => {
-    console.log('check userData >>', authStore.userData);
-    if (authStore.userData) {
-      store.checkAppVersion(authStore.userData.grade);
+  reaction(
+    () => authStore.userData,
+    (userData) => {
+      if (userData) {
+        store.checkAppVersion(userData.grade);
+      } else {
+        console.log('not sign in.');
+      }
     }
-  }, [authStore.userData, store]);
+  );
+
   return <LevelContext.Provider value={store}>{children}</LevelContext.Provider>;
 }
