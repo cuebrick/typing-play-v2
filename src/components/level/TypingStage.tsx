@@ -2,13 +2,12 @@ import Hangul from 'korean-js/src/hangul';
 import {useEffect, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IBuffer, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
-import {arrangeKey, arrangeKeyList} from 'modules/KeyMap';
+import {arrangeKey} from 'modules/KeyMap';
 import {defaultBuffer} from 'dto/Level';
 
 interface IProps {
   level: ILevel | null;
-  keyInputList: IKeyInput[];
-  keyInput: IKeyInput;
+  keyInput: IKeyInput | null;
   onProgress(letterObjectList: ILetter[]): void;
   isFinished: boolean;
 }
@@ -38,7 +37,7 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
     setLetterList((prevLetterList) => {
       const list = [...prevLetterList];
       const item = {...list[indexRefs.current]};
-      // 수정한 경우에만 true에서 false로 변경.
+      // 타자 수정 시 true로 설정
       if (isModify) {
         item.isModify = isModify;
       }
@@ -56,6 +55,17 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
     });
   };
 
+  const removeLastLetterItem = () => {
+    setLetterList((prevLetterList) => {
+      const list = [...prevLetterList];
+      const item = {...list[indexRefs.current - 1]};
+      item.isModify = true;
+      item.typingText = [];
+      list[indexRefs.current - 1] = item;
+      return list;
+    });
+  };
+
   useEffect(() => {
     if (!level?.language) return;
     if (isFinished) return;
@@ -68,11 +78,11 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
         if (text === 'BACKSPACE_KEY') {
           if (prev.typingText.length === 0) {
             // remove last word
-            updateLetterList(data, [], undefined, true);
+            removeLastLetterItem();
             setLetterIndex((prevIndex) => {
               return prevIndex > 0 ? prevIndex - 1 : prevIndex;
             });
-          } else if (prev.typingText.length !== 0) {
+          } else {
             // remove last letter
             prev.typingText.pop();
             updateLetterList(data, prev.typingText, undefined, true);

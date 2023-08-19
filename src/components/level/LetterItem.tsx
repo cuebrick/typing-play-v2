@@ -25,16 +25,15 @@ function LetterItem({data, active}: IProps): JSX.Element {
       const assembled = Hangul.assemble(data.typingText as string[]);
       setAssembledTypingText(assembled);
     } else {
-      // undefined로 내려와서 else로 state 초기화
+      // 빈 텍스트는 undefined라 else에서 빈 string으로 초기화
       setAssembledTypingText('');
     }
     const result = JSON.stringify(data.sampleText) === JSON.stringify(data.typingText) ? 'correct' : 'incorrect';
-    if (data.typingText?.length || (data.typingText?.length && !active)) {
+    if (data.typingText?.length || data.isModify) {
+      // 자소 지우기                 // 글자 지우기 (글자 지울 시 isModify = true가 꼭 들어감)
       setCorrectTypo(result);
     }
-  }, [data.typingText, active, data.sampleText]);
-
-  // todo:
+  }, [data, data.typingText, active, data.sampleText]);
 
   return (
     <div
