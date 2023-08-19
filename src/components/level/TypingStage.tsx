@@ -12,7 +12,7 @@ interface IProps {
   isFinished: boolean;
 }
 
-function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.Element {
+function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Element {
   const [letterList, setLetterList] = useState<ILetter[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
   const [buffer, setBuffer] = useState<IBuffer>(defaultBuffer as IBuffer);
@@ -111,6 +111,10 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
       });
     }
   }, [keyInput, level?.language, indexRefs, isFinished]);
+
+  useEffect(() => {
+    onProgress(letterList);
+  }, [letterList, onProgress]);
 
   useEffect(() => {
     indexRefs.current = letterIndex;
