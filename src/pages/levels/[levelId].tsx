@@ -71,8 +71,8 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInputList={keyInputList} keyInput={keyInput} level={store.level} onProgress={onProgress} />
-      <Keyboard keyInput={keyInput} nextKey={nextKey} />
+      <TypingStage keyInput={keyInput} level={store.level} onProgress={onProgress} isFinished={isFinished} />
+      <Keyboard keyInput={keyInput} nextKey={nextKey} isFinished={isFinished} />
 
       <ScoreBoard
         letterList={letterList}

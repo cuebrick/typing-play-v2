@@ -10,6 +10,7 @@ interface IProps {
   keyInputList: IKeyInput[];
   keyInput: IKeyInput;
   onProgress(letterObjectList: ILetter[]): void;
+  isFinished: boolean;
 }
 
 function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.Element {
@@ -57,6 +58,7 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
 
   useEffect(() => {
     if (!level?.language) return;
+    if (isFinished) return;
     const isHangulMode = level?.language === 'ko';
 
     if (keyInput) {
@@ -98,7 +100,7 @@ function TypingStage({level, keyInputList, keyInput, onProgress}: IProps): JSX.E
         return data;
       });
     }
-  }, [keyInput, level?.language, indexRefs]);
+  }, [keyInput, level?.language, indexRefs, isFinished]);
 
   useEffect(() => {
     indexRefs.current = letterIndex;
