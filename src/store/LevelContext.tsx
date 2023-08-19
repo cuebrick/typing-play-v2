@@ -10,9 +10,6 @@ import {AuthContext} from './AuthContext';
 import {IUserData} from '../interfaces/UserInterface';
 
 export interface ILevelContext {
-  // appInfo: IAppInfo;
-  // levelList: ILevel[];
-  // categoryList: ICategory[];
   getAppInfo(): Promise<IAppInfo>;
   getLevelList(params?: ILevelListParams): void;
   getCategoryList(): void;
@@ -20,18 +17,9 @@ export interface ILevelContext {
 }
 
 const defaultState: ILevelContext = {
-  // appInfo: {} as IAppInfo,
-  // levelList: [],
-  // categoryList: [],
-
   async getAppInfo() {
     const docRef = doc(db, 'application', 'info');
     const docSnap = await getDoc(docRef);
-    /* const appInfo = docSnap.data() as IAppInfo;
-    runInAction(() => {
-      this.appInfo = appInfo;
-    });
-    return appInfo; */
     return docSnap.data() as IAppInfo;
   },
 
@@ -93,8 +81,6 @@ export function LevelProvider({children}: PropsWithChildren) {
     (userData) => {
       if (userData) {
         store.checkAppVersion(userData.grade);
-      } else {
-        console.log('not sign in.');
       }
     }
   );

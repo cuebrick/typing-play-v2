@@ -103,13 +103,16 @@ const defaultState: IEditorContext = {
       parsedList = JSON.parse(list);
     }
     // const list: ILevel[] = JSON.parse(localStorage.getItem('levelList') || '[]');
-    this.levelList = parsedList.filter((item) => {
-      if (params?.categoryId) {
-        return item.categoryId === params.categoryId;
-      }
-      // todo: add orderBy, orderDirection
-      return item;
-    });
+    if (params) {
+      parsedList = parsedList.filter((item) => {
+        if (params?.categoryId) {
+          return item.categoryId === params.categoryId;
+        }
+        // todo: add orderBy, orderDirection
+        return item;
+      });
+    }
+    this.levelList = parsedList.sort((a, b) => a.order - b.order);
   },
 
   // getLevel(id: string) {
