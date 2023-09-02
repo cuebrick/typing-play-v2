@@ -1,20 +1,20 @@
 import {useRouter} from 'next/router';
 import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
-import {EditorContext, EditorProvider} from 'store/EditorContext';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {ILetter, IScoreData} from 'interfaces/LevelInterface';
+import {ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
 import {CommonContext} from 'store/CommonContext';
+import {LevelContext, LevelProvider} from '../../store/LevelContext';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
   const {levelId} = router.query;
-  const store = useContext(EditorContext);
+  const store = useContext(LevelContext);
   const authStore = useContext(AuthContext);
   const commonStore = useContext(CommonContext);
 
@@ -22,6 +22,8 @@ function LevelsIdPage(): JSX.Element {
   const [letterList, setLetterList] = useState<ILetter[] | null>(null);
   // `while rendering a different component` error 해결 위해 여기에 isFinished 작성
   const [isFinished, setIsFinished] = useState(false);
+  const [showChildComponent, setShowChildComponent] = useState(true);
+  const [level, setLevel] = useState<ILevel | null>(null);
 
   const onProgress = useCallback(
     (list: ILetter[]) => {
@@ -43,17 +45,15 @@ function LevelsIdPage(): JSX.Element {
   };
 
   useEffect(() => {
-    if (store.levelList.length === 0) {
+    if (!localStorage.getItem('levelList')) {
       store.getLevelList();
     }
 
     if (levelId) {
-      // store.getLevel(levelId as string).then((level) => {
-      //   // useKeyboardInput 에게 알려줌
-      //   setTypingText(level.text);
-      // });
-      const level = store.getLevel(levelId as string);
-      setTypingText(level.text);
+      const levelList = JSON.parse(localStorage.getItem('levelList')!);
+      const levelData = levelList.find((item: ILevel) => item.id === levelId);
+      setTypingText(levelData.text);
+      setLevel(levelData);
     }
   }, [store, levelId, setTypingText]);
 
@@ -71,23 +71,27 @@ function LevelsIdPage(): JSX.Element {
 
   return (
     <div className="typing-level">
-      <TypingStage keyInput={keyInput} level={store.level} onProgress={onProgress} isFinished={isFinished} />
-      <Keyboard keyInput={keyInput} nextKey={nextKey} isFinished={isFinished} />
-
-      <ScoreBoard
-        letterList={letterList}
-        keyInputList={keyInputList}
-        clearKeyInputData={clearKeyInputData}
-        onSaveUserTypingData={onSaveUserTypingData}
-        isFinished={isFinished}
-        setIsFinished={setIsFinished}
-      />
+      {showChildComponent && (
+        <>
+          <TypingStage keyInput={keyInput} level={level} onProgress={onProgress} isFinished={isFinished} />
+          <Keyboard keyInput={keyInput} nextKey={nextKey} />
+          <ScoreBoard
+            levelData={level}
+            letterList={letterList}
+            keyInputList={keyInputList}
+            clearKeyInputData={clearKeyInputData}
+            onSaveUserTypingData={onSaveUserTypingData}
+            isFinished={isFinished}
+            setIsFinished={setIsFinished}
+          />
+        </>
+      )}
     </div>
   );
 }
 
 LevelsIdPage.getProvider = (page: ReactElement): ReactElement => {
-  return <EditorProvider>{page}</EditorProvider>;
+  return <LevelProvider>{page}</LevelProvider>;
 };
 
 export default observer(LevelsIdPage);

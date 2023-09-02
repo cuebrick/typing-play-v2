@@ -44,7 +44,6 @@ export interface IEditorContext {
   saveLevel(levelData: ILevel): Promise<DocumentReference | unknown>;
 
   deleteLevel(id: string): void;
-  saveUserTypingData(userTypingData: IUserTypingData): void;
 }
 
 const defaultState: IEditorContext = {
@@ -165,21 +164,6 @@ const defaultState: IEditorContext = {
       return {success: true};
     } catch (error) {
       return {success: false, error};
-    }
-  },
-
-  async saveUserTypingData(userTypingData: IUserTypingData) {
-    if (!userTypingData.userId) return {};
-
-    try {
-      const docRef = await doc(collection(db, 'userTypingData'));
-      userTypingData.createdAt = Timestamp.now();
-      userTypingData.id = docRef.id;
-      await setDoc(docRef, userTypingData);
-      return docRef;
-    } catch (error) {
-      console.error('failed save userTypingData');
-      return error;
     }
   }
 };

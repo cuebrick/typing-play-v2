@@ -1,10 +1,21 @@
 import {Context, createContext, PropsWithChildren, useContext} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
-import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, where} from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  QuerySnapshot,
+  setDoc,
+  Timestamp,
+  where
+} from 'firebase/firestore';
 import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
 import {IAppInfo} from '../interfaces/AppInfo';
-import {ILevel, ILevelListParams} from '../interfaces/LevelInterface';
+import {ILevel, ILevelListParams, IUserTypingData} from '../interfaces/LevelInterface';
 import {ICategory} from '../interfaces/CategoryInterface';
 import {AuthContext} from './AuthContext';
 import {IUserData} from '../interfaces/UserInterface';
@@ -14,6 +25,7 @@ export interface ILevelContext {
   getLevelList(params?: ILevelListParams): void;
   getCategoryList(): void;
   checkAppVersion(grade: IUserData['grade']): void;
+  saveUserTypingData(userTypingData: IUserTypingData): void;
 }
 
 const defaultState: ILevelContext = {
@@ -67,6 +79,21 @@ const defaultState: ILevelContext = {
         this.getCategoryList();
       }
       localStorage.setItem('appInfo', JSON.stringify(appServerInfo));
+    }
+  },
+
+  async saveUserTypingData(userTypingData: IUserTypingData) {
+    if (!userTypingData.userId) return {};
+
+    try {
+      const docRef = await doc(collection(db, 'userTypingData'));
+      userTypingData.createdAt = Timestamp.now();
+      userTypingData.id = docRef.id;
+      // await setDoc(docRef, userTypingData);
+      return docRef;
+    } catch (error) {
+      console.error('failed save userTypingData');
+      return error;
     }
   }
 };
