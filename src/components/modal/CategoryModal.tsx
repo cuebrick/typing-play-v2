@@ -13,7 +13,6 @@ import {EditorContext} from 'store/EditorContext';
 
 interface IProps {
   onChangeCategory?(): void;
-
   onClose(): void;
 }
 
@@ -41,7 +40,8 @@ function CategoryModal({onClose}: IProps): JSX.Element {
     const {name, value} = e.target as HTMLInputElement;
     setDetail({
       ...detail,
-      [name]: value
+      [name]: name === 'order' ? Number(value) : value
+      // todo: order엔 string 입력 불가하도록 작업 or order에도 numberStepper 사용
     });
   };
 
