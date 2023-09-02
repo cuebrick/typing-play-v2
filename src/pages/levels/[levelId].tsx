@@ -40,8 +40,11 @@ function LevelsIdPage(): JSX.Element {
   );
 
   const clearKeyInputData = () => {
-    setLetterList([]);
+    setLetterList(null);
     clearAllKeyInputData();
+    setShowChildComponent(false);
+    setIsFinished(false);
+    setTimeout(() => setShowChildComponent(true), 0);
   };
 
   useEffect(() => {

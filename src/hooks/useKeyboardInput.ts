@@ -45,7 +45,7 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, IKeyData, (text: st
   }, []);
 
   const clearAllKeyInputData = (): void => {
-    setKeyInput({} as IKeyInput);
+    setKeyInput(null);
     setKeyInputList([]);
   };
 
