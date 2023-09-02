@@ -1,10 +1,10 @@
 import {IKeyInput, ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
-import {useCallback, useContext, useEffect, useState} from 'react';
-import {EditorContext} from 'store/EditorContext';
+import {useCallback, useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {useRouter} from 'next/router';
 
 interface IProps {
+  levelData: ILevel | null;
   letterList: ILetter[] | null;
   keyInputList: IKeyInput[];
   clearKeyInputData(): void;
@@ -13,6 +13,7 @@ interface IProps {
   setIsFinished(boolean: boolean): void;
 }
 function ScoreBoard({
+  levelData,
   letterList,
   keyInputList,
   clearKeyInputData,
@@ -22,13 +23,13 @@ function ScoreBoard({
 }: IProps): JSX.Element {
   const [scoreData, setScoreData] = useState<IScoreData>({} as IScoreData);
   const [nextLevel, setNextLevel] = useState<ILevel>({} as ILevel);
-  const store = useContext(EditorContext);
   const router = useRouter();
 
   const calculate = useCallback(() => {
     if (!letterList || isFinished) return;
+    if (!levelData) return;
 
-    const typingList = Hangul.disassemble(store.level.text);
+    const typingList = Hangul.disassemble(levelData.text);
     // 단어 기준 오타율 계산 시 사용
     const inputList = letterList.reduce((acc: string[], curr: ILetter) => {
       if (curr.typingText) {
@@ -75,7 +76,7 @@ function ScoreBoard({
     };
     setScoreData(data);
     onSaveUserTypingData(data);
-  }, [letterList, isFinished, store.level.text, keyInputList, onSaveUserTypingData]);
+  }, [letterList, isFinished, levelData, keyInputList, onSaveUserTypingData]);
 
   // const getNextLevelId = () => {
   //   const currentCategory = store.levelList.filter((item) => {
@@ -88,21 +89,22 @@ function ScoreBoard({
   // };
 
   useEffect(() => {
+    if (!levelData) return;
     if (letterList) {
       // 점수계산 및 서버에 저장 후 다음 행동 선택(목록 or 다음레벨)
       // getNextLevel;
-      const currentCategory = store.levelList.filter((item) => {
-        return item.categoryId === store.level.categoryId;
+      const currentCategory = JSON.parse(localStorage.getItem('levelList') as string).filter((item: ILevel) => {
+        return item.categoryId === levelData.categoryId;
       });
-      const currentLevelIndex = currentCategory.findIndex((item) => {
-        return item.id === store.level.id;
+      const currentLevelIndex = currentCategory.findIndex((item: ILevel) => {
+        return item.id === levelData.id;
       });
       setNextLevel(currentCategory[currentLevelIndex + 1]);
 
       calculate();
       setIsFinished(true);
     }
-  }, [letterList, calculate, setIsFinished, store.levelList, store.level.categoryId, store.level.id]);
+  }, [letterList, calculate, setIsFinished, levelData]);
 
   const onClickNextLevelBtn = (level: ILevel): void => {
     clearKeyInputData();
