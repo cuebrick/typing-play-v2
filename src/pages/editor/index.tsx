@@ -23,30 +23,24 @@ function EditorIndexPage(): JSX.Element {
     if (!authStore.userData?.grade) return;
 
     if (authStore.userData?.grade === 'admin') {
-      store.getLevelList();
+      store.getCategoryList();
+      const firstOrder = store.categoryList.find((item) => item.order === '1');
+      // todo: order === 1 is error
+      setSelectedCategory(firstOrder);
     } else {
       router.push('/');
     }
-  }, [store, authStore.userData?.grade]);
+  }, [store, authStore.userData?.grade, router]);
 
   const onSaveDetail = (levelData: ILevel): void => {
     setSelectedCategory({...selectedCategory} as ICategory);
     commonStore.addModeless(`${levelData.title}의 변경 내용이 저장되었습니다.`);
     setSelectedLevel(levelData);
-
-    // console.log('isEdit', isEdit);
-    // // debugger;
-    // const docRef = await store.saveLevel(data, isEdit) as DocumentReference;
-    // console.log('<<<<response', docRef);
-    // if (!isEdit && docRef) {
-    //   await router.push(`/levels/editor/${docRef.id}`);
-    // }
   };
 
   useEffect(() => {
     if (!authStore.userData?.grade) return;
-    // todo:
-    console.log('>>>>>');
+    // todo: access denied
   }, [store, authStore.userData?.grade]);
 
   const onSelectCategory = (category: ICategory): void => {
