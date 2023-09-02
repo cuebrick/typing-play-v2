@@ -4,7 +4,6 @@ import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
 interface IProps {
   nextKey: IKeyData;
   keyInput: IKeyInput | null;
-  isFinished: boolean;
 }
 
 interface IKeyCap {
@@ -17,7 +16,7 @@ interface IKeyCap {
   y: number;
 }
 
-function Keyboard({nextKey, keyInput, isFinished}: IProps): JSX.Element {
+function Keyboard({nextKey, keyInput}: IProps): JSX.Element {
   // todo: 타자 완료 시 keyInput 막기
 
   const keyCapData: IKeyCap[] = [
@@ -173,7 +172,7 @@ function Keyboard({nextKey, keyInput, isFinished}: IProps): JSX.Element {
     {
       code: 'KeyU',
       keyCode: 85,
-      text: 'y',
+      text: 'u',
       x: 417.5,
       y: 63.5
     },
