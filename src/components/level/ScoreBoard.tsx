@@ -92,15 +92,11 @@ function ScoreBoard({
     if (!levelData) return;
     if (letterList) {
       // 점수계산 및 서버에 저장 후 다음 행동 선택(목록 or 다음레벨)
-      // getNextLevel;
       const currentCategory = JSON.parse(localStorage.getItem('levelList') as string).filter((item: ILevel) => {
         return item.categoryId === levelData.categoryId;
       });
-      const currentLevelIndex = currentCategory.findIndex((item: ILevel) => {
-        return item.id === levelData.id;
-      });
-      setNextLevel(currentCategory[currentLevelIndex + 1]);
-
+      const result = currentCategory.find((item: ILevel) => item.order === levelData.order + 1);
+      setNextLevel(result);
       calculate();
       setIsFinished(true);
     }
