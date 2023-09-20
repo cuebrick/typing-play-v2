@@ -1,19 +1,17 @@
 import {observer} from 'mobx-react-lite';
-import {ReactElement, useContext, useEffect} from 'react';
-import {EditorContext, EditorProvider} from 'store/EditorContext';
+import {ReactElement, useContext, useEffect, useState} from 'react';
 import LevelItem from 'components/level/LevelItem';
 import {useRouter} from 'next/router';
 import {ILevel} from 'interfaces/LevelInterface';
+import {LevelContext, LevelProvider} from '../../store/LevelContext';
 
 function LevelsIndexPage(): JSX.Element {
-  const store = useContext(EditorContext);
   const router = useRouter();
-
+  const store = useContext(LevelContext);
+  const [levelList, setLevelList] = useState<ILevel[]>([]);
   useEffect(() => {
-    if (store.levelList.length === 0) {
-      store.getLevelList();
-    }
-  }, [store]);
+    setLevelList(JSON.parse(localStorage.getItem('levelList') as string));
+  }, [store.checkedApp]);
 
   const onClickLevelItem = (level: ILevel): void => {
     router.push(`/levels/${level.id}`);
@@ -21,15 +19,16 @@ function LevelsIndexPage(): JSX.Element {
 
   return (
     <div className="level-list">
-      {store.levelList.map((level) => (
-        <LevelItem onClick={() => onClickLevelItem(level)} key={level.id} levelData={level} />
-      ))}
+      {levelList &&
+        levelList.map((level: ILevel) => (
+          <LevelItem onClick={() => onClickLevelItem(level)} key={level.id} levelData={level} />
+        ))}
     </div>
   );
 }
 
 LevelsIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <EditorProvider>{page}</EditorProvider>;
+  return <LevelProvider>{page}</LevelProvider>;
 };
 
 export default observer(LevelsIndexPage);

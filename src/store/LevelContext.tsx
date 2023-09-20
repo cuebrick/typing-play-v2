@@ -21,6 +21,7 @@ import {AuthContext} from './AuthContext';
 import {IUserData} from '../interfaces/UserInterface';
 
 export interface ILevelContext {
+  checkedApp: boolean;
   getAppInfo(): Promise<IAppInfo>;
   getLevelList(params?: ILevelListParams): void;
   getCategoryList(): void;
@@ -29,6 +30,7 @@ export interface ILevelContext {
 }
 
 const defaultState: ILevelContext = {
+  checkedApp: false,
   async getAppInfo() {
     const docRef = doc(db, 'application', 'info');
     const docSnap = await getDoc(docRef);
@@ -78,10 +80,11 @@ const defaultState: ILevelContext = {
     if (appServerInfo.version !== appLocalInfo.version) {
       this.getLevelList();
       if (grade === 'admin') {
-        this.getCategoryList();
+        await this.getCategoryList();
       }
       localStorage.setItem('appInfo', JSON.stringify(appServerInfo));
     }
+    this.checkedApp = true;
   },
 
   async saveUserTypingData(userTypingData: IUserTypingData) {
