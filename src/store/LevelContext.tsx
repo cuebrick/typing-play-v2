@@ -42,6 +42,8 @@ const defaultState: ILevelContext = {
     }
     if (params?.orderBy && params?.orderDirection) {
       qc.push(orderBy(params?.orderBy, params.orderDirection));
+    } else {
+      qc.push(orderBy('categoryId'), orderBy('order'));
     }
     const q = query(collection(db, 'levels'), ...qc);
     const querySnapshot: QuerySnapshot = await getDocs(q);
