@@ -19,7 +19,7 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
   }, []);
   const [letterList, setLetterList] = useState<ILetter[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
-  const [buffer, setBuffer] = useState<IBuffer>(defaultBuffer as IBuffer);
+  const [, setBuffer] = useState<IBuffer>(defaultBuffer as IBuffer);
   const indexRefs = useRef<number>(letterIndex);
 
   // entry point
