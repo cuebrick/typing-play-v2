@@ -1,9 +1,10 @@
+/* eslint-disable no-debugger */
 import Hangul from 'korean-js/src/hangul';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
+// import {useEffect, useMemo, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IBuffer, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import {arrangeKey} from 'modules/KeyMap';
-import {defaultBuffer} from 'dto/Level';
 
 interface IProps {
   level: ILevel | null;
@@ -13,6 +14,9 @@ interface IProps {
 }
 
 function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Element {
+  const defaultBuffer: IBuffer = useMemo(() => {
+    return {typingText: [], isModify: false};
+  }, []);
   const [letterList, setLetterList] = useState<ILetter[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
   const [buffer, setBuffer] = useState<IBuffer>(defaultBuffer as IBuffer);
@@ -30,8 +34,9 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
         } as ILetter;
       }) as ILetter[];
       setLetterList(list);
+      setBuffer(defaultBuffer);
     }
-  }, [level]);
+  }, [defaultBuffer, level]);
 
   const updateLetterList = (data: IBuffer, text: string[], secondText?: string[], isModify?: boolean) => {
     setLetterList((prevLetterList) => {
@@ -89,6 +94,14 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
           }
         } else if (text) {
           data.typingText.push(text);
+          // 마지막 글자 입력 시 넘치지 않게 마지막 자소 제거
+          /* if (
+            letterList.length === letterIndex + 1 &&
+            Hangul.disassemble(Hangul.assemble(data.typingText), true).length > 1
+          ) {
+            data.typingText.pop();
+          } */
+          // data.typingText.push('ㅅ');
           const typingText = Hangul.disassemble(Hangul.assemble(data.typingText)[0]) as string[];
           if (Hangul.disassemble(Hangul.assemble(data.typingText), true).length > 1) {
             // assemble하여 두 글자가 나오는 경우. 뒷 글자도 같이 넣어주지 않으면 앞 글자만 보임.
