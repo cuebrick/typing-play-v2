@@ -24,9 +24,9 @@ function EditorIndexPage(): JSX.Element {
 
     if (authStore.userData?.grade === 'admin') {
       store.getCategoryList();
-      const firstOrder = store.categoryList.find((item) => item.order === '1');
+      const firstOrder = store.categoryList.find((item) => item.order === 1);
       // todo: order === 1 is error
-      setSelectedCategory(firstOrder);
+      setSelectedCategory(firstOrder || null);
     } else {
       router.push('/');
     }
