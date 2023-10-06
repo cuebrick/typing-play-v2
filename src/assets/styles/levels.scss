@@ -3,6 +3,12 @@
   display: flex;
   flex-wrap: wrap;
 
+  .level-title {
+    flex-basis: 100%;
+    margin-left: $DEFAULT_ITEM_GAP;
+    margin-top: $DEFAULT_ITEM_GAP;
+  }
+
   .level-item {
     display: flex;
     width: calc(25% - 20px);

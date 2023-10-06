@@ -1,31 +1,20 @@
 import {Context, createContext, PropsWithChildren, useContext} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  QuerySnapshot,
-  setDoc,
-  Timestamp,
-  where
-} from 'firebase/firestore';
+import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, Timestamp, where} from 'firebase/firestore';
 import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
 import {IAppInfo} from '../interfaces/AppInfo';
-import {ILevel, ILevelListParams, IUserTypingData} from '../interfaces/LevelInterface';
+import {ILevel, ILevelList, ILevelListParams, IUserTypingData} from '../interfaces/LevelInterface';
 import {ICategory} from '../interfaces/CategoryInterface';
 import {AuthContext} from './AuthContext';
-import {IUserData} from '../interfaces/UserInterface';
 
 export interface ILevelContext {
   checkedApp: boolean;
   getAppInfo(): Promise<IAppInfo>;
-  getLevelList(params?: ILevelListParams): void;
+  getLevelList(): void;
+  getLevelData(params: ILevelListParams): Promise<ILevel[]>;
   getCategoryList(): void;
-  checkAppVersion(grade: IUserData['grade']): void;
+  checkAppVersion(): void;
   saveUserTypingData(userTypingData: IUserTypingData): void;
 }
 
@@ -37,7 +26,46 @@ const defaultState: ILevelContext = {
     return docSnap.data() as IAppInfo;
   },
 
-  async getLevelList(params?: ILevelListParams) {
+  async getLevelList() {
+    const categoryList = JSON.parse(localStorage.getItem('categoryList') as string);
+
+    // const levelList: ILevelList[] = [];
+    // categoryList.map(async (category: ICategory) => {
+    //   const result = await this.getLevelData({categoryId: category.id});
+    //   const data = {
+    //     ...category,
+    //     levels: result
+    //   };
+    //   levelList.push(data);
+    // });
+    // runInAction(() => {
+    //   localStorage.setItem('levelList', JSON.stringify(levelList));
+    // });
+
+    // const levelList: ILevelList[] = [];
+    // for (const category of categoryList) {
+    //   const result = await this.getLevelData({ categoryId: category.id });
+    //   const data = {
+    //     ...category,
+    //     levels: result
+    //   };
+    //   levelList.push(data);
+    // }
+
+    const levelList: ILevelList[] = await Promise.all(
+      categoryList.map(async (category: ICategory) => {
+        const result = await this.getLevelData({categoryId: category.id});
+        return {
+          ...category,
+          levels: result
+        };
+      })
+    );
+
+    localStorage.setItem('levelList', JSON.stringify(levelList));
+  },
+
+  async getLevelData(params: ILevelListParams) {
     const qc = []; // QueryConstraint(s)
     if (params?.categoryId) {
       qc.push(where('categoryId', '==', params.categoryId));
@@ -53,9 +81,7 @@ const defaultState: ILevelContext = {
     querySnapshot.forEach((docObj) => {
       list.push(docObj.data() as ILevel);
     });
-    runInAction(() => {
-      localStorage.setItem('levelList', JSON.stringify(list));
-    });
+    return list;
   },
 
   async getCategoryList() {
@@ -70,7 +96,7 @@ const defaultState: ILevelContext = {
     });
   },
 
-  async checkAppVersion(grade) {
+  async checkAppVersion() {
     let appLocalInfo = {} as IAppInfo;
     const appServerInfo = await this.getAppInfo();
     const foundLocalInfo = localStorage.getItem('appInfo');
@@ -78,10 +104,8 @@ const defaultState: ILevelContext = {
       appLocalInfo = JSON.parse(foundLocalInfo);
     }
     if (appServerInfo.version !== appLocalInfo.version) {
-      this.getLevelList();
-      if (grade === 'admin') {
-        await this.getCategoryList();
-      }
+      await this.getCategoryList();
+      await this.getLevelList();
       localStorage.setItem('appInfo', JSON.stringify(appServerInfo));
     }
     this.checkedApp = true;
@@ -112,7 +136,7 @@ export function LevelProvider({children}: PropsWithChildren) {
     () => authStore.userData,
     (userData) => {
       if (userData) {
-        store.checkAppVersion(userData.grade);
+        store.checkAppVersion();
       }
     }
   );

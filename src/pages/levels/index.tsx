@@ -1,27 +1,30 @@
 import {observer} from 'mobx-react-lite';
 import {ReactElement, useContext, useEffect, useState} from 'react';
-import LevelItem from 'components/level/LevelItem';
 import {useRouter} from 'next/router';
-import {ILevel} from 'interfaces/LevelInterface';
+import {ILevel, ILevelList} from 'interfaces/LevelInterface';
 import {LevelContext, LevelProvider} from '../../store/LevelContext';
+import LevelList from '../../components/level/LevelList';
 
 function LevelsIndexPage(): JSX.Element {
   const router = useRouter();
   const store = useContext(LevelContext);
-  const [levelList, setLevelList] = useState<ILevel[]>([]);
+  // const [levelData, setLevelData] = useState<ILevel[]>([]);
+  const [levelData, setLevelData] = useState<ILevelList[]>([]);
   useEffect(() => {
-    setLevelList(JSON.parse(localStorage.getItem('levelList') as string));
+    setLevelData(JSON.parse(localStorage.getItem('levelList') as string));
   }, [store.checkedApp]);
 
+  // todo: onClick 이벤트 적용
   const onClickLevelItem = (level: ILevel): void => {
     router.push(`/levels/${level.id}`);
   };
 
   return (
-    <div className="level-list">
-      {levelList &&
-        levelList.map((level: ILevel) => (
-          <LevelItem onClick={() => onClickLevelItem(level)} key={level.id} levelData={level} />
+    <div className="level-wrap">
+      {levelData &&
+        levelData.map((levelList: ILevelList) => (
+          <LevelList key={levelList.id} title={levelList.title} levels={levelList.levels} />
+          // <LevelItem onClick={() => onClickLevelItem(level)} key={level.id} levelData={level} />
         ))}
     </div>
   );

@@ -9,6 +9,13 @@ export type InputTypes = 'letter' | 'word';
 export type OrderDirections = 'asc' | 'desc';
 export type Languages = 'ko' | 'en';
 
+export interface ILevelList {
+  id: string;
+  title: string;
+  order: number;
+  levels: ILevel[];
+}
+
 export interface ILevel {
   categoryId: string;
   categoryTitle: string;
