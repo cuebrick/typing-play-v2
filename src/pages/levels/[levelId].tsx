@@ -4,12 +4,12 @@ import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {ILetter, ILevel, IScoreData} from 'interfaces/LevelInterface';
+import {ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
 import {CommonContext} from 'store/CommonContext';
-import {LevelContext, LevelProvider} from '../../store/LevelContext';
+import {LevelContext, LevelProvider} from 'store/LevelContext';
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
@@ -53,10 +53,23 @@ function LevelsIdPage(): JSX.Element {
     }
 
     if (levelId) {
-      const levelList = JSON.parse(localStorage.getItem('levelList')!);
-      const levelData = levelList.find((item: ILevel) => item.id === levelId);
-      setTypingText(levelData.text);
-      setLevel(levelData);
+      const levelList: ILevelList[] = JSON.parse(localStorage.getItem('levelList')!);
+
+      const levelData: ILevel | null = levelList.reduce(
+        (foundLevel: ILevel | null, item: ILevelList): ILevel | null => {
+          if (foundLevel !== null) {
+            return foundLevel;
+          }
+          const found = item.levels.find((levelItem: ILevel) => levelItem.id === levelId);
+          return found || null;
+        },
+        null as ILevel | null
+      );
+
+      if (levelData) {
+        setTypingText(levelData.text);
+        setLevel(levelData);
+      }
     }
   }, [store, levelId, setTypingText]);
 

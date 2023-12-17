@@ -1,21 +1,23 @@
+import {ILevel, ILevelList} from 'interfaces/LevelInterface';
+import {useRouter} from 'next/router';
 import LevelItem from './LevelItem';
-import {ILevel} from '../../interfaces/LevelInterface';
 
 interface IProps {
-  title: string;
-  levels: ILevel[];
+  levelList: ILevelList;
 }
 
-function LevelList({title, levels}: IProps): JSX.Element | null {
-  if (!levels || levels.length === 0) {
-    return null;
-  }
+function LevelList({levelList}: IProps): JSX.Element | null {
+  const router = useRouter();
+
+  const onClickLevelItem = (level: ILevel): void => {
+    router.push(`/levels/${level.id}`);
+  };
 
   return (
     <div className="level-list">
-      <p className="level-title">{title}</p>
-      {levels.map((level: ILevel) => (
-        <LevelItem levelData={level} key={level.id} />
+      <p className="level-title">{levelList.title}</p>
+      {levelList.levels.map((level: ILevel) => (
+        <LevelItem levelData={level} onClick={() => onClickLevelItem(level)} key={level.id} />
       ))}
     </div>
   );
