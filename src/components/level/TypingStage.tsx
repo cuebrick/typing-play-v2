@@ -80,6 +80,54 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
       setBuffer((prev) => {
         const data = {...prev};
         const text = arrangeKey(keyInput, isHangulMode);
+
+        // 자소 입력 모드
+        if (level.inputType === 'letter') {
+          if (text === 'BACKSPACE_KEY') {
+            if (prev.typingText.length === 0) {
+              // remove last word
+              removeLastLetterItem();
+              setLetterIndex((prevIndex) => {
+                return prevIndex > 0 ? prevIndex - 1 : prevIndex;
+              });
+            } else {
+              // remove last letter
+              prev.typingText.pop();
+              updateLetterList(data, prev.typingText, undefined, true);
+            }
+          } else if (text) {
+            data.typingText.push(text);
+            const typingText = Hangul.disassemble(data.typingText[0]) as string[];
+            if (Hangul.disassemble(data.typingText.join('')).length > 1) {
+              // assemble하여 두 글자가 나오는 경우. 뒷 글자도 같이 넣어주지 않으면 앞 글자만 보임.
+              // 자소 입력 모드에선 첫 글자 입력 이외엔 모두 해당.
+              const secondTypingText = Hangul.disassemble(data.typingText[1]) as string[];
+              updateLetterList(data, typingText, secondTypingText);
+            } else {
+              // assemble하여 한 글자인 경우.
+              // 자소 입력 모드에선 첫 글자 입력시에만 해당.
+              updateLetterList(data, typingText);
+            }
+          }
+
+          if (Hangul.assemble(data.typingText).length > 1) {
+            // 자소를 입력하여 buffer가 2글자가 됐을 때 index 1 증가
+            setLetterIndex((prevIndex) => {
+              return prevIndex + 1;
+            });
+            return {...defaultBuffer, typingText: Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[]};
+          }
+          if (
+            Hangul.assemble(data.typingText).length === 1 &&
+            Hangul.disassemble(data.typingText.join('')).length === 2
+          ) {
+            // 겹자음 입력 시엔 typingText만 추가로 재설정
+            // 이 부분이 없으면 자소 입력이 제대로 안됨
+            return {...defaultBuffer, typingText: Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[]};
+          }
+          return data;
+        }
+
         if (text === 'BACKSPACE_KEY') {
           if (prev.typingText.length === 0) {
             // remove last word
