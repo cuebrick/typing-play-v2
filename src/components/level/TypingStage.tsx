@@ -1,7 +1,6 @@
 /* eslint-disable no-debugger */
 import Hangul from 'korean-js/src/hangul';
 import {useEffect, useMemo, useRef, useState} from 'react';
-// import {useEffect, useMemo, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IBuffer, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import {arrangeKey} from 'modules/KeyMap';
@@ -110,24 +109,17 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
             }
           }
 
-          if (Hangul.assemble(data.typingText).length > 1) {
-            // 자소를 입력하여 buffer가 2글자가 됐을 때 index 1 증가
+          if (data.typingText.length > 1) {
             setLetterIndex((prevIndex) => {
+              // 자소를 입력하여 buffer가 2글자가 됐을 때 index 1 증가
               return prevIndex + 1;
             });
-            return {...defaultBuffer, typingText: Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[]};
-          }
-          if (
-            Hangul.assemble(data.typingText).length === 1 &&
-            Hangul.disassemble(data.typingText.join('')).length === 2
-          ) {
-            // 겹자음 입력 시엔 typingText만 추가로 재설정
-            // 이 부분이 없으면 자소 입력이 제대로 안됨
-            return {...defaultBuffer, typingText: Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[]};
+            return {...defaultBuffer, typingText: [data.typingText[1]]};
           }
           return data;
         }
 
+        // 단어 입력 모드
         if (text === 'BACKSPACE_KEY') {
           if (prev.typingText.length === 0) {
             // remove last word
@@ -171,7 +163,7 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
         return data;
       });
     }
-  }, [keyInput, level?.language, indexRefs, isFinished]);
+  }, [defaultBuffer, indexRefs, keyInput, level?.language, level?.inputType, isFinished]);
 
   useEffect(() => {
     onProgress(letterList);
