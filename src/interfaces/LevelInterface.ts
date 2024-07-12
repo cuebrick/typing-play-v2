@@ -48,6 +48,10 @@ export interface IKeyInput {
   timestamp: Timestamp | null;
 }
 
+export interface IHangulKeyData extends IKeyData {
+  combinable: boolean;
+}
+
 export interface IKeyData {
   code: string;
   key: string;
@@ -57,8 +61,7 @@ export interface IKeyData {
 
 export interface IBuffer {
   // id: string;
-  typingText: string[];
-  isModify: boolean;
+  typingText: string | string[];
 }
 
 export interface ILetter extends IBuffer {

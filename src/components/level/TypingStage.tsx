@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 import Hangul from 'korean-js/src/hangul';
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IBuffer, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import {arrangeKey} from 'modules/KeyMap';
@@ -12,14 +12,97 @@ interface IProps {
   isFinished: boolean;
 }
 
+type InputText = {
+  type: 'INPUT_TEXT';
+  text: string;
+  inputType: 'letter' | 'word';
+};
+type InputBackspace = {
+  type: 'INPUT_BACKSPACE';
+  inputType: 'letter' | 'word';
+};
+
+type TypingType = InputText | InputBackspace;
+
+let isRemoved = false;
+let isWordRemoved = false;
+
+function typingReducer(state: (string | string[])[], action: TypingType): (string | string[])[] {
+  switch (action.type) {
+    case 'INPUT_TEXT': {
+      // 자소 입력 모드
+      if (action.inputType === 'letter') return [...state, action.text];
+
+      // 단어 입력 모드 - 지우기 한 직후  // '가나'에서 두 번 지워 '가'를 만든 뒤 'ㄴ' 입력 시 '간'으로 나옴
+      if (isRemoved) {
+        const list = [...state];
+        const lastItem: string[] = list[list.length - 1];
+        lastItem.push(action.text);
+        isRemoved = false;
+        isWordRemoved = false;
+        return list;
+      }
+
+      // 단어 입력 모드 - 통상
+      return Hangul.disassemble(Hangul.assemble([...state.flat(), action.text]), true);
+    }
+    case 'INPUT_BACKSPACE': {
+      if (state.length > 0 && state[0].length > 0) {
+        // 자소 입력 모드
+        if (action.inputType === 'letter') return state.slice(0, -1);
+
+        if (!isRemoved) isRemoved = true;
+        // 단어 입력 모드 - 자소 지우기
+        if (state[state.length - 1].length > 0) {
+          // 마지막 글자를 구성하는 배열에서 한 글자 씩 제거
+          const list = [...state];
+          (list[list.length - 1] as string[]).pop();
+          return list;
+        }
+
+        // 단어 입력 모드 - 단어 지우기
+        if (state[state.length - 1].length === 0) {
+          if (!isWordRemoved) isWordRemoved = true;
+
+          // 글자를 구성하는 배열 중 마지막 배열 제거(index 변경) 및 마지막 배열 초기화(글자 제거)
+          const list = [...state];
+          (list as string[][]).pop();
+          (list[list.length - 1] as string[]).splice(0);
+          return list;
+        }
+      }
+      return state;
+    }
+    default:
+      return state;
+  }
+}
+
 function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Element {
-  const defaultBuffer: IBuffer = useMemo(() => {
-    return {typingText: [], isModify: false};
-  }, []);
-  const [letterList, setLetterList] = useState<ILetter[]>([]);
+  const [letterList, setLetterList] = useState<{id: string; sampleText: string[]}[]>([]);
+  const defaultTypingList: (string | string[])[] = [];
+  const [typingList, dispatchTypingList] = useReducer(typingReducer, defaultTypingList);
+  const [modifyIndexList, setModifyIndexList] = useState<number[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
-  const [, setBuffer] = useState<IBuffer>(defaultBuffer as IBuffer);
-  const indexRefs = useRef<number>(letterIndex);
+  const indexRefs = useRef<number>(0);
+
+  const onRemoveText = useCallback(() => {
+    // 자소 입력 모드에선 지울 때 현재 index가 아니라 이전 index를 지워야 함.
+    let currentIndex: number;
+    if (level?.inputType === 'letter') {
+      currentIndex = letterIndex - 1;
+    } else if (isWordRemoved) {
+      currentIndex = letterIndex - 1; // 단어를 지웠을 땐 -1을 해줘야 함.
+    } else {
+      currentIndex = letterIndex;
+    }
+
+    if (!modifyIndexList.includes(currentIndex)) {
+      setModifyIndexList((prev) => {
+        return [...prev, currentIndex].sort();
+      });
+    }
+  }, [letterIndex, level?.inputType, modifyIndexList]);
 
   // entry point
   useEffect(() => {
@@ -28,142 +111,33 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
       const list = disassembled.map((sampleText, index) => {
         return {
           id: `letter${index}`,
-          sampleText, // : Hangul.assemble(sampleText as string[])
-          typingText: [] as string[]
+          sampleText // : Hangul.assemble(sampleText as string[])
         } as ILetter;
-      }) as ILetter[];
+      });
       setLetterList(list);
-      setBuffer(defaultBuffer);
     }
-  }, [defaultBuffer, level]);
-
-  const updateLetterList = (data: IBuffer, text: string[], secondText?: string[], isModify?: boolean) => {
-    setLetterList((prevLetterList) => {
-      const list = [...prevLetterList];
-      const item = {...list[indexRefs.current]};
-      // 타자 수정 시 true로 설정
-      if (isModify) {
-        item.isModify = isModify;
-      }
-      // 입력한 글자를 list에 끼워 넣음.
-      item.typingText = text;
-      list[indexRefs.current] = item;
-      if (secondText) {
-        // assemble하여 두 글자가 나온 상황.
-        // 동일한 방법으로 다음 인덱스에 글자를 끼워 넣음.
-        const secondItem = {...list[indexRefs.current + 1]};
-        secondItem.typingText = secondText;
-        list[indexRefs.current + 1] = secondItem;
-      }
-      return list;
-    });
-  };
-
-  const removeLastLetterItem = () => {
-    setLetterList((prevLetterList) => {
-      const list = [...prevLetterList];
-      const item = {...list[indexRefs.current - 1]};
-      item.isModify = true;
-      item.typingText = [];
-      list[indexRefs.current - 1] = item;
-      return list;
-    });
-  };
+  }, [level]);
 
   useEffect(() => {
     if (!level?.language) return;
     if (isFinished) return;
+
     const isHangulMode = level?.language === 'ko';
 
     if (keyInput) {
-      setBuffer((prev) => {
-        const data = {...prev};
-        const text = arrangeKey(keyInput, isHangulMode);
+      const text = arrangeKey(keyInput, isHangulMode);
+      if (text === 'BACKSPACE_KEY') {
+        dispatchTypingList({type: 'INPUT_BACKSPACE', inputType: level.inputType});
+        // onRemoveText();
+        setTimeout(onRemoveText, 0); // dispatch 비동기로 인해 함수의 else if 미작동
+        return;
+      }
 
-        // 자소 입력 모드
-        if (level.inputType === 'letter') {
-          if (text === 'BACKSPACE_KEY') {
-            if (prev.typingText.length === 0) {
-              // remove last word
-              removeLastLetterItem();
-              setLetterIndex((prevIndex) => {
-                return prevIndex > 0 ? prevIndex - 1 : prevIndex;
-              });
-            } else {
-              // remove last letter
-              prev.typingText.pop();
-              updateLetterList(data, prev.typingText, undefined, true);
-            }
-          } else if (text) {
-            data.typingText.push(text);
-            const typingText = Hangul.disassemble(data.typingText[0]) as string[];
-            if (Hangul.disassemble(data.typingText.join('')).length > 1) {
-              // assemble하여 두 글자가 나오는 경우. 뒷 글자도 같이 넣어주지 않으면 앞 글자만 보임.
-              // 자소 입력 모드에선 첫 글자 입력 이외엔 모두 해당.
-              const secondTypingText = Hangul.disassemble(data.typingText[1]) as string[];
-              updateLetterList(data, typingText, secondTypingText);
-            } else {
-              // assemble하여 한 글자인 경우.
-              // 자소 입력 모드에선 첫 글자 입력시에만 해당.
-              updateLetterList(data, typingText);
-            }
-          }
-
-          if (data.typingText.length > 1) {
-            setLetterIndex((prevIndex) => {
-              // 자소를 입력하여 buffer가 2글자가 됐을 때 index 1 증가
-              return prevIndex + 1;
-            });
-            return {...defaultBuffer, typingText: [data.typingText[1]]};
-          }
-          return data;
-        }
-
-        // 단어 입력 모드
-        if (text === 'BACKSPACE_KEY') {
-          if (prev.typingText.length === 0) {
-            // remove last word
-            removeLastLetterItem();
-            setLetterIndex((prevIndex) => {
-              return prevIndex > 0 ? prevIndex - 1 : prevIndex;
-            });
-          } else {
-            // remove last letter
-            prev.typingText.pop();
-            updateLetterList(data, prev.typingText, undefined, true);
-          }
-        } else if (text) {
-          data.typingText.push(text);
-          // 마지막 글자 입력 시 넘치지 않게 마지막 자소 제거
-          /* if (
-            letterList.length === letterIndex + 1 &&
-            Hangul.disassemble(Hangul.assemble(data.typingText), true).length > 1
-          ) {
-            data.typingText.pop();
-          } */
-          // data.typingText.push('ㅅ');
-          const typingText = Hangul.disassemble(Hangul.assemble(data.typingText)[0]) as string[];
-          if (Hangul.disassemble(Hangul.assemble(data.typingText), true).length > 1) {
-            // assemble하여 두 글자가 나오는 경우. 뒷 글자도 같이 넣어주지 않으면 앞 글자만 보임.
-            // ex) '폳' + 'ㅗ' =/= '포도', = '포ᅟ'
-            const secondTypingText = Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[];
-            updateLetterList(data, typingText, secondTypingText);
-          } else {
-            // assemble하여 한 글자인 경우. 즉, 일반적인 상황.
-            updateLetterList(data, typingText);
-          }
-        }
-
-        if (Hangul.assemble(data.typingText).length > 1) {
-          setLetterIndex((prevIndex) => {
-            return prevIndex + 1;
-          });
-          return {...defaultBuffer, typingText: Hangul.disassemble(Hangul.assemble(data.typingText)[1]) as string[]};
-        }
-        return data;
-      });
+      if (text) {
+        dispatchTypingList({type: 'INPUT_TEXT', text, inputType: level.inputType});
+      }
     }
-  }, [defaultBuffer, indexRefs, keyInput, level?.language, level?.inputType, isFinished]);
+  }, [isFinished, keyInput, level?.inputType, level?.language]);
 
   useEffect(() => {
     onProgress(letterList);
@@ -173,11 +147,26 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
     indexRefs.current = letterIndex;
   }, [letterIndex]);
 
+  const getTypingText = (index: number): string[] => {
+    const list = typingList?.[index] ? [typingList?.[index]] : [];
+    return (level?.inputType === 'word' ? typingList?.[index] : list) as string[];
+  };
+
   return (
     <div className="typing-stage">
       <div className="text-line">
         {letterList?.map((letter, index) => (
-          <LetterItem data={letter} key={letter.id} active={index === letterIndex} />
+          <LetterItem
+            data={{
+              ...letter,
+              typingText: getTypingText(index)
+            }}
+            active={index === letterIndex}
+            isModify={modifyIndexList.includes(index)}
+            itemIndex={index}
+            currentIndex={letterIndex}
+            key={letter.id}
+          />
         ))}
       </div>
     </div>
