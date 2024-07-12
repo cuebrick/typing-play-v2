@@ -2,8 +2,8 @@
 import Hangul from 'korean-js/src/hangul';
 import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
-import {IBuffer, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
-import {arrangeKey} from 'modules/KeyMap';
+import {IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
+import KeyMap, {arrangeKey} from 'modules/KeyMap';
 
 interface IProps {
   level: ILevel | null;
@@ -140,8 +140,29 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
   }, [isFinished, keyInput, level?.inputType, level?.language]);
 
   useEffect(() => {
-    onProgress(letterList);
-  }, [letterList, onProgress]);
+    const list = letterList.map((item, index) => {
+      return {...item, typingText: typingList[index]};
+    });
+    onProgress(list);
+  }, [letterList, onProgress, typingList]);
+
+  useEffect(() => {
+    if (level?.inputType === 'letter') {
+      setLetterIndex(typingList.length);
+    } else if (level?.inputType === 'word') {
+      const lastItem = typingList[typingList.length - 1]; // 마지막 글자
+      const lastJaso = lastItem ? lastItem[lastItem.length - 1] : undefined;
+
+      const calcLetterIndex = () => {
+        // 글자를 지워 자소가 없는 경우엔 바로 리턴
+        if (!lastJaso) return typingList.length - 1;
+
+        const isCombinable = KeyMap.getKeyDataByHangulKey(lastJaso).combinable;
+        return isCombinable ? typingList.length - 1 : typingList.length;
+      };
+      setLetterIndex(typingList.length > 0 ? calcLetterIndex : 0);
+    }
+  }, [level?.inputType, typingList]);
 
   useEffect(() => {
     indexRefs.current = letterIndex;
