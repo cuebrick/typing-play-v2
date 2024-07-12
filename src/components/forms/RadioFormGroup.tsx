@@ -1,23 +1,28 @@
-import {ChangeEvent} from "react";
+import {ChangeEvent} from 'react';
 
-type Props = {
+type Props<T> = {
   name: string;
   value: string;
-  options: Array<any>;
+  options: T[];
   onChange(e: ChangeEvent): void;
+};
+
+interface IConstraint {
+  value: string;
+  label: string;
 }
 
-function RadioFormGroup({name, value, options, onChange}: Props):JSX.Element {
+function RadioFormGroup<T extends IConstraint>({name, value, options, onChange}: Props<T>): JSX.Element {
   return (
-      <div className="radio-form-group">
-        {options?.map((item:any) => (
-            <label key={item.value}>
-              <input type="radio" name={name} value={item.value} checked={item.value === value} onChange={onChange} />
-              {item.label}
-            </label>
-        ))}
-      </div>
-  )
+    <div className="radio-form-group">
+      {options?.map((item) => (
+        <label key={item.value} htmlFor={name}>
+          <input type="radio" name={name} value={item.value} checked={item.value === value} onChange={onChange} />
+          {item.label}
+        </label>
+      ))}
+    </div>
+  );
 }
 
-export default RadioFormGroup
+export default RadioFormGroup;

@@ -1,7 +1,7 @@
 import {ReactElement, useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {observer} from 'mobx-react-lite';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {EditorContext, EditorProvider} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {AuthContext} from 'store/AuthContext';
 import EditorLevelForm from 'components/editor/EditorLevelForm';
@@ -9,41 +9,39 @@ import {defaultLevelData} from 'dto/Level';
 import EditorLevelList from 'components/editor/EditorLevelList';
 import EditorCategoryList from 'components/editor/EditorCategoryList';
 import {ICategory} from 'interfaces/CategoryInterface';
+import {CommonContext} from 'store/CommonContext';
 
 function EditorIndexPage(): JSX.Element {
   const authStore = useContext(AuthContext);
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
+  const commonStore = useContext(CommonContext);
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>({...defaultLevelData});
 
   useEffect(() => {
-      if (!authStore.userData?.grade) return;
+    if (!authStore.userData?.grade) return;
 
-      if (authStore.userData?.grade === 'admin') {
-        store.getLevelList();
-      } else {
-        router.push('/');
-      }
-    }, [store, authStore.userData?.grade]
-  );
+    if (authStore.userData?.grade === 'admin') {
+      store.getCategoryList();
+      const firstOrder = store.categoryList.find((item) => item.order === 1);
+      // todo: order === 1 is error
+      setSelectedCategory(firstOrder || null);
+    } else {
+      router.push('/');
+    }
+  }, [store, authStore.userData?.grade, router]);
 
-  const onSaveDetail = (): void => {
+  const onSaveDetail = (levelData: ILevel): void => {
     setSelectedCategory({...selectedCategory} as ICategory);
-
-    // console.log('isEdit', isEdit);
-    // // debugger;
-    // const docRef = await store.saveLevel(data, isEdit) as DocumentReference;
-    // console.log('<<<<response', docRef);
-    // if (!isEdit && docRef) {
-    //   await router.push(`/levels/editor/${docRef.id}`);
-    // }
+    commonStore.addModeless(`${levelData.title}의 변경 내용이 저장되었습니다.`);
+    setSelectedLevel(levelData);
   };
 
   useEffect(() => {
-      if (!authStore.userData?.grade) return;
-    }, [store, authStore.userData?.grade]
-  );
+    if (!authStore.userData?.grade) return;
+    // todo: access denied
+  }, [store, authStore.userData?.grade]);
 
   const onSelectCategory = (category: ICategory): void => {
     setSelectedCategory(category);
@@ -71,7 +69,7 @@ function EditorIndexPage(): JSX.Element {
 }
 
 EditorIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
+  return <EditorProvider>{page}</EditorProvider>;
 };
 
 export default observer(EditorIndexPage);

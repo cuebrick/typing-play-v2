@@ -27,7 +27,7 @@ const defaultState: IAuthContext = {
   },
 
   async getUserData(uid: string) {
-    const docRef = doc(db, "userData", uid);
+    const docRef = doc(db, 'userData', uid);
     const docSnap = await getDoc(docRef);
     console.log('user docSnap >>>', docSnap, docSnap.data());
     // 사용자의 세이브 데이터가 있는 경우
@@ -61,7 +61,7 @@ export function AuthProvider({children}: PropsWithChildren) {
       }
       store.setUser(user);
     });
-  }, [auth]);
+  }, [store]);
 
   return <AuthContext.Provider value={store}>{children}</AuthContext.Provider>;
 }

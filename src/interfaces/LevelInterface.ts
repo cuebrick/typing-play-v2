@@ -1,5 +1,21 @@
 import {Timestamp} from 'firebase/firestore';
 
+// export enum OrderDirection {
+//   asc = 'asc',
+//   desc = 'desc'
+// }
+
+export type InputTypes = 'letter' | 'word';
+export type OrderDirections = 'asc' | 'desc';
+export type Languages = 'ko' | 'en';
+
+export interface ILevelList {
+  id: string;
+  title: string;
+  order: number;
+  levels: ILevel[];
+}
+
 export interface ILevel {
   categoryId: string;
   categoryTitle: string;
@@ -7,9 +23,9 @@ export interface ILevel {
   subTitle: string;
   description: string;
   text: string;
-  inputType: string;
+  inputType: InputTypes;
   difficulty: string;
-  language: string;
+  language: Languages;
   id: string;
   writerUid: string | null;
   writerEmail: string | null;
@@ -21,24 +37,51 @@ export interface ILevel {
 export interface ILevelListParams {
   categoryId?: string;
   orderBy?: string;
-  orderDirection?: 'asc' | 'desc';
+  orderDirection?: OrderDirections;
 }
 
 export interface IKeyInput {
+  id: string;
   code: string;
   key: string;
   shiftKey: boolean;
   timestamp: Timestamp | null;
 }
 
-export interface IKeyMap {
+export interface IHangulKeyData extends IKeyData {
+  combinable: boolean;
+}
+
+export interface IKeyData {
   code: string;
   key: string;
   han: string;
   shiftKey: boolean;
 }
 
-export interface ILetter {
-  sampleText: string | string[];
-  typingText?: string[] | string[][];
+export interface IBuffer {
+  // id: string;
+  typingText: string | string[];
+}
+
+export interface ILetter extends IBuffer {
+  id: string;
+  sampleText: string[];
+  // typingText?: string[];
+}
+
+export interface IScoreData {
+  accuracy: number;
+  realAccuracy: number;
+  speed: number;
+  duration: number;
+  score: number;
+}
+
+export interface IUserTypingData extends IScoreData {
+  id: string;
+  userId: string | null | undefined;
+  levelId: string;
+  keyInputList: IKeyInput[];
+  createdAt: Timestamp | null;
 }

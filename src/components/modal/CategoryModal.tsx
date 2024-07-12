@@ -1,25 +1,23 @@
 import {observer} from 'mobx-react-lite';
-import Modal from "components/modal/Modal";
-import ModalHeader from "components/modal/ModalHeader";
-import ModalBody from "components/modal/ModalBody";
-import ModalFooter from "components/modal/ModalFooter";
-import {ChangeEvent, useContext, useEffect, useState} from "react";
-import TextForm from "components/forms/TextForm";
-import FormData from "components/forms/FormData";
-import FormRow from "components/forms/FormRow";
-import FormLabel from "components/forms/FormLabel";
+import Modal from 'components/modal/Modal';
+import ModalHeader from 'components/modal/ModalHeader';
+import ModalBody from 'components/modal/ModalBody';
+import ModalFooter from 'components/modal/ModalFooter';
+import {ChangeEvent, useContext, useEffect, useState} from 'react';
+import TextForm from 'components/forms/TextForm';
+import FormData from 'components/forms/FormData';
+import FormRow from 'components/forms/FormRow';
+import FormLabel from 'components/forms/FormLabel';
 import {ICategory} from 'interfaces/CategoryInterface';
-import {LevelContext} from "store/LevelContext";
+import {EditorContext} from 'store/EditorContext';
 
 interface IProps {
   onChangeCategory?(): void;
-
   onClose(): void;
 }
 
 function CategoryModal({onClose}: IProps): JSX.Element {
-
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -42,7 +40,8 @@ function CategoryModal({onClose}: IProps): JSX.Element {
     const {name, value} = e.target as HTMLInputElement;
     setDetail({
       ...detail,
-      [name]: value
+      [name]: name === 'order' ? Number(value) : value
+      // todo: order엔 string 입력 불가하도록 작업 or order에도 numberStepper 사용
     });
   };
 
@@ -72,8 +71,10 @@ function CategoryModal({onClose}: IProps): JSX.Element {
       <ModalBody>
         <div className="category-editor">
           <ul className="category-list">
-            {store.categoryList.map(category => (
-              <li key={category.id} onClick={() => onClickCategory(category)}>{category.title}</li>
+            {store.categoryList.map((category) => (
+              <li key={category.id} onClick={() => onClickCategory(category)}>
+                {category.title}
+              </li>
             ))}
             <li>
               <button onClick={onClickCreate}>생성</button>
@@ -83,9 +84,7 @@ function CategoryModal({onClose}: IProps): JSX.Element {
             <h4>{isEdit ? '카테고리 수정' : '신규 카테고리'}</h4>
             <FormRow>
               <FormLabel>카테고리 ID</FormLabel>
-              <FormData>
-                {isEdit ? detail.id : '자동 생성'}
-              </FormData>
+              <FormData>{isEdit ? detail.id : '자동 생성'}</FormData>
             </FormRow>
             <FormRow>
               <FormLabel>Title</FormLabel>

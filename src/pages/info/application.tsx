@@ -1,6 +1,4 @@
 function ApplicationPage(): JSX.Element {
-  return (
-    <>Application</>
-  )
+  return <>Application</>;
 }
 export default ApplicationPage;

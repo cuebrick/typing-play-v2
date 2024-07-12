@@ -3,7 +3,6 @@ import {ILevel} from 'interfaces/LevelInterface';
 interface IProps {
   data: ILevel;
   isActive: boolean;
-
   onClick?(): void;
 }
 
@@ -17,5 +16,9 @@ function EditorLevelItem({data, isActive, onClick}: IProps): JSX.Element {
     </div>
   );
 }
+
+EditorLevelItem.defaultProps = {
+  onClick: undefined
+};
 
 export default EditorLevelItem;

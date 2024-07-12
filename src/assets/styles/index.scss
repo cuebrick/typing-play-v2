@@ -2,7 +2,7 @@
 // font
 
 // reset
-body {
+body, p {
   margin: 0;
 }
 
@@ -38,6 +38,7 @@ select {
 @import "forms";
 
 @import "modal";
+@import "modaless";
 
 //pages
 @import "card-item";

@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
-import {LevelContext} from 'store/LevelContext';
+import {EditorContext} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {defaultLevelData} from 'dto/Level';
 import EditorLevelItem from 'components/level/EditorLevelItem';
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.Element {
-  const store = useContext(LevelContext);
+  const store = useContext(EditorContext);
   const [selectedLevelData, setSelectedLevelData] = useState<ILevel>({...defaultLevelData});
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
         <h3>{categoryData?.title || '전체 카테고리'}</h3>
       </div>
       <div className="list">
-        {store.levelList.map(level => (
+        {store.levelList.map((level) => (
           <EditorLevelItem
             key={level.id}
             isActive={level.id === selectedLevelData.id}
@@ -50,7 +50,6 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
           />
         ))}
       </div>
-
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import TrophyBadge from "./TrophyBadge";
 import {ILevel} from 'interfaces/LevelInterface';
+import TrophyBadge from './TrophyBadge';
 
 interface IProps {
   levelData: ILevel;
@@ -18,5 +18,9 @@ function LevelItem({levelData, onClick}: IProps): JSX.Element {
     </div>
   );
 }
+
+LevelItem.defaultProps = {
+  onClick: undefined
+};
 
 export default LevelItem;

@@ -1,6 +1,4 @@
 function SettingsPage(): JSX.Element {
-  return (
-    <>Settings</>
-  )
+  return <>Settings</>;
 }
 export default SettingsPage;
