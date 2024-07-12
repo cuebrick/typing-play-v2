@@ -14,12 +14,7 @@ function LevelsIndexPage(): JSX.Element {
 
   return (
     <div className="level-wrap">
-      {levelData &&
-        levelData.map((levelList: ILevelList) => (
-          <LevelList key={levelList.id} levelList={levelList} />
-          // <LevelList key={levelList.id} title={levelList.title} levels={levelList.levels} />
-          // <LevelItem onClick={() => onClickLevelItem(level)} key={level.id} levelData={level} />
-        ))}
+      {levelData && levelData.map((levelList: ILevelList) => <LevelList key={levelList.id} levelList={levelList} />)}
     </div>
   );
 }
