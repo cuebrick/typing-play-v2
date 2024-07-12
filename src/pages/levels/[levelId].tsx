@@ -29,14 +29,16 @@ function LevelsIdPage(): JSX.Element {
     (list: ILetter[]) => {
       if (list.length === 0) return;
       const lastItem = list[list.length - 1];
-      const isEqual = JSON.stringify(lastItem.sampleText) === JSON.stringify(lastItem.typingText);
+      const lastTypingText = level?.inputType === 'word' ? lastItem.typingText : [lastItem.typingText];
 
-      // 완료조건
+      const isEqual = JSON.stringify(lastItem.sampleText) === JSON.stringify(lastTypingText);
+
+      // 완료조건 1. 마지막 글자가 동일. 2. 타이핑이 샘플의 길이를 넘어감.
       if (isEqual && !isFinished) {
         setLetterList(list);
       }
     },
-    [isFinished]
+    [isFinished, level?.inputType]
   );
 
   const clearKeyInputData = () => {
