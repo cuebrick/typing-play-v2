@@ -2,7 +2,7 @@
 import Hangul from 'korean-js/src/hangul';
 import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
-import {IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
+import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import KeyMap, {arrangeKey} from 'modules/KeyMap';
 
 interface IProps {
@@ -10,6 +10,7 @@ interface IProps {
   keyInput: IKeyInput | null;
   onProgress(letterObjectList: ILetter[]): void;
   isFinished: boolean;
+  setNextKey(key: IKeyData): void;
 }
 
 type InputText = {
@@ -78,7 +79,7 @@ function typingReducer(state: (string | string[])[], action: TypingType): (strin
   }
 }
 
-function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Element {
+function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IProps): JSX.Element {
   const [letterList, setLetterList] = useState<{id: string; sampleText: string[]}[]>([]);
   const defaultTypingList: (string | string[])[] = [];
   const [typingList, dispatchTypingList] = useReducer(typingReducer, defaultTypingList);
@@ -150,6 +151,12 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
     if (level?.inputType === 'letter') {
       setLetterIndex(typingList.length);
     } else if (level?.inputType === 'word') {
+      const flatTypingList = typingList.length === 0 ? [] : typingList.reduce((acc, curr) => acc.concat(curr, []));
+      const next = KeyMap.getKeyDataByHangulKey(
+        Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length]
+      );
+      setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
+
       const lastItem = typingList[typingList.length - 1]; // 마지막 글자
       const lastJaso = lastItem ? lastItem[lastItem.length - 1] : undefined;
 
