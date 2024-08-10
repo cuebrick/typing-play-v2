@@ -13,6 +13,10 @@ interface IProps {
   setNextKey(key: IKeyData): void;
 }
 
+type InputRightAltKey = {
+  type: 'INPUT_RIGHT_ALT_KEY';
+  isHangulMode: boolean;
+};
 type InputText = {
   type: 'INPUT_TEXT';
   text: string;
@@ -23,13 +27,18 @@ type InputBackspace = {
   inputType: 'letter' | 'word';
 };
 
-type TypingType = InputText | InputBackspace;
+type TypingType = InputRightAltKey | InputText | InputBackspace;
 
 let isRemoved = false;
 let isWordRemoved = false;
+let isHangulMode = false;
 
 function typingReducer(state: (string | string[])[], action: TypingType): (string | string[])[] {
   switch (action.type) {
+    case 'INPUT_RIGHT_ALT_KEY': {
+      isHangulMode = action.isHangulMode;
+      return state;
+    }
     case 'INPUT_TEXT': {
       // 자소 입력 모드
       if (action.inputType === 'letter') return [...state, action.text];
@@ -116,6 +125,7 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
         } as ILetter;
       });
       setLetterList(list);
+      isHangulMode = level?.language === 'ko'; // 레벨의 언어에 맞게 최초 언어 설정
     }
   }, [level]);
 
@@ -123,10 +133,12 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
     if (!level?.language) return;
     if (isFinished) return;
 
-    const isHangulMode = level?.language === 'ko';
-
     if (keyInput) {
       const text = arrangeKey(keyInput, isHangulMode);
+      if (text === 'HANGUL_MODE') {
+        dispatchTypingList({type: 'INPUT_RIGHT_ALT_KEY', isHangulMode: !isHangulMode});
+        return;
+      }
       if (text === 'BACKSPACE_KEY') {
         dispatchTypingList({type: 'INPUT_BACKSPACE', inputType: level.inputType});
         // onRemoveText();
@@ -164,7 +176,8 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
         // 글자를 지워 자소가 없는 경우엔 바로 리턴
         if (!lastJaso) return typingList.length - 1;
 
-        const isCombinable = KeyMap.getKeyDataByHangulKey(lastJaso).combinable;
+        // 한글일 땐 글자의 조합 가능 여부 판단, 영어는 바로 false
+        const isCombinable = isHangulMode ? KeyMap.getKeyDataByHangulKey(lastJaso).combinable : false;
         return isCombinable ? typingList.length - 1 : typingList.length;
       };
       setLetterIndex(typingList.length > 0 ? calcLetterIndex : 0);
