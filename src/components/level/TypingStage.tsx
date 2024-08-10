@@ -160,13 +160,13 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   }, [letterList, onProgress, typingList]);
 
   useEffect(() => {
+    let next;
     if (level?.inputType === 'letter') {
       setLetterIndex(typingList.length);
+      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[typingList.length]);
     } else if (level?.inputType === 'word') {
       const flatTypingList = typingList.length === 0 ? [] : typingList.reduce((acc, curr) => acc.concat(curr, []));
-      const next = KeyMap.getKeyDataByHangulKey(
-        Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length]
-      );
+      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length]);
       setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
 
       const lastItem = typingList[typingList.length - 1]; // 마지막 글자
@@ -182,6 +182,7 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
       };
       setLetterIndex(typingList.length > 0 ? calcLetterIndex : 0);
     }
+    setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
   }, [level?.inputType, typingList]);
 
   useEffect(() => {
