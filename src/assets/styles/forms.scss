@@ -76,43 +76,6 @@ button {
   }
 }
 
-.switch-form {
-  display: flex;
-  align-items: center;
-  height: 40px;
-
-  > input[type=checkbox] {
-    appearance: none;
-    width: 37px;
-    height: 20px;
-    border-radius: 20px;
-    border: 1px solid #999;
-    background-color: #eee;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.2s;
-
-    &:before {
-      display: block;
-      margin-left: 1px;
-      content: "";
-      width: 16px;
-      height: 16px;
-      border-radius: 16px;
-      background-color: #ffffff;
-      transition: margin 0.5s;
-    }
-
-    &:checked {
-      background-color: #0cf;
-
-      &:before {
-        margin-left: 18px;
-      }
-    }
-  }
-}
-
 .radio-form-group {
   display: flex;
   align-items: center;
