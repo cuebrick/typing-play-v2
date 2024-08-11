@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
+import {IKeyData, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
@@ -18,12 +18,13 @@ function LevelsIdPage(): JSX.Element {
   const authStore = useContext(AuthContext);
   const commonStore = useContext(CommonContext);
 
-  const [keyInputList, keyInput, nextKey, setTypingText, clearAllKeyInputData] = useKeyboardInput();
+  const [keyInputList, keyInput, setTypingText, clearAllKeyInputData] = useKeyboardInput();
   const [letterList, setLetterList] = useState<ILetter[] | null>(null);
   // `while rendering a different component` error 해결 위해 여기에 isFinished 작성
   const [isFinished, setIsFinished] = useState(false);
   const [showChildComponent, setShowChildComponent] = useState(true);
   const [level, setLevel] = useState<ILevel | null>(null);
+  const [nextKey, setNextKey] = useState<IKeyData>({} as IKeyData);
 
   const onProgress = useCallback(
     (list: ILetter[]) => {
@@ -91,7 +92,13 @@ function LevelsIdPage(): JSX.Element {
     <div className="typing-level">
       {showChildComponent && (
         <>
-          <TypingStage keyInput={keyInput} level={level} onProgress={onProgress} isFinished={isFinished} />
+          <TypingStage
+            keyInput={keyInput}
+            level={level}
+            onProgress={onProgress}
+            isFinished={isFinished}
+            setNextKey={setNextKey}
+          />
           <Keyboard keyInput={keyInput} nextKey={nextKey} />
           <ScoreBoard
             levelData={level}

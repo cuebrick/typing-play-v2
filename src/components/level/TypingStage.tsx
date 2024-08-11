@@ -2,7 +2,7 @@
 import Hangul from 'korean-js/src/hangul';
 import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
-import {IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
+import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import KeyMap, {arrangeKey} from 'modules/KeyMap';
 
 interface IProps {
@@ -10,8 +10,13 @@ interface IProps {
   keyInput: IKeyInput | null;
   onProgress(letterObjectList: ILetter[]): void;
   isFinished: boolean;
+  setNextKey(key: IKeyData): void;
 }
 
+type InputRightAltKey = {
+  type: 'INPUT_RIGHT_ALT_KEY';
+  isHangulMode: boolean;
+};
 type InputText = {
   type: 'INPUT_TEXT';
   text: string;
@@ -22,13 +27,18 @@ type InputBackspace = {
   inputType: 'letter' | 'word';
 };
 
-type TypingType = InputText | InputBackspace;
+type TypingType = InputRightAltKey | InputText | InputBackspace;
 
 let isRemoved = false;
 let isWordRemoved = false;
+let isHangulMode = false;
 
 function typingReducer(state: (string | string[])[], action: TypingType): (string | string[])[] {
   switch (action.type) {
+    case 'INPUT_RIGHT_ALT_KEY': {
+      isHangulMode = action.isHangulMode;
+      return state;
+    }
     case 'INPUT_TEXT': {
       // 자소 입력 모드
       if (action.inputType === 'letter') return [...state, action.text];
@@ -78,7 +88,7 @@ function typingReducer(state: (string | string[])[], action: TypingType): (strin
   }
 }
 
-function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Element {
+function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IProps): JSX.Element {
   const [letterList, setLetterList] = useState<{id: string; sampleText: string[]}[]>([]);
   const defaultTypingList: (string | string[])[] = [];
   const [typingList, dispatchTypingList] = useReducer(typingReducer, defaultTypingList);
@@ -115,6 +125,7 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
         } as ILetter;
       });
       setLetterList(list);
+      isHangulMode = level?.language === 'ko'; // 레벨의 언어에 맞게 최초 언어 설정
     }
   }, [level]);
 
@@ -122,10 +133,12 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
     if (!level?.language) return;
     if (isFinished) return;
 
-    const isHangulMode = level?.language === 'ko';
-
     if (keyInput) {
       const text = arrangeKey(keyInput, isHangulMode);
+      if (text === 'HANGUL_MODE') {
+        dispatchTypingList({type: 'INPUT_RIGHT_ALT_KEY', isHangulMode: !isHangulMode});
+        return;
+      }
       if (text === 'BACKSPACE_KEY') {
         dispatchTypingList({type: 'INPUT_BACKSPACE', inputType: level.inputType});
         // onRemoveText();
@@ -147,9 +160,15 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
   }, [letterList, onProgress, typingList]);
 
   useEffect(() => {
+    let next;
     if (level?.inputType === 'letter') {
       setLetterIndex(typingList.length);
+      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[typingList.length]);
     } else if (level?.inputType === 'word') {
+      const flatTypingList = typingList.length === 0 ? [] : typingList.reduce((acc, curr) => acc.concat(curr, []));
+      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length]);
+      setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
+
       const lastItem = typingList[typingList.length - 1]; // 마지막 글자
       const lastJaso = lastItem ? lastItem[lastItem.length - 1] : undefined;
 
@@ -157,11 +176,13 @@ function TypingStage({level, keyInput, onProgress, isFinished}: IProps): JSX.Ele
         // 글자를 지워 자소가 없는 경우엔 바로 리턴
         if (!lastJaso) return typingList.length - 1;
 
-        const isCombinable = KeyMap.getKeyDataByHangulKey(lastJaso).combinable;
+        // 한글일 땐 글자의 조합 가능 여부 판단, 영어는 바로 false
+        const isCombinable = isHangulMode ? KeyMap.getKeyDataByHangulKey(lastJaso).combinable : false;
         return isCombinable ? typingList.length - 1 : typingList.length;
       };
       setLetterIndex(typingList.length > 0 ? calcLetterIndex : 0);
     }
+    setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
   }, [level?.inputType, typingList]);
 
   useEffect(() => {

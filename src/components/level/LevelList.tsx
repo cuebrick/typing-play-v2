@@ -1,6 +1,17 @@
 import {ILevel, ILevelList} from 'interfaces/LevelInterface';
 import {useRouter} from 'next/router';
 import LevelItem from './LevelItem';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+const GroupTitle = styled.p`
+  flex-basis: 100%;
+  margin-left: 10px;
+  margin-top: 10px;
+`;
 
 interface IProps {
   levelList: ILevelList;
@@ -14,12 +25,12 @@ function LevelList({levelList}: IProps): JSX.Element | null {
   };
 
   return (
-    <div className="level-list">
-      <p className="level-title">{levelList.title}</p>
+    <Container>
+      <GroupTitle>{levelList.title}</GroupTitle>
       {levelList.levels.map((level: ILevel) => (
         <LevelItem levelData={level} onClick={() => onClickLevelItem(level)} key={level.id} />
       ))}
-    </div>
+    </Container>
   );
 }
 

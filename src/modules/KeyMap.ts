@@ -302,8 +302,8 @@ export const arrangeKey = (keyInput: IKeyInput, isHangulMode: boolean): string |
     }
     case 'HangulMode': {
       // 한글모드를 변경
-      isHangulMode = !isHangulMode;
-      // text = 'HANGUL_MODE';
+      // isHangulMode = !isHangulMode;
+      text = 'HANGUL_MODE';
       break;
     }
     default: {
