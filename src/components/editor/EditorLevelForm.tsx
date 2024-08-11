@@ -64,11 +64,12 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   };
 
   const onChangeInputType = (e: ChangeEvent): void => {
-    const {checked, name} = e.target as HTMLInputElement;
+    const {checked, name, value} = e.target as HTMLInputElement;
     const merged = {
       ...data,
       [name]: checked ? inputType.word.value : inputType.letter.value
     } as ILevel;
+    console.log('>>> 나오자 2', value);
     setData(merged);
   };
 
@@ -152,9 +153,9 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
               onChange={onChangeInputType}
               name="inputType"
               checkedLabel={inputType.letter.label}
-              checkedValue={inputType.word.value}
+              // checkedValue={inputType.word.value}
               uncheckedLabel={inputType.word.label}
-              uncheckedValue={inputType.letter.value}
+              // uncheckedValue={inputType.letter.value}
               checked={data.inputType === inputType.word.value}
             />
           </FormData>
