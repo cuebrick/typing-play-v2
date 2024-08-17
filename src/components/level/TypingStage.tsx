@@ -160,14 +160,13 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   }, [letterList, onProgress, typingList]);
 
   useEffect(() => {
-    let next;
+    let nextTextData: string;
     if (level?.inputType === 'letter') {
       setLetterIndex(typingList.length);
-      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[typingList.length]);
+      nextTextData = Hangul.disassemble(level?.text)[typingList.length];
     } else if (level?.inputType === 'word') {
       const flatTypingList = typingList.length === 0 ? [] : typingList.reduce((acc, curr) => acc.concat(curr, []));
-      next = KeyMap.getKeyDataByHangulKey(Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length]);
-      setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
+      nextTextData = Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length];
 
       const lastItem = typingList[typingList.length - 1]; // 마지막 글자
       const lastJaso = lastItem ? lastItem[lastItem.length - 1] : undefined;
@@ -182,6 +181,9 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
       };
       setLetterIndex(typingList.length > 0 ? calcLetterIndex : 0);
     }
+    const next = checkKoreanText(nextTextData)
+      ? KeyMap.getKeyDataByHangulKey(nextTextData)
+      : KeyMap.getKeyDataByEnglishKey(nextTextData);
     setNextKey(next || ({} as IKeyData)); // 다음 글자가 없을 때는 빈 객체를 전달
   }, [level?.inputType, typingList]);
 
@@ -192,6 +194,11 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   const getTypingText = (index: number): string[] => {
     const list = typingList?.[index] ? [typingList?.[index]] : [];
     return (level?.inputType === 'word' ? typingList?.[index] : list) as string[];
+  };
+
+  const checkKoreanText = (text: string): boolean => {
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
+    return korean.test(text);
   };
 
   return (
