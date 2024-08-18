@@ -6,6 +6,7 @@ const Container = styled.span`
   align-items: center;
   height: 40px;
 `;
+
 const CheckboxInput = styled.input`
   appearance: none;
   width: 37px;
@@ -29,7 +30,9 @@ const CheckboxInput = styled.input`
   }
 
   &:checked {
-    background-color: #0cf;
+    //background-color: #0cf;
+    // background-color: ${(props) => props.theme.colors.confirm};
+    background-color: ${({theme}) => theme.colors.confirm};
 
     &:before {
       margin-left: 18px;

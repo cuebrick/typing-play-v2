@@ -5,6 +5,8 @@ import logo from 'assets/images/logo.svg';
 import userIcon from 'assets/images/user-icon.svg';
 import {AuthContext} from 'store/AuthContext';
 import Modeless from 'components/modeless/Modeless';
+import {ThemeProvider} from 'styled-components';
+import {defaultTheme} from 'theme/theme';
 
 type Props = {children: ReactNode};
 
@@ -12,7 +14,7 @@ function DefaultLayout({children}: Props): JSX.Element {
   const authStore = useContext(AuthContext);
 
   return (
-    <>
+    <ThemeProvider theme={defaultTheme}>
       <header className="default-layout-header">
         <div className="logo">
           <Image src={logo} alt="Typing Play" />
@@ -25,7 +27,7 @@ function DefaultLayout({children}: Props): JSX.Element {
       </header>
       <div className="contents-body">{children}</div>
       <Modeless />
-    </>
+    </ThemeProvider>
   );
 }
 
