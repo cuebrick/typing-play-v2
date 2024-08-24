@@ -1,5 +1,34 @@
 import clsx from 'clsx';
 import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
+import styled from 'styled-components';
+
+const Container = styled.div``;
+
+const Layout = styled.g`
+  fill: #fff;
+
+  rect {
+    transition: fill 0.15s;
+
+    &.next-key {
+      fill: #dc7cb5;
+    }
+
+    &.pressed-key {
+      fill: #96caff;
+    }
+  }
+`;
+
+const Letter = styled.g`
+  fill: #000;
+  line-height: 16px;
+
+  .small-letter {
+    font-size: 10px;
+    font-weight: bold;
+  }
+`;
 
 interface IProps {
   nextKey: IKeyData;
@@ -440,9 +469,9 @@ function Keyboard({nextKey, keyInput}: IProps): JSX.Element {
   ];
 
   return (
-    <div className="keyboard">
+    <Container>
       <svg width="805" height="280" viewBox="0 0 805 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g className="layout">
+        <Layout>
           <rect width="805" height="280" rx="10" fill="white" />
           {keyCapData.map((item) => (
             <rect
@@ -457,8 +486,8 @@ function Keyboard({nextKey, keyInput}: IProps): JSX.Element {
               stroke="#ACB0B8"
             />
           ))}
-        </g>
-        <g className="letter">
+        </Layout>
+        <Letter className="letter">
           <text transform="matrix(1, 0, 0, 1, 29.04, 23.93)" dx="0" dy="7">
             ~
           </text>
@@ -795,9 +824,9 @@ function Keyboard({nextKey, keyInput}: IProps): JSX.Element {
           <text className="small-letter" transform="matrix(1, 0, 0, 1, 772.48, 247.8)" dx="0" dy="12">
             Ctrl
           </text>
-        </g>
+        </Letter>
       </svg>
-    </div>
+    </Container>
   );
 }
 

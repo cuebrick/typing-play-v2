@@ -16,6 +16,6 @@ export const defaultTheme = {
     size: 16
   },
   layout: {
-    gap: 10
+    item_gap: 10
   }
 };

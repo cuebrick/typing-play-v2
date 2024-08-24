@@ -57,6 +57,7 @@ function DefaultLayout({children}: Props): JSX.Element {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
+      <DefaultLayoutHeader>
         <div className="logo">
           <Image src={logo} alt="Typing Play" />
         </div>
@@ -65,8 +66,8 @@ function DefaultLayout({children}: Props): JSX.Element {
           {authStore.userData?.name}
           <Image src={userIcon} alt="User Icon" />
         </div>
-      </header>
-      <div className="contents-body">{children}</div>
+      </DefaultLayoutHeader>
+      <ContentsBody>{children}</ContentsBody>
       <Modeless />
     </ThemeProvider>
   );
