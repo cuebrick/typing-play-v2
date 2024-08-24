@@ -1,27 +1,6 @@
 @import "variables";
 // font
 
-// reset
-body, p {
-  margin: 0;
-}
-
-div, header {
-  box-sizing: border-box;
-}
-
-// base style
-body {
-  background-color: $APP_THEME_BACKGROUND_COLOR;
-  font-size: $DEFAULT_FONT_SIZE;
-}
-
-input[type=text],
-input[type=password],
-textarea,
-select {
-  font-size: $DEFAULT_FONT_SIZE;
-}
 
 
 // layout
