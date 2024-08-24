@@ -4,6 +4,27 @@ import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
 import KeyMap, {arrangeKey} from 'modules/KeyMap';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  width: 600px;
+  min-height: 130px;
+  font-size: 32px;
+`;
+
+const TextLine = styled.div`
+  width: 540px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 3px;
+  row-gap: 20px;
+`;
 
 interface IProps {
   level: ILevel | null;
@@ -202,8 +223,8 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   };
 
   return (
-    <div className="typing-stage">
-      <div className="text-line">
+    <Container>
+      <TextLine>
         {letterList?.map((letter, index) => (
           <LetterItem
             data={{
@@ -217,8 +238,8 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
             key={letter.id}
           />
         ))}
-      </div>
-    </div>
+      </TextLine>
+    </Container>
   );
 }
 

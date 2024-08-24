@@ -6,6 +6,12 @@ const nextConfig = {
   swcMinify: true,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
+  },
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: {
+      displayName: false
+    }
   }
 };
 

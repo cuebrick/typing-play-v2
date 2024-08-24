@@ -1,12 +1,12 @@
 import {ILevel} from 'interfaces/LevelInterface';
-import TrophyBadge from './TrophyBadge';
 import styled from 'styled-components';
+import TrophyBadge from './TrophyBadge';
 
 const Container = styled.div`
   display: flex;
   width: calc(25% - 20px);
   height: 120px;
-  margin: 10px;
+  margin: ${({theme}) => theme.layout.item_gap}px;
   padding: 10px;
   box-sizing: border-box;
   background-color: #fff;
@@ -14,8 +14,15 @@ const Container = styled.div`
 `;
 const LevelInfo = styled.div``;
 const LevelNum = styled.div``;
-const LevelTitle = styled.div``;
-const LevelSubTitle = styled.div``;
+const LevelTitle = styled.div`
+  flex-basis: 100%;
+  margin-left: ${({theme}) => theme.layout.item_gap}px;
+  margin-top: ${({theme}) => theme.layout.item_gap}px;
+`;
+const LevelSubTitle = styled.div`
+  margin-left: ${({theme}) => theme.layout.item_gap}px;
+  margin-top: ${({theme}) => theme.layout.item_gap}px;
+`;
 
 interface IProps {
   levelData: ILevel;

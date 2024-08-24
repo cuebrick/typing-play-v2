@@ -2,6 +2,71 @@ import {useEffect, useRef, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {ILetter} from 'interfaces/LevelInterface';
 import clsx from 'clsx';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4em;
+
+  &.active .typing {
+    animation-name: currentText;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes currentText {
+    0% {
+      border-color: rgba(220, 124, 181, 1);
+    }
+    50% {
+      border-color: rgba(220, 124, 181, 0);
+    }
+    100% {
+      border-color: rgba(220, 124, 181, 1);
+    }
+  }
+
+  &.correct .token {
+    background-color: #c4f2bd;
+  }
+
+  &.incorrect .token {
+    background-color: #f8a1ab;
+  }
+
+  &.isModify .token {
+    background-color: #ffd47e;
+  }
+`;
+
+const Token = styled.span`
+  color: #666;
+  //min-width: 0.325em;
+  width: 1em;
+  flex-shrink: 1;
+  flex-basis: 1.4em;
+  border-radius: 5px;
+`;
+
+const Typing = styled.span`
+  min-width: 0.325em;
+  flex-shrink: 1;
+  flex-basis: 1.4em;
+  border-bottom: 2px solid transparent;
+`;
+
+/*const TypingLineHighlighter = styled.div`
+  width: 550px;
+  height: 50px;
+  top: 62px;
+  position: absolute;
+  border: 2px solid #dc7cb5;
+  border-radius: 5px;
+  font-size: 32px;
+  line-height: 46px;
+  padding: 3px;
+`;*/
 
 interface IProps {
   data: ILetter;
@@ -50,16 +115,16 @@ function LetterItem({data, active, isModify, itemIndex, currentIndex}: IProps): 
   }, [currentIndex, itemIndex]);
 
   return (
-    <div
+    <Container
       className={clsx('letter-item', {active}, [
         {incorrect: correctTypo === 'incorrect'},
         {isModify: isModify && correctTypo === 'correct'},
         {correct: !isModify && correctTypo === 'correct'}
       ])}
     >
-      <span className="token">{assembledSampleText}</span>
-      <span className="typing">{assembledTypingText}</span>
-    </div>
+      <Token className="token">{assembledSampleText}</Token>
+      <Typing className="typing">{assembledTypingText}</Typing>
+    </Container>
   );
 }
 
