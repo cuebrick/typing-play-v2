@@ -5,6 +5,24 @@ import {ILevel} from 'interfaces/LevelInterface';
 import {defaultLevelData} from 'dto/Level';
 import EditorLevelItem from 'components/level/EditorLevelItem';
 import {ICategory} from 'interfaces/CategoryInterface';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 300px;
+  flex-shrink: 0;
+`;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+  }
+`;
+const LevelList = styled.div``;
 
 interface IProps {
   categoryData: ICategory | null;

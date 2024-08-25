@@ -57,24 +57,6 @@ input, textarea, select {
   }
 }
 
-button {
-  white-space: nowrap;
-
-  &.default {
-    height: 30px;
-    border: none;
-    border-radius: 3px;
-    padding: 0 20px;
-    color: #234771;
-    background-color: #a8c5e6;
-    cursor: pointer;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: inherit;
-  }
-}
 
 .radio-form-group {
   display: flex;
