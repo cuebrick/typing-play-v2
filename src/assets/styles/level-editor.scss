@@ -10,63 +10,6 @@
   column-gap: 20px;
   padding: 20px;
 
-  .editor-category-list {
-    width: 300px;
-    flex-shrink: 0;
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 30px;
-      margin-bottom: 20px;
-
-      h3 {
-        margin: 0;
-      }
-    }
-
-    .editor-category-item {
-      background-color: #fff;
-      border: 1px solid #eee;
-      padding: 10px;
-      cursor: pointer;
-
-      &.active {
-        background-color: #efefef;
-      }
-    }
-  }
-
-  .editor-level-list {
-    width: 300px;
-    flex-shrink: 0;
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 30px;
-      margin-bottom: 20px;
-
-      h3 {
-        margin: 0;
-      }
-    }
-
-    .list {
-      .editor-level-item {
-        background-color: #fff;
-        border: 1px solid #eee;
-        padding: 10px;
-        cursor: pointer;
-
-        &.active {
-          background-color: #efefef;
-        }
-      }
-    }
-  }
 
   .editor-level-form {
     flex-grow: 1;
