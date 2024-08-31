@@ -10,6 +10,24 @@ import FormRow from 'components/forms/FormRow';
 import FormLabel from 'components/forms/FormLabel';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {EditorContext} from 'store/EditorContext';
+import styled from 'styled-components';
+
+const CategoryEditor = styled.div`
+  display: flex;
+`;
+const CategoryList = styled.ul`
+  width: 200px;
+  flex-shrink: 0;
+
+  > li {
+    min-height: 40px;
+
+    &:hover {
+      background-color: rgba(0, 100, 256, 0.1);
+    }
+  }
+`;
+const CategoryDetail = styled.div``;
 
 interface IProps {
   onChangeCategory?(): void;
@@ -69,8 +87,8 @@ function CategoryModal({onClose}: IProps): JSX.Element {
     <Modal>
       <ModalHeader onClose={onClickClose}>레벨 카테고리</ModalHeader>
       <ModalBody>
-        <div className="category-editor">
-          <ul className="category-list">
+        <CategoryEditor>
+          <CategoryList>
             {store.categoryList.map((category) => (
               <li key={category.id} onClick={() => onClickCategory(category)}>
                 {category.title}
@@ -79,8 +97,8 @@ function CategoryModal({onClose}: IProps): JSX.Element {
             <li>
               <button onClick={onClickCreate}>생성</button>
             </li>
-          </ul>
-          <div className="category-detail">
+          </CategoryList>
+          <CategoryDetail>
             <h4>{isEdit ? '카테고리 수정' : '신규 카테고리'}</h4>
             <FormRow>
               <FormLabel>카테고리 ID</FormLabel>
@@ -102,8 +120,8 @@ function CategoryModal({onClose}: IProps): JSX.Element {
               {isEdit && <button onClick={onClickDelete}>삭제</button>}
               <button onClick={onClickSave}>{isEdit ? '저장' : '등록'}</button>
             </FormRow>
-          </div>
-        </div>
+          </CategoryDetail>
+        </CategoryEditor>
       </ModalBody>
       <ModalFooter>
         <button onClick={onClickClose}>닫기</button>
