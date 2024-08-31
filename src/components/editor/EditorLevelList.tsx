@@ -54,10 +54,10 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
   };
 
   return (
-    <div className="editor-level-list">
-      <div className="header">
+    <Container>
+      <Header>
         <h3>{categoryData?.title || '전체 카테고리'}</h3>
-      </div>
+      </Header>
       <div className="list">
         {store.levelList.map((level) => (
           <EditorLevelItem
@@ -68,7 +68,7 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
           />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 

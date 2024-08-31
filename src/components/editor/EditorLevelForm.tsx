@@ -15,6 +15,31 @@ import {ILevel} from 'interfaces/LevelInterface';
 import {EditorContext} from 'store/EditorContext';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {ILanguage} from 'interfaces/LanguageInterface';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  flex-grow: 1;
+`;
+const LevelFormHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+  }
+`;
+const ButtonGroup = styled.div`
+  height: 30px;
+  display: flex;
+  column-gap: 2px;
+`;
+const DetailForm = styled.div`
+  background-color: #fff;
+  padding: 20px;
+`;
 
 interface IProps {
   levelData: ILevel;
@@ -89,10 +114,10 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
   };
 
   return (
-    <div className="editor-level-form">
-      <div className="header">
+    <Container>
+      <LevelFormHeader>
         <h3>{levelData.title || '이름 없는 레벨'}</h3>
-        <div className="button-group">
+        <ButtonGroup>
           <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>
             저장
           </button>
@@ -102,9 +127,9 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           <button className="default" disabled={levelData.id === ''} onClick={() => onCreate(false)}>
             현재 데이터를 이용해 새 레벨
           </button>
-        </div>
-      </div>
-      <div className="detail-form">
+        </ButtonGroup>
+      </LevelFormHeader>
+      <DetailForm className="detail-form">
         <FormRow>
           <FormLabel htmlFor="categoryId">카테고리</FormLabel>
           <FormData>
@@ -184,8 +209,8 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         {/* <pre>{JSON.stringify(data, null, '\t')}</pre> */}
-      </div>
-    </div>
+      </DetailForm>
+    </Container>
   );
 }
 
