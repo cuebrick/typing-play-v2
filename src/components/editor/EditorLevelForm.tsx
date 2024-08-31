@@ -16,6 +16,7 @@ import {EditorContext} from 'store/EditorContext';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {ILanguage} from 'interfaces/LanguageInterface';
 import styled from 'styled-components';
+import Button from 'components/forms/Button';
 
 const Container = styled.div`
   flex-grow: 1;
@@ -118,15 +119,13 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
       <LevelFormHeader>
         <h3>{levelData.title || '이름 없는 레벨'}</h3>
         <ButtonGroup>
-          <button className="default" onClick={onClickSave} disabled={isDisableToSave()}>
+          <Button onClick={onClickSave} disabled={isDisableToSave()}>
             저장
-          </button>
-          <button className="default" onClick={() => onCreate(true)}>
-            +
-          </button>
-          <button className="default" disabled={levelData.id === ''} onClick={() => onCreate(false)}>
+          </Button>
+          <Button onClick={() => onCreate(true)}>+</Button>
+          <Button disabled={levelData.id === ''} onClick={() => onCreate(false)}>
             현재 데이터를 이용해 새 레벨
-          </button>
+          </Button>
         </ButtonGroup>
       </LevelFormHeader>
       <DetailForm className="detail-form">
