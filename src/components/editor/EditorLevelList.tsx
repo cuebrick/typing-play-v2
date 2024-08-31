@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite';
 import {EditorContext} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {defaultLevelData} from 'dto/Level';
-import EditorLevelItem from 'components/level/EditorLevelItem';
+import EditorLevelItem from 'components/editor/EditorLevelItem';
 import {ICategory} from 'interfaces/CategoryInterface';
 import styled from 'styled-components';
 
