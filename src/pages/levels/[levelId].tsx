@@ -10,6 +10,13 @@ import {defaultUserTypingData} from 'dto/Level';
 import {AuthContext} from 'store/AuthContext';
 import {CommonContext} from 'store/CommonContext';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
+import styled from 'styled-components';
+
+const TypingLevel = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
 
 function LevelsIdPage(): JSX.Element {
   const router = useRouter();
@@ -89,7 +96,7 @@ function LevelsIdPage(): JSX.Element {
   };
 
   return (
-    <div className="typing-level">
+    <TypingLevel>
       {showChildComponent && (
         <>
           <TypingStage
@@ -111,7 +118,7 @@ function LevelsIdPage(): JSX.Element {
           />
         </>
       )}
-    </div>
+    </TypingLevel>
   );
 }
 
