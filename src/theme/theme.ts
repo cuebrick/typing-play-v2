@@ -2,7 +2,9 @@ export const defaultTheme = {
   presets: {
     light: {
       text: '#333',
-      background: '#DDD'
+      background: '#DDD',
+      buttonBackground: '#eff7fd',
+      buttonText: '#bdd7df'
     },
     dark: {
       text: '#DDD',

@@ -58,7 +58,7 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
         ))}
       </Categories>
       {isShowCategoryModal && <CategoryModal onClose={() => setIsShowCategoryModal(false)} />}
-    </div>
+    </Container>
   );
 }
 

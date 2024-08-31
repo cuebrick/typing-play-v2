@@ -2,6 +2,12 @@ import {useRouter} from 'next/router';
 import {useContext} from 'react';
 import {observer} from 'mobx-react-lite';
 import {EditorContext} from 'store/EditorContext';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 700px;
+  height: 500px;
+`;
 
 function WelcomeCardItem(): JSX.Element {
   const levelStore = useContext(EditorContext);
@@ -16,11 +22,11 @@ function WelcomeCardItem(): JSX.Element {
   };
 
   return (
-    <div className="welcome-card-item">
+    <Container>
       타플은 한글 타자 연습을 위한 프로그램 입니다.
       <button onClick={onClickLevelList}>목록에서 시작</button>
       <button onClick={onClickStart}>{levelStore.userData?.levelId ? '이어서 시작' : '처음 시작'}</button>
-    </div>
+    </Container>
   );
 }
 

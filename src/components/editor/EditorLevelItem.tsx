@@ -25,12 +25,12 @@ interface IProps {
 
 function EditorLevelItem({data, isActive, onClick}: IProps): JSX.Element {
   return (
-    <div className={`editor-level-item ${isActive ? 'active' : ''}`} onClick={onClick}>
-      <div className="info">
-        <div className="title">{data.title}</div>
-        <div className="subtitle">{data.subTitle}</div>
-      </div>
-    </div>
+    <Container className={isActive ? 'active' : ''} onClick={onClick}>
+      <Info>
+        <Title>{data.title}</Title>
+        <SubTitle>{data.subTitle}</SubTitle>
+      </Info>
+    </Container>
   );
 }
 

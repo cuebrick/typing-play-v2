@@ -10,6 +10,13 @@ import EditorLevelList from 'components/editor/EditorLevelList';
 import EditorCategoryList from 'components/editor/EditorCategoryList';
 import {ICategory} from 'interfaces/CategoryInterface';
 import {CommonContext} from 'store/CommonContext';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  column-gap: 20px;
+  padding: 20px;
+`;
 
 function EditorIndexPage(): JSX.Element {
   const authStore = useContext(AuthContext);
@@ -60,11 +67,11 @@ function EditorIndexPage(): JSX.Element {
   };
 
   return (
-    <div className="editor-index-page">
+    <Container>
       <EditorCategoryList onSelect={onSelectCategory} />
       <EditorLevelList onSelect={onSelectLevel} categoryData={selectedCategory} selectedLevel={selectedLevel} />
       <EditorLevelForm levelData={selectedLevel} onSave={onSaveDetail} onCreate={onCreateLevel} />
-    </div>
+    </Container>
   );
 }
 

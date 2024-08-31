@@ -3,7 +3,7 @@ import {observer} from 'mobx-react-lite';
 import {EditorContext} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {defaultLevelData} from 'dto/Level';
-import EditorLevelItem from 'components/level/EditorLevelItem';
+import EditorLevelItem from 'components/editor/EditorLevelItem';
 import {ICategory} from 'interfaces/CategoryInterface';
 import styled from 'styled-components';
 
@@ -54,10 +54,10 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
   };
 
   return (
-    <div className="editor-level-list">
-      <div className="header">
+    <Container>
+      <Header>
         <h3>{categoryData?.title || '전체 카테고리'}</h3>
-      </div>
+      </Header>
       <div className="list">
         {store.levelList.map((level) => (
           <EditorLevelItem
@@ -68,7 +68,7 @@ function EditorLevelList({categoryData, selectedLevel, onSelect}: IProps): JSX.E
           />
         ))}
       </div>
-    </div>
+    </Container>
   );
 }
 
