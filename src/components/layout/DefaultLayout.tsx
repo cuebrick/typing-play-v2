@@ -9,27 +9,32 @@ import styled, {createGlobalStyle, ThemeProvider} from 'styled-components';
 import {defaultTheme} from 'theme/theme';
 
 const GlobalStyle = createGlobalStyle`
-// reset
-body, p {
-  margin: 0;
-}
+  // reset
+  body, p {
+      margin: 0;
+  }
 
-div, header {
-  box-sizing: border-box;
-}
+  div, header {
+      box-sizing: border-box;
+  }
 
-// base style
-body {
-  background-color: ${({theme}) => theme.presets.light.background};
-  font-size: ${({theme}) => theme.fonts.size};
-}
+  // base style
+  body {
+      background-color: ${({theme}) => theme.presets.light.background};
+      font-size: ${({theme}) => theme.fonts.size}px;
+  }
 
-input[type=text],
-input[type=password],
-textarea,
-select {
-  font-size: ${({theme}) => theme.fonts.size};
-}`;
+  input[type=text],
+  input[type=password],
+  textarea,
+  select {
+      font-size: ${({theme}) => theme.fonts.size}px;
+  }
+
+  input, textarea, select {
+      outline: none;
+  }
+`;
 
 const DefaultLayoutHeader = styled.header`
   width: 100%;
