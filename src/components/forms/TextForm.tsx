@@ -67,7 +67,7 @@ function TextForm({type = 'text', id, name, value, placeholder, required, disabl
 
 TextForm.defaultProps = {
   type: 'text',
-  placeholder: "입력",
+  placeholder: '입력',
   required: false,
   disabled: false
 };
