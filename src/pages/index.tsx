@@ -1,4 +1,3 @@
-// import styles from 'assets/styles/index-page.module.scss'
 import CardItem from 'components/CardItem';
 import WelcomeCardItem from 'components/pages/WelcomeCardItem';
 import LoginCardItem from 'components/pages/LoginCardItem';

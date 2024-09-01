@@ -6,7 +6,7 @@ import {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from '@firebase/auth';
 import {auth} from 'database';
 import Link from 'next/link';
-import {LevelContext} from '../../store/LevelContext';
+import {LevelContext} from 'store/LevelContext';
 
 function LoginCardItem(): JSX.Element {
   const [email, setEmail] = useState('');

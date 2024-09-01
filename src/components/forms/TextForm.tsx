@@ -42,7 +42,7 @@ function TextForm({type = 'text', id, name, value, placeholder, required, disabl
   if (type === 'textarea') {
     return (
       <TextareaContainer
-        id={name}
+        id={id}
         name={name}
         value={value}
         placeholder={placeholder}

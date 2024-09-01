@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router';
 import {useContext} from 'react';
 import {observer} from 'mobx-react-lite';
-import {EditorContext} from 'store/EditorContext';
+import {AuthContext} from 'store/AuthContext';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 function WelcomeCardItem(): JSX.Element {
-  const levelStore = useContext(EditorContext);
+  const authStore = useContext(AuthContext);
   const router = useRouter();
 
   const onClickLevelList = (): void => {

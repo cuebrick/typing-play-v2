@@ -6,7 +6,7 @@ import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
 import {IKeyData, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
 import ScoreBoard from 'components/level/ScoreBoard';
-import {defaultUserTypingData} from 'dto/Level';
+import {defaultUserTypingData} from 'default-objects/Level';
 import {AuthContext} from 'store/AuthContext';
 import {CommonContext} from 'store/CommonContext';
 import {LevelContext, LevelProvider} from 'store/LevelContext';

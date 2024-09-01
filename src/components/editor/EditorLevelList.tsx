@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {EditorContext} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
-import {defaultLevelData} from 'dto/Level';
+import {defaultLevelData} from 'default-objects/Level';
 import EditorLevelItem from 'components/editor/EditorLevelItem';
 import {ICategory} from 'interfaces/CategoryInterface';
 import styled from 'styled-components';

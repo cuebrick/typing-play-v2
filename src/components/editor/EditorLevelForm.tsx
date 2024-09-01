@@ -9,7 +9,7 @@ import {
   SwitchForm,
   TextForm
 } from 'components/forms';
-import {inputType, languageOptions} from 'constants/Constants';
+import {inputType, languageOptions} from 'constants/constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {ILevel} from 'interfaces/LevelInterface';
 import {EditorContext} from 'store/EditorContext';
@@ -128,7 +128,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </Button>
         </ButtonGroup>
       </LevelFormHeader>
-      <DetailForm className="detail-form">
+      <DetailForm>
         <FormRow>
           <FormLabel htmlFor="categoryId">카테고리</FormLabel>
           <FormData>
@@ -144,34 +144,32 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="title" required>
-            제목
-          </FormLabel>
+          <FormLabel required>제목</FormLabel>
           <FormData>
             <TextForm name="title" value={data.title} placeholder="제목" onChange={onChange} />
             {data.id}
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="subTitle">부제목</FormLabel>
+          <FormLabel>부제목</FormLabel>
           <FormData>
             <TextForm name="subTitle" value={data.subTitle} placeholder="부제목" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="description">설명</FormLabel>
+          <FormLabel>설명</FormLabel>
           <FormData>
             <TextForm name="description" value={data.description} placeholder="설명" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="text">타자 데이터</FormLabel>
+          <FormLabel>타자 데이터</FormLabel>
           <FormData>
             <TextForm type="textarea" name="text" value={data.text} placeholder="타자 데이터" onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="inputType">유형</FormLabel>
+          <FormLabel>유형</FormLabel>
           <FormData>
             <SwitchForm
               onChange={onChangeInputType}
@@ -185,13 +183,13 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="difficulty">난이도</FormLabel>
+          <FormLabel>난이도</FormLabel>
           <FormData>
             <InputRangeForm name="difficulty" value={data.difficulty} onChange={onChange} />
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="language">언어</FormLabel>
+          <FormLabel>언어</FormLabel>
           <FormData>
             <RadioFormGroup<ILanguage>
               name="language"
@@ -202,7 +200,7 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           </FormData>
         </FormRow>
         <FormRow>
-          <FormLabel htmlFor="order">order</FormLabel>
+          <FormLabel>order</FormLabel>
           <FormData>
             <NumberStepper name="order" value={data.order} invalidated={isInvalidatedOrder()} onStep={onChangeOrder} />
           </FormData>

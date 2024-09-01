@@ -5,7 +5,7 @@ import {EditorContext, EditorProvider} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
 import {AuthContext, AuthProvider} from 'store/AuthContext';
 import EditorLevelForm from 'components/editor/EditorLevelForm';
-import {defaultLevelData} from 'dto/Level';
+import {defaultLevelData} from 'default-objects/Level';
 import EditorLevelList from 'components/editor/EditorLevelList';
 import EditorCategoryList from 'components/editor/EditorCategoryList';
 import {ICategory} from 'interfaces/CategoryInterface';
