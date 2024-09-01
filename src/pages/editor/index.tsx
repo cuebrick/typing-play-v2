@@ -3,7 +3,7 @@ import {useRouter} from 'next/router';
 import {observer} from 'mobx-react-lite';
 import {EditorContext, EditorProvider} from 'store/EditorContext';
 import {ILevel} from 'interfaces/LevelInterface';
-import {AuthContext} from 'store/AuthContext';
+import {AuthContext, AuthProvider} from 'store/AuthContext';
 import EditorLevelForm from 'components/editor/EditorLevelForm';
 import {defaultLevelData} from 'dto/Level';
 import EditorLevelList from 'components/editor/EditorLevelList';
@@ -76,7 +76,11 @@ function EditorIndexPage(): JSX.Element {
 }
 
 EditorIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <EditorProvider>{page}</EditorProvider>;
+  return (
+    <AuthProvider>
+      <EditorProvider>{page}</EditorProvider>
+    </AuthProvider>
+  );
 };
 
 export default observer(EditorIndexPage);
