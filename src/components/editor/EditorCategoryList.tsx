@@ -1,6 +1,6 @@
 import {ICategory} from 'interfaces/CategoryInterface';
 import CategoryModal from 'components/modal/CategoryModal';
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useState} from 'react';
 import {EditorContext} from 'store/EditorContext';
 import EditorCategoryItem from 'components/editor/EditorCategoryItem';
 import styled from 'styled-components';
@@ -31,10 +31,6 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
   const store = useContext(EditorContext);
   const [selected, setSelected] = useState<ICategory | null>(null);
   const [isShowCategoryModal, setIsShowCategoryModal] = useState(false);
-
-  useEffect(() => {
-    store.getCategoryList();
-  }, [store]);
 
   const onClickCategory = (categoryData: ICategory): void => {
     onSelect(categoryData);
