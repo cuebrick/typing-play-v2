@@ -5,7 +5,7 @@ import {auth, db} from 'database';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {IUserData} from 'interfaces/UserInterface';
 import {Context, createContext, PropsWithChildren, useEffect} from 'react';
-import {defaultUserData} from 'dto/User';
+import {defaultUserData} from 'default-objects/User';
 
 export interface IAuthContext {
   user: User | null; // firebase/auth user

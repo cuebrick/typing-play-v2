@@ -25,7 +25,7 @@ interface IProps {
 
 function EditorLevelItem({data, isActive, onClick}: IProps): JSX.Element {
   return (
-    <Container className={isActive ? 'active' : ''} onClick={onClick}>
+    <Container className={clsx({active: isActive})} onClick={onClick}>
       <Info>
         <Title>{data.title}</Title>
         <SubTitle>{data.subTitle}</SubTitle>
@@ -33,9 +33,5 @@ function EditorLevelItem({data, isActive, onClick}: IProps): JSX.Element {
     </Container>
   );
 }
-
-EditorLevelItem.defaultProps = {
-  onClick: undefined
-};
 
 export default EditorLevelItem;

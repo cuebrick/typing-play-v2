@@ -2,8 +2,6 @@ import {ReactElement} from 'react';
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 
-import 'assets/styles/index.scss';
-
 import DefaultLayout from 'components/layout/DefaultLayout';
 import {AuthProvider} from 'store/AuthContext';
 import {CommonProvider} from 'store/CommonContext';

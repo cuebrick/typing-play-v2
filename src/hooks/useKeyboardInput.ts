@@ -20,7 +20,7 @@ function useKeyboardInput(): [IKeyInput[], IKeyInput | null, (text: string) => v
 
         const list = [...keyInputList, obj];
         setKeyInputList(list);
-        console.log(id, code, key, '\nKEY', obj, '\nNEXT', next, '\nLIST', list);
+        console.log(id, code, key, '\nKEY', obj, '\nLIST', list);
       }
     },
     [keyInputList, typingText]

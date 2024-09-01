@@ -31,8 +31,4 @@ function ModalHeader({children, onClose}: IProps): JSX.Element {
   );
 }
 
-ModalHeader.defaultProps = {
-  // title: '알림'
-};
-
 export default ModalHeader;
