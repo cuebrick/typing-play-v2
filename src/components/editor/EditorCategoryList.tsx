@@ -5,6 +5,7 @@ import {EditorContext} from 'store/EditorContext';
 import EditorCategoryItem from 'components/editor/EditorCategoryItem';
 import styled from 'styled-components';
 import Button from 'components/forms/Button';
+import {observer} from 'mobx-react-lite';
 
 const Container = styled.div`
   width: 300px;
@@ -58,4 +59,4 @@ function EditorCategoryList({onSelect}: IProps): JSX.Element {
   );
 }
 
-export default EditorCategoryList;
+export default observer(EditorCategoryList);
