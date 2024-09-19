@@ -25,7 +25,7 @@ function WelcomeCardItem(): JSX.Element {
     <Container>
       타플은 한글 타자 연습을 위한 프로그램 입니다.
       <button onClick={onClickLevelList}>목록에서 시작</button>
-      <button onClick={onClickStart}>{levelStore.userData?.levelId ? '이어서 시작' : '처음 시작'}</button>
+      <button onClick={onClickStart}>{authStore.userData?.levelId ? '이어서 시작' : '처음 시작'}</button>
     </Container>
   );
 }
