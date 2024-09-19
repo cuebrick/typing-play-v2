@@ -118,7 +118,7 @@ const defaultState: ILevelContext = {
       const docRef = await doc(collection(db, 'userTypingData'));
       userTypingData.createdAt = Timestamp.now();
       userTypingData.id = docRef.id;
-      // await setDoc(docRef, userTypingData);
+      // await setDoc(docRef, userTypingData);  // todo: 기능 개발 후 주석 해제
       return docRef;
     } catch (error) {
       console.error('failed save userTypingData');
