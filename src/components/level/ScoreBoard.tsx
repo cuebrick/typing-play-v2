@@ -39,9 +39,13 @@ function ScoreBoard({
     }, []);
 
     // 타자 시간 계산 부분
-    const typingDuration =
-      (keyInputList[keyInputList.length - 1].timestamp?.seconds as number) -
-      (keyInputList[0].timestamp?.seconds as number);
+    // 총 나노초 공식 : totalNanoseconds = seconds * 10^9 + nanoseconds
+    const startTime =
+      (keyInputList[0].timestamp?.seconds as number) * 10 ** 9 + (keyInputList[0].timestamp?.nanoseconds as number);
+    const lastTime =
+      (keyInputList[keyInputList.length - 1].timestamp?.seconds as number) * 10 ** 9 +
+      (keyInputList[keyInputList.length - 1].timestamp?.nanoseconds as number);
+    const typingDuration = (lastTime - startTime) / 10 ** 9;
 
     // 오타율 계산 부분
     // 자소 기준 오타율 계산
@@ -71,7 +75,7 @@ function ScoreBoard({
       accuracy: typingAccuracy,
       realAccuracy: 0,
       speed: typingSpeed,
-      duration: typingDuration,
+      duration: Math.floor(typingDuration),
       score: 0
     };
     setScoreData(data);
