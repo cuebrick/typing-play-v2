@@ -72,7 +72,6 @@ export interface ILetter extends IBuffer {
 
 export interface IScoreData {
   accuracy: number;
-  realAccuracy: number;
   speed: number;
   duration: number;
   score: number;

@@ -73,7 +73,6 @@ function ScoreBoard({
     const typingSpeed = Math.floor(((typingList.length * 60) / typingDuration) * (typingAccuracy / 100));
     const data = {
       accuracy: typingAccuracy,
-      realAccuracy: 0,
       speed: typingSpeed,
       duration: Math.floor(typingDuration),
       score: 0
@@ -124,7 +123,6 @@ function ScoreBoard({
     <div>
       <span>Scoreboard is here!</span>
       <span>정확도 : {scoreData.accuracy}</span>
-      <span>실제 정확도 : {scoreData.realAccuracy}</span>
       <span>타수 : {scoreData.speed}</span>
       <span>진행시간 : {scoreData.duration}</span>
       <span>점수 : {scoreData.score}</span>
