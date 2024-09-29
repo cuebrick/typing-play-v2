@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
-import {IKeyInput} from 'interfaces/LevelInterface';
+import {IKeyInput} from 'interfaces/level-interface';
 import {Timestamp} from 'firebase/firestore';
-import {checkTypingKey} from 'modules/KeyInputFilter';
+import {checkTypingKey} from 'modules/key-input-filter';
 import Hangul from 'korean-js/src/hangul';
 
 function useKeyboardInput(): [IKeyInput[], IKeyInput | null, (text: string) => void, () => void] {

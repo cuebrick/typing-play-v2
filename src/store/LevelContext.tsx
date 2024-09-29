@@ -3,9 +3,9 @@ import {useLocalObservable} from 'mobx-react-lite';
 import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, Timestamp, where} from 'firebase/firestore';
 import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
-import {IAppInfo} from '../interfaces/AppInfo';
-import {ILevel, ILevelList, ILevelListParams, IUserTypingData} from '../interfaces/LevelInterface';
-import {ICategory} from '../interfaces/CategoryInterface';
+import {IAppInfo} from '../interfaces/app-info';
+import {ILevel, ILevelList, ILevelListParams, IUserTypingData} from '../interfaces/level-interface';
+import {ICategory} from '../interfaces/category-interface';
 import {AuthContext} from './AuthContext';
 
 export interface ILevelContext {

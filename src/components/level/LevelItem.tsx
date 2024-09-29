@@ -1,4 +1,4 @@
-import {ILevel} from 'interfaces/LevelInterface';
+import {ILevel} from 'interfaces/level-interface';
 import styled from 'styled-components';
 import TrophyBadge from './TrophyBadge';
 

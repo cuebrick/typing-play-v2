@@ -1,4 +1,4 @@
-import {IKeyInput, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
+import {IKeyInput, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/level-interface';
 import {useCallback, useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {useRouter} from 'next/router';

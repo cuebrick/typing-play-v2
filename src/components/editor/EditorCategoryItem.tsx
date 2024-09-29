@@ -1,4 +1,4 @@
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ICategory} from 'interfaces/category-interface';
 import clsx from 'clsx';
 import styled from 'styled-components';
 

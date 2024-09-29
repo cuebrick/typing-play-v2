@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
+import {IKeyInput, IKeyData} from 'interfaces/level-interface';
 import styled from 'styled-components';
 
 const Container = styled.div``;

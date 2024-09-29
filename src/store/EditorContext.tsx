@@ -2,8 +2,8 @@ import {Context, createContext, PropsWithChildren} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {runInAction} from 'mobx';
 import {db, auth} from 'database';
-import {ILevel, ILevelListParams, IUserTypingData} from 'interfaces/LevelInterface';
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ILevel, ILevelListParams, IUserTypingData} from 'interfaces/level-interface';
+import {ICategory} from 'interfaces/category-interface';
 import {
   DocumentReference,
   QuerySnapshot,

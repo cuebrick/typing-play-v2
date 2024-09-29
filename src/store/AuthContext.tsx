@@ -3,7 +3,7 @@ import {useLocalObservable} from 'mobx-react-lite';
 import {User} from '@firebase/auth';
 import {auth, db} from 'database';
 import {doc, getDoc, setDoc} from 'firebase/firestore';
-import {IUserData} from 'interfaces/UserInterface';
+import {IUserData} from 'interfaces/user-interface';
 import {Context, createContext, PropsWithChildren, useEffect} from 'react';
 import {defaultUserData} from 'default-objects/User';
 

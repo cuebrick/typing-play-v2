@@ -2,8 +2,8 @@
 import Hangul from 'korean-js/src/hangul';
 import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
-import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/LevelInterface';
-import KeyMap, {arrangeKey} from 'modules/KeyMap';
+import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/level-interface';
+import KeyMap, {arrangeKey} from 'modules/key-map';
 import styled from 'styled-components';
 
 const Container = styled.div`

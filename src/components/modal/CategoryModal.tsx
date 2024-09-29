@@ -8,7 +8,7 @@ import TextForm from 'components/forms/TextForm';
 import FormData from 'components/forms/FormData';
 import FormRow from 'components/forms/FormRow';
 import FormLabel from 'components/forms/FormLabel';
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ICategory} from 'interfaces/category-interface';
 import {EditorContext} from 'store/EditorContext';
 import styled from 'styled-components';
 

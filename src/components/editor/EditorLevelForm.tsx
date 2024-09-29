@@ -11,10 +11,10 @@ import {
 } from 'components/forms';
 import {inputType, languageOptions} from 'constants/constants';
 import {ChangeEvent, useContext, useEffect, useState} from 'react';
-import {ILevel} from 'interfaces/LevelInterface';
+import {ILevel} from 'interfaces/level-interface';
+import {ICategory} from 'interfaces/category-interface';
+import {ILanguage} from 'interfaces/language-interface';
 import {EditorContext} from 'store/EditorContext';
-import {ICategory} from 'interfaces/CategoryInterface';
-import {ILanguage} from 'interfaces/LanguageInterface';
 import styled from 'styled-components';
 import Button from 'components/forms/Button';
 

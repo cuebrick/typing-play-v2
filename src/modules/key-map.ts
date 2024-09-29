@@ -1,4 +1,4 @@
-import {IKeyInput, IKeyData, IHangulKeyData} from 'interfaces/LevelInterface';
+import {IKeyInput, IKeyData, IHangulKeyData} from 'interfaces/level-interface';
 
 const mapData: {[key: string]: string} = {
   q: 'ㅂ',
