@@ -25,13 +25,13 @@ export const defaultUserTypingData: IUserTypingData = {
   keyInputList: [],
   createdAt: null,
   accuracy: -1,
-  realAccuracy: -1,
+  // realAccuracy: -1,
   speed: -1,
   duration: -1,
   score: -1
 };
 
-export const defaultBuffer: IBuffer = {
+/*export const defaultBuffer: IBuffer = {
   typingText: [],
   isModify: false
-};
+};*/
