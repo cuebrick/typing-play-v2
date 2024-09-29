@@ -67,7 +67,7 @@ function typingReducer(state: (string | string[])[], action: TypingType): (strin
       // 단어 입력 모드 - 지우기 한 직후  // '가나'에서 두 번 지워 '가'를 만든 뒤 'ㄴ' 입력 시 '간'으로 나옴
       if (isRemoved) {
         const list = [...state];
-        const lastItem: string[] = list[list.length - 1];
+        const lastItem: string[] = list[list.length - 1] as string[];
         lastItem.push(action.text);
         isRemoved = false;
         isWordRemoved = false;
@@ -181,13 +181,13 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   }, [letterList, onProgress, typingList]);
 
   useEffect(() => {
-    let nextTextData: string;
+    let nextTextData: string = '';
     if (level?.inputType === 'letter') {
       setLetterIndex(typingList.length);
-      nextTextData = Hangul.disassemble(level?.text)[typingList.length];
+      nextTextData = Hangul.disassemble(level?.text)[typingList.length] as string;
     } else if (level?.inputType === 'word') {
       const flatTypingList = typingList.length === 0 ? [] : typingList.reduce((acc, curr) => acc.concat(curr, []));
-      nextTextData = Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList).length];
+      nextTextData = Hangul.disassemble(level?.text)[Hangul.disassemble(flatTypingList as string).length] as string;
 
       const lastItem = typingList[typingList.length - 1]; // 마지막 글자
       const lastJaso = lastItem ? lastItem[lastItem.length - 1] : undefined;

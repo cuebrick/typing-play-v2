@@ -1,4 +1,24 @@
-export const defaultTheme = {
+interface ITheme {
+  presets: {
+    light: {
+      [key: string]: string | number;
+    };
+    dark: {
+      [key: string]: string | number;
+    };
+  };
+  colors: {
+    [key: string]: string | number;
+  };
+  fonts: {
+    [key: string]: string | number;
+  };
+  layout: {
+    [key: string]: string | number;
+  };
+}
+
+export const defaultTheme: ITheme = {
   presets: {
     light: {
       text: '#333',
