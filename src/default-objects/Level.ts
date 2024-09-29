@@ -1,4 +1,4 @@
-import {IBuffer, ILevel, IUserTypingData} from 'interfaces/LevelInterface';
+import {IBuffer, ILevel, IUserTypingData} from 'interfaces/level-interface';
 
 export const defaultLevelData: ILevel = {
   categoryId: '',

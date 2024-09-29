@@ -1,4 +1,4 @@
-import {ILevel, ILevelList} from 'interfaces/LevelInterface';
+import {ILevel, ILevelList} from 'interfaces/level-interface';
 import {useRouter} from 'next/router';
 import LevelItem from './LevelItem';
 import styled from 'styled-components';

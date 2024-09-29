@@ -1,4 +1,4 @@
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ICategory} from 'interfaces/category-interface';
 import CategoryModal from 'components/modal/CategoryModal';
 import {useContext, useState} from 'react';
 import {EditorContext} from 'store/EditorContext';

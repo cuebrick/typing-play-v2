@@ -2,13 +2,13 @@ import {ReactElement, useContext, useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import {observer} from 'mobx-react-lite';
 import {EditorContext, EditorProvider} from 'store/EditorContext';
-import {ILevel} from 'interfaces/LevelInterface';
+import {ILevel} from 'interfaces/level-interface';
 import {AuthContext, AuthProvider} from 'store/AuthContext';
 import EditorLevelForm from 'components/editor/EditorLevelForm';
 import {defaultLevelData} from 'default-objects/Level';
 import EditorLevelList from 'components/editor/EditorLevelList';
 import EditorCategoryList from 'components/editor/EditorCategoryList';
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ICategory} from 'interfaces/category-interface';
 import {CommonContext} from 'store/CommonContext';
 import styled from 'styled-components';
 

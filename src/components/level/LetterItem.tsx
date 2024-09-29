@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
-import {ILetter} from 'interfaces/LevelInterface';
+import {ILetter} from 'interfaces/level-interface';
 import clsx from 'clsx';
 import styled from 'styled-components';
 

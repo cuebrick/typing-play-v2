@@ -1,8 +1,8 @@
 import {useContext, useEffect, useState} from 'react';
 import {EditorContext} from 'store/EditorContext';
 import Hangul from 'korean-js/src/hangul';
-import {IKeyInput, IKeyData} from 'interfaces/LevelInterface';
-import KeyMap from 'modules/KeyMap';
+import {IKeyInput, IKeyData} from 'interfaces/level-interface';
+import KeyMap from 'modules/key-map';
 
 function useNextLetter(): [IKeyData, (list: IKeyInput[]) => void] {
   const [typingText, setTypingText] = useState<string[] | string[][]>();

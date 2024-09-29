@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import {ReactElement, useContext, useEffect, useState} from 'react';
-import {ILevelList} from 'interfaces/LevelInterface';
+import {ILevelList} from 'interfaces/level-interface';
 import {LevelContext, LevelProvider} from 'store/LevelContext';
 import LevelList from '../../components/level/LevelList';
 

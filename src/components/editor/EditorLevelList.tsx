@@ -1,10 +1,10 @@
 import {useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import {EditorContext} from 'store/EditorContext';
-import {ILevel} from 'interfaces/LevelInterface';
+import {ILevel} from 'interfaces/level-interface';
 import {defaultLevelData} from 'default-objects/Level';
 import EditorLevelItem from 'components/editor/EditorLevelItem';
-import {ICategory} from 'interfaces/CategoryInterface';
+import {ICategory} from 'interfaces/category-interface';
 import styled from 'styled-components';
 
 const Container = styled.div`

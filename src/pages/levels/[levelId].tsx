@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {IKeyData, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/LevelInterface';
+import {IKeyData, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/level-interface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'default-objects/Level';
 import {AuthContext} from 'store/AuthContext';

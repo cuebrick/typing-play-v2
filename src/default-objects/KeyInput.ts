@@ -1,4 +1,4 @@
-import {IKeyInput} from 'interfaces/LevelInterface';
+import {IKeyInput} from 'interfaces/level-interface';
 
 export const defaultKeyInputData: IKeyInput = {
   key: '',
