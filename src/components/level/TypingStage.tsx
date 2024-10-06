@@ -232,7 +232,7 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
               typingText: getTypingText(index)
             }}
             active={index === letterIndex}
-            isModify={modifyIndexList.includes(index)}
+            modified={modifyIndexList.includes(index)}
             itemIndex={index}
             currentIndex={letterIndex}
             key={letter.id}
