@@ -26,18 +26,6 @@ const Container = styled.div`
       border-color: rgba(220, 124, 181, 1);
     }
   }
-
-  &.correct .token {
-    background-color: #c4f2bd;
-  }
-
-  &.incorrect .token {
-    background-color: #f8a1ab;
-  }
-
-  &.isModify .token {
-    background-color: #ffd47e;
-  }
 `;
 
 const Token = styled.span`
@@ -47,6 +35,18 @@ const Token = styled.span`
   flex-shrink: 1;
   flex-basis: 1.4em;
   border-radius: 5px;
+
+  &.correct {
+    background-color: #c4f2bd;
+
+    &.modified {
+      background-color: #ffd47e;
+    }
+  }
+
+  &.incorrect {
+    background-color: #f8a1ab;
+  }
 `;
 
 const Typing = styled.span`
@@ -71,33 +71,17 @@ const Typing = styled.span`
 interface IProps {
   data: ILetter;
   active: boolean;
-  isModify: boolean;
+  modified: boolean;
   itemIndex: number;
   currentIndex: number;
 }
 
-function LetterItem({data, active, isModify, itemIndex, currentIndex}: IProps): JSX.Element {
-  const [assembledSampleText, setAssembledSampleText] = useState<string>();
-  const [assembledTypingText, setAssembledTypingText] = useState<string>();
-  const [correctTypo, setCorrectTypo] = useState<string>();
+function LetterItem({data, active, modified, itemIndex, currentIndex}: IProps): JSX.Element {
+  const [resultStatus, setResultStatus] = useState<'correct' | 'incorrect'>();
   const isReadyRef = useRef(false);
 
-  useEffect(() => {
-    if (data.sampleText) {
-      const assembled = Hangul.assemble(data.sampleText as string[]);
-      setAssembledSampleText(assembled);
-    }
-  }, [data.sampleText]);
-
-  useEffect(() => {
-    if (data.typingText) {
-      const assembled = Hangul.assemble(data.typingText as string[]);
-      setAssembledTypingText(assembled);
-    } else {
-      // 빈 텍스트는 undefined라 else에서 빈 string으로 초기화
-      setAssembledTypingText('');
-    }
-  }, [data, data.typingText, active, data.sampleText, isModify]);
+  const sampleText = Hangul.assemble((data.sampleText as string[]) || '');
+  const typingText = Hangul.assemble((data.typingText as string[]) || '');
 
   useEffect(() => {
     if (itemIndex === currentIndex || itemIndex === currentIndex - 1) {
@@ -107,23 +91,17 @@ function LetterItem({data, active, isModify, itemIndex, currentIndex}: IProps): 
     if (isReadyRef && itemIndex !== currentIndex) {
       isReadyRef.current = false;
       const result = JSON.stringify(data.sampleText) === JSON.stringify(data.typingText) ? 'correct' : 'incorrect';
-      if (data.typingText?.length || isModify) {
+      if (data.typingText?.length || modified) {
         // 자소 지우기                 // 글자 지우기 (글자 지울 시 isModify = true가 꼭 들어감)
-        setCorrectTypo(result);
+        setResultStatus(result);
       }
     }
   }, [currentIndex, itemIndex]);
 
   return (
-    <Container
-      className={clsx('letter-item', {active}, [
-        {incorrect: correctTypo === 'incorrect'},
-        {isModify: isModify && correctTypo === 'correct'},
-        {correct: !isModify && correctTypo === 'correct'}
-      ])}
-    >
-      <Token className="token">{assembledSampleText}</Token>
-      <Typing className="typing">{assembledTypingText}</Typing>
+    <Container className={clsx('letter-item', {active})}>
+      <Token className={clsx(resultStatus, {modified})}>{sampleText}</Token>
+      <Typing className="typing">{typingText}</Typing>
     </Container>
   );
 }
