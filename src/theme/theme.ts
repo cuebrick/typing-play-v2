@@ -38,6 +38,6 @@ export const defaultTheme: ITheme = {
     size: 16
   },
   layout: {
-    item_gap: 10
+    itemGap: 10
   }
 };
