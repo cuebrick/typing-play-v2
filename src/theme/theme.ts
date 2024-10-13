@@ -35,9 +35,12 @@ export const defaultTheme: ITheme = {
     confirm: '#0cf'
   },
   fonts: {
-    size: 16
+    size: 16,
+    typingItemSize: 32
   },
   layout: {
-    itemGap: 10
+    itemGap: 10,
+    typingItemLength: 15, // 한 줄에 들어가는 타자 길이
+    typingItemGap: 20
   }
 };

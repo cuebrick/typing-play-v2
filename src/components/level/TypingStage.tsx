@@ -4,7 +4,7 @@ import {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import LetterItem from 'components/level/LetterItem';
 import {IKeyData, IKeyInput, ILetter, ILevel} from 'interfaces/level-interface';
 import KeyMap, {arrangeKey} from 'modules/key-map';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -12,18 +12,43 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: #fff;
-  padding: 20px;
   width: 600px;
+  // desktop max-height: 3 line(sample + typing + gap) + {padding(20 * 2) + optical extra margin(50px)}
+  max-height: calc(
+    (${({theme}) => theme.fonts.typingItemSize * 1.5}px * 6) + (${({theme}) => theme.layout.typingItemGap}px * 2 + 80px)
+  );
   min-height: 130px;
+  overflow: hidden;
   font-size: 32px;
+  padding-top: 20px;
+  margin-bottom: 20px;
+
+  &::before {
+    content: '';
+    height: 30px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 1) 20%,
+      rgba(255, 255, 255, 0.8) 40%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+  }
 `;
 
 const TextLine = styled.div`
   width: 540px;
+  overflow: hidden;
   display: flex;
   flex-wrap: wrap;
   column-gap: 3px;
   row-gap: 20px;
+  padding-bottom: 20px;
+  scroll-behavior: smooth;
 `;
 
 interface IProps {
@@ -116,6 +141,7 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   const [modifyIndexList, setModifyIndexList] = useState<number[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
   const indexRefs = useRef<number>(0);
+  const theme = useTheme();
 
   const onRemoveText = useCallback(() => {
     // 자소 입력 모드에선 지울 때 현재 index가 아니라 이전 index를 지워야 함.
