@@ -6,7 +6,7 @@ const Container = styled.div`
   display: flex;
   width: calc(25% - 20px);
   height: 120px;
-  margin: ${({theme}) => theme.layout.item_gap}px;
+  margin: ${({theme}) => theme.layout.itemGap}px;
   padding: 10px;
   box-sizing: border-box;
   background-color: #fff;
@@ -16,12 +16,12 @@ const LevelInfo = styled.div``;
 const LevelNum = styled.div``;
 const LevelTitle = styled.div`
   flex-basis: 100%;
-  margin-left: ${({theme}) => theme.layout.item_gap}px;
-  margin-top: ${({theme}) => theme.layout.item_gap}px;
+  margin-left: ${({theme}) => theme.layout.itemGap}px;
+  margin-top: ${({theme}) => theme.layout.itemGap}px;
 `;
 const LevelSubTitle = styled.div`
-  margin-left: ${({theme}) => theme.layout.item_gap}px;
-  margin-top: ${({theme}) => theme.layout.item_gap}px;
+  margin-left: ${({theme}) => theme.layout.itemGap}px;
+  margin-top: ${({theme}) => theme.layout.itemGap}px;
 `;
 
 interface IProps {

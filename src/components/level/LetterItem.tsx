@@ -7,7 +7,8 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  line-height: 1.4em;
+  line-height: 1.5em;
+  text-align: center;
 
   &.active .typing {
     animation-name: currentText;
@@ -28,12 +29,12 @@ const Container = styled.div`
   }
 `;
 
-const Token = styled.span`
+const Sample = styled.span`
   color: #666;
   //min-width: 0.325em;
   width: 1em;
   flex-shrink: 1;
-  flex-basis: 1.4em;
+  flex-basis: 1.5em;
   border-radius: 5px;
 
   &.correct {
@@ -52,11 +53,11 @@ const Token = styled.span`
 const Typing = styled.span`
   min-width: 0.325em;
   flex-shrink: 1;
-  flex-basis: 1.4em;
+  flex-basis: 1.5em;
   border-bottom: 2px solid transparent;
 `;
 
-/*const TypingLineHighlighter = styled.div`
+/* const TypingLineHighlighter = styled.div`
   width: 550px;
   height: 50px;
   top: 62px;
@@ -66,7 +67,7 @@ const Typing = styled.span`
   font-size: 32px;
   line-height: 46px;
   padding: 3px;
-`;*/
+`; */
 
 interface IProps {
   data: ILetter;
@@ -100,7 +101,7 @@ function LetterItem({data, active, modified, itemIndex, currentIndex}: IProps): 
 
   return (
     <Container className={clsx('letter-item', {active})}>
-      <Token className={clsx(resultStatus, {modified})}>{sampleText}</Token>
+      <Sample className={clsx(resultStatus, {modified})}>{sampleText}</Sample>
       <Typing className="typing">{typingText}</Typing>
     </Container>
   );
