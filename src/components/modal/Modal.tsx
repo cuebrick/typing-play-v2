@@ -37,16 +37,12 @@ interface IProps {
   children?: ReactNode;
 }
 
-function Modal({type, children}: IProps): JSX.Element {
+function Modal({type = 'md', children}: IProps): JSX.Element {
   return (
     <Container>
       <ModalContainer className={type}>{children}</ModalContainer>
     </Container>
   );
 }
-
-Modal.defaultProps = {
-  type: 'md'
-};
 
 export default Modal;
