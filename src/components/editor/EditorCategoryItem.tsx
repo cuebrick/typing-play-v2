@@ -18,7 +18,6 @@ const Title = styled.div``;
 interface IProps {
   data: ICategory;
   isActive: boolean;
-
   onClick?(): void;
 }
 
@@ -31,9 +30,5 @@ function EditorCategoryItem({data, isActive, onClick}: IProps): JSX.Element {
     </Container>
   );
 }
-
-EditorCategoryItem.defaultProps = {
-  onClick: undefined
-};
 
 export default EditorCategoryItem;

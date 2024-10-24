@@ -38,7 +38,16 @@ type Props = {
   onChange(e: ChangeEvent): void;
 };
 
-function TextForm({type = 'text', id, name, value, placeholder, required, disabled, onChange}: Props): JSX.Element {
+function TextForm({
+  type = 'text',
+  id,
+  name,
+  value,
+  placeholder = '입력',
+  required = false,
+  disabled = false,
+  onChange
+}: Props): JSX.Element {
   if (type === 'textarea') {
     return (
       <TextareaContainer
@@ -65,10 +74,4 @@ function TextForm({type = 'text', id, name, value, placeholder, required, disabl
   );
 }
 
-TextForm.defaultProps = {
-  type: 'text',
-  placeholder: '입력',
-  required: false,
-  disabled: false
-};
 export default TextForm;

@@ -42,8 +42,4 @@ function LevelItem({levelData, onClick}: IProps): JSX.Element {
   );
 }
 
-LevelItem.defaultProps = {
-  onClick: undefined
-};
-
 export default LevelItem;
