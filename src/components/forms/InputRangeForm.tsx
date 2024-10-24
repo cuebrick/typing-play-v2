@@ -31,7 +31,7 @@ type Props = {
   onChange(e: ChangeEvent): void;
 };
 
-function InputRangeForm({name, width, value, onChange}: Props): JSX.Element {
+function InputRangeForm({name, width = 300, value, onChange}: Props): JSX.Element {
   const [count, setCount] = useState('');
   useEffect(() => {
     setCount(value);
@@ -50,9 +50,5 @@ function InputRangeForm({name, width, value, onChange}: Props): JSX.Element {
     </Container>
   );
 }
-
-InputRangeForm.defaultProps = {
-  width: 300
-};
 
 export default InputRangeForm;
