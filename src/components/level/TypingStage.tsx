@@ -141,6 +141,7 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
   const [modifyIndexList, setModifyIndexList] = useState<number[]>([]);
   const [letterIndex, setLetterIndex] = useState(0);
   const indexRefs = useRef<number>(0);
+  const textLineRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
   const onRemoveText = useCallback(() => {
@@ -206,6 +207,11 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
     onProgress(list);
   }, [letterList, onProgress, typingList]);
 
+  const checkKoreanText = (text: string): boolean => {
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
+    return korean.test(text);
+  };
+
   useEffect(() => {
     let nextTextData: string = '';
     if (level?.inputType === 'letter') {
@@ -243,14 +249,21 @@ function TypingStage({level, keyInput, onProgress, isFinished, setNextKey}: IPro
     return (level?.inputType === 'word' ? typingList?.[index] : list) as string[];
   };
 
-  const checkKoreanText = (text: string): boolean => {
-    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ]/;
-    return korean.test(text);
-  };
+  useEffect(() => {
+    if (textLineRef.current) {
+      // 1. 보정값 -0.0000001 : 해당 보정 값이 없으면 마지막 글자 타이핑 시 줄이 바뀜. 정수보다 클 때 작동하는 보정 값임.
+      // 2. 보정값 -1 : 타이핑 중인 줄이 2 => 3으로 넘어갈 때 작동하도록 함.
+      // scrollTo로 동작하기에 음수의 경우는 고려하지 않음.
+      const currentTypingLine = Math.floor(typingList.length / theme.layout.typingItemLength - 1.0000001);
+      const offsetY =
+        currentTypingLine * 1.5 * 2 * theme.fonts.typingItemSize + currentTypingLine * theme.layout.typingItemGap;
+      textLineRef.current.scrollTo(0, offsetY);
+    }
+  }, [typingList]);
 
   return (
     <Container>
-      <TextLine>
+      <TextLine ref={textLineRef}>
         {letterList?.map((letter, index) => (
           <LetterItem
             data={{
