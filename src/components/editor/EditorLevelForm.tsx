@@ -17,6 +17,7 @@ import {ILanguage} from 'interfaces/language-interface';
 import {EditorContext} from 'store/EditorContext';
 import styled from 'styled-components';
 import Button from 'components/forms/Button';
+import TimeSelector, {TimeUnitTypes} from 'components/forms/TimeSelector';
 
 const Container = styled.div`
   flex-grow: 1;
@@ -114,6 +115,13 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
     return store.levelList.some((level) => level.id !== data.id && level.order === data.order);
   };
 
+  const [timeValue, setTimeValue] = useState<number>();
+  const [timeUnit, setTimeUnit] = useState<TimeUnitTypes>();
+  const onChangeTimeSelector = (value: number, unit: TimeUnitTypes, isDisabled: boolean): void => {
+    setTimeValue(value);
+    setTimeUnit(unit);
+  };
+
   return (
     <Container>
       <LevelFormHeader>
@@ -203,6 +211,12 @@ function EditorLevelForm({levelData, onSave, onCreate}: IProps): JSX.Element {
           <FormLabel>order</FormLabel>
           <FormData>
             <NumberStepper name="order" value={data.order} invalidated={isInvalidatedOrder()} onStep={onChangeOrder} />
+          </FormData>
+        </FormRow>
+        <FormRow>
+          <FormLabel>Time Selector</FormLabel>
+          <FormData>
+            <TimeSelector value={timeValue ?? 1} min={10} max={40} unit="minute" onChange={onChangeTimeSelector} />
           </FormData>
         </FormRow>
         {/* <pre>{JSON.stringify(data, null, '\t')}</pre> */}
