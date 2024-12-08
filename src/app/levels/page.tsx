@@ -1,3 +1,5 @@
+'use client';
+
 import {observer} from 'mobx-react-lite';
 import {ReactElement, useContext, useEffect, useState} from 'react';
 import {ILevelList} from 'interfaces/level-interface';

@@ -1,3 +1,5 @@
+'use client';
+
 import FormLabel from 'components/forms/FormLabel';
 import FormRow from 'components/forms/FormRow';
 import FormData from 'components/forms/FormData';

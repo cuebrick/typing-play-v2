@@ -1,6 +1,19 @@
+'use client';
+
 import {Context, createContext, PropsWithChildren, useContext} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
-import {collection, doc, getDoc, getDocs, orderBy, query, QuerySnapshot, Timestamp, where} from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  QuerySnapshot,
+  setDoc,
+  Timestamp,
+  where
+} from 'firebase/firestore';
 import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
 import {IAppInfo} from '../interfaces/app-info';
@@ -118,7 +131,7 @@ const defaultState: ILevelContext = {
       const docRef = await doc(collection(db, 'userTypingData'));
       userTypingData.createdAt = Timestamp.now();
       userTypingData.id = docRef.id;
-      // await setDoc(docRef, userTypingData);  // todo: 기능 개발 후 주석 해제
+      // await setDoc(docRef, userTypingData); // todo: 기능 개발 후 주석 해제
       return docRef;
     } catch (error) {
       console.error('failed save userTypingData');

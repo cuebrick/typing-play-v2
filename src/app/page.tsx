@@ -1,3 +1,5 @@
+'use client';
+
 import CardItem from 'components/CardItem';
 import WelcomeCardItem from 'components/pages/WelcomeCardItem';
 import LoginCardItem from 'components/pages/LoginCardItem';

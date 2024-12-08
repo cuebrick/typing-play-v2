@@ -1,7 +1,7 @@
 import {ILevel, ILevelList} from 'interfaces/level-interface';
-import {useRouter} from 'next/router';
-import LevelItem from './LevelItem';
+import {useRouter} from 'next/navigation';
 import styled from 'styled-components';
+import LevelItem from './LevelItem';
 
 const Container = styled.div`
   display: flex;

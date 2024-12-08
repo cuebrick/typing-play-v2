@@ -1,5 +1,7 @@
+'use client';
+
 import {ReactElement, useContext, useEffect, useState} from 'react';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import {observer} from 'mobx-react-lite';
 import {EditorContext, EditorProvider} from 'store/EditorContext';
 import {ILevel} from 'interfaces/level-interface';
