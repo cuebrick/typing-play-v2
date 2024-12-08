@@ -1,4 +1,5 @@
-import {useRouter} from 'next/router';
+'use client';
+
 import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
@@ -18,9 +19,8 @@ const TypingLevel = styled.div`
   flex-direction: column;
 `;
 
-function LevelsIdPage(): JSX.Element {
-  const router = useRouter();
-  const {levelId} = router.query;
+function LevelsIdPage({params}: {params: {levelId: string}}): JSX.Element {
+  const {levelId} = params;
   const store = useContext(LevelContext);
   const authStore = useContext(AuthContext);
   const commonStore = useContext(CommonContext);

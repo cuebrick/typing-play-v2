@@ -1,3 +1,5 @@
+'use client';
+
 import {ReactNode, useContext} from 'react';
 import {observer} from 'mobx-react-lite';
 import Image from 'next/image';

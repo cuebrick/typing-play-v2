@@ -1,3 +1,5 @@
+'use client';
+
 import {Context, createContext, PropsWithChildren} from 'react';
 import {useLocalObservable} from 'mobx-react-lite';
 import {runInAction} from 'mobx';

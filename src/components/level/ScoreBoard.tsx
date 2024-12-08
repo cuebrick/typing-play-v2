@@ -1,7 +1,7 @@
 import {IKeyInput, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/level-interface';
 import {useCallback, useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 
 interface IProps {
   levelData: ILevel | null;

@@ -1,4 +1,6 @@
-import {useRouter} from 'next/router';
+'use client';
+
+import {useRouter} from 'next/navigation';
 import {useContext} from 'react';
 import {observer} from 'mobx-react-lite';
 import {AuthContext} from 'store/AuthContext';

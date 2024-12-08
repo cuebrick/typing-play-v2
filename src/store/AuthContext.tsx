@@ -1,3 +1,5 @@
+'use client';
+
 import {runInAction} from 'mobx';
 import {useLocalObservable} from 'mobx-react-lite';
 import {User} from '@firebase/auth';

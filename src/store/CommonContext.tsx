@@ -1,3 +1,5 @@
+'use client';
+
 import {IModeless} from 'interfaces/common-interface';
 import StringUtils from 'modules/string-utils';
 import {Context, createContext, PropsWithChildren} from 'react';
