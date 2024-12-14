@@ -1,9 +1,9 @@
 'use client';
 
 import {observer} from 'mobx-react-lite';
-import {ReactElement, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {ILevelList} from 'interfaces/level-interface';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {LevelContext} from 'store/LevelContext';
 import LevelList from '../../components/level/LevelList';
 
 function LevelsIndexPage(): JSX.Element {
@@ -20,9 +20,5 @@ function LevelsIndexPage(): JSX.Element {
     </div>
   );
 }
-
-LevelsIndexPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
-};
 
 export default observer(LevelsIndexPage);
