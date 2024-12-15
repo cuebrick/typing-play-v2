@@ -1,6 +1,6 @@
 'use client';
 
-import {ReactElement, useCallback, useContext, useEffect, useState} from 'react';
+import {useCallback, useContext, useEffect, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
@@ -10,7 +10,7 @@ import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'default-objects/Level';
 import {AuthContext} from 'store/AuthContext';
 import {CommonContext} from 'store/CommonContext';
-import {LevelContext, LevelProvider} from 'store/LevelContext';
+import {LevelContext} from 'store/LevelContext';
 import styled from 'styled-components';
 
 const TypingLevel = styled.div`
@@ -121,9 +121,5 @@ function LevelsIdPage({params}: {params: {levelId: string}}): JSX.Element {
     </TypingLevel>
   );
 }
-
-LevelsIdPage.getProvider = (page: ReactElement): ReactElement => {
-  return <LevelProvider>{page}</LevelProvider>;
-};
 
 export default observer(LevelsIdPage);
