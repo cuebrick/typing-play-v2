@@ -9,7 +9,7 @@ export type InputTypes = 'letter' | 'word';
 export type OrderDirections = 'asc' | 'desc';
 export type Languages = 'ko' | 'en';
 
-export interface ILevelList {
+export interface ILevelInfo {
   id: string;
   title: string;
   order: number;
