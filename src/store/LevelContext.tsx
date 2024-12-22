@@ -17,7 +17,7 @@ import {
 import {reaction, runInAction} from 'mobx';
 import {db} from '../database';
 import {IAppInfo} from '../interfaces/app-info';
-import {ILevel, ILevelList, ILevelListParams, IUserTypingData} from '../interfaces/level-interface';
+import {ILevel, ILevelInfo, ILevelListParams, IUserTypingData} from '../interfaces/level-interface';
 import {ICategory} from '../interfaces/category-interface';
 import {AuthContext} from './AuthContext';
 
@@ -65,7 +65,7 @@ const defaultState: ILevelContext = {
     //   levelList.push(data);
     // }
 
-    const levelList: ILevelList[] = await Promise.all(
+    const levelList: ILevelInfo[] = await Promise.all(
       categoryList.map(async (category: ICategory) => {
         const result = await this.getLevelData({categoryId: category.id});
         return {

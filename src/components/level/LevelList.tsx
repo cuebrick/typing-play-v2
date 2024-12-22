@@ -1,4 +1,4 @@
-import {ILevel, ILevelList} from 'interfaces/level-interface';
+import {ILevel, ILevelInfo} from 'interfaces/level-interface';
 import {useRouter} from 'next/navigation';
 import styled from 'styled-components';
 import LevelItem from './LevelItem';
@@ -14,7 +14,7 @@ const GroupTitle = styled.p`
 `;
 
 interface IProps {
-  levelList: ILevelList;
+  levelList: ILevelInfo;
 }
 
 function LevelList({levelList}: IProps): JSX.Element | null {

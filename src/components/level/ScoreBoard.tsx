@@ -1,4 +1,4 @@
-import {IKeyInput, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/level-interface';
+import {IKeyInput, ILetter, ILevel, ILevelInfo, IScoreData} from 'interfaces/level-interface';
 import {useCallback, useEffect, useState} from 'react';
 import Hangul from 'korean-js/src/hangul';
 import {useRouter} from 'next/navigation';
@@ -96,7 +96,7 @@ function ScoreBoard({
     if (letterList) {
       // 점수계산 및 서버에 저장 후 다음 행동 선택(목록 or 다음레벨)
       const currentCategory = JSON.parse(localStorage.getItem('levelList') as string).find(
-        (item: ILevelList) => item.id === levelData.categoryId
+        (item: ILevelInfo) => item.id === levelData.categoryId
       );
       const result = currentCategory.levels.find((item: ILevel) => item.order === levelData.order + 1);
       setNextLevel(result);

@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import Keyboard from 'components/level/Keyboard';
 import TypingStage from 'components/level/TypingStage';
 import useKeyboardInput from 'hooks/useKeyboardInput';
-import {IKeyData, ILetter, ILevel, ILevelList, IScoreData} from 'interfaces/level-interface';
+import {IKeyData, ILetter, ILevel, ILevelInfo, IScoreData} from 'interfaces/level-interface';
 import ScoreBoard from 'components/level/ScoreBoard';
 import {defaultUserTypingData} from 'default-objects/Level';
 import {AuthContext} from 'store/AuthContext';
@@ -63,10 +63,10 @@ function LevelsIdPage({params}: {params: {levelId: string}}): JSX.Element {
     }
 
     if (levelId) {
-      const levelList: ILevelList[] = JSON.parse(localStorage.getItem('levelList')!);
+      const levelList: ILevelInfo[] = JSON.parse(localStorage.getItem('levelList')!);
 
       const levelData: ILevel | null = levelList.reduce(
-        (foundLevel: ILevel | null, item: ILevelList): ILevel | null => {
+        (foundLevel: ILevel | null, item: ILevelInfo): ILevel | null => {
           if (foundLevel !== null) {
             return foundLevel;
           }
