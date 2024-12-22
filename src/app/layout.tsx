@@ -3,6 +3,7 @@ import {LevelProvider} from '../store/LevelContext';
 import {CommonProvider} from '../store/CommonContext';
 import {AuthProvider} from '../store/AuthContext';
 import DefaultLayout from '../components/layout/DefaultLayout';
+import {EditorProvider} from '../store/EditorContext';
 
 export const metadata = {
   title: 'Typing play',
@@ -13,13 +14,15 @@ function RootLayout({children}: PropsWithChildren) {
   return (
     <html lang="ko">
       <body>
-        <AuthProvider>
-          <LevelProvider>
-            <CommonProvider>
-              <DefaultLayout>{children}</DefaultLayout>
-            </CommonProvider>
-          </LevelProvider>
-        </AuthProvider>
+        <CommonProvider>
+          <AuthProvider>
+            <EditorProvider>
+              <LevelProvider>
+                <DefaultLayout>{children}</DefaultLayout>
+              </LevelProvider>
+            </EditorProvider>
+          </AuthProvider>
+        </CommonProvider>
       </body>
     </html>
   );
