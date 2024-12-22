@@ -1,3 +1,5 @@
+'use client';
+
 import {ILevel, ILevelInfo} from 'interfaces/level-interface';
 import {useRouter} from 'next/navigation';
 import styled from 'styled-components';
@@ -18,17 +20,11 @@ interface IProps {
 }
 
 function LevelList({levelList}: IProps): JSX.Element | null {
-  const router = useRouter();
-
-  const onClickLevelItem = (level: ILevel): void => {
-    router.push(`/levels/${level.id}`);
-  };
-
   return (
     <Container>
       <GroupTitle>{levelList.title}</GroupTitle>
       {levelList.levels.map((level: ILevel) => (
-        <LevelItem levelData={level} onClick={() => onClickLevelItem(level)} key={level.id} />
+        <LevelItem levelData={level} key={level.id} />
       ))}
     </Container>
   );
