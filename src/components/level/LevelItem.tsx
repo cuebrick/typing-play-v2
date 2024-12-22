@@ -1,5 +1,8 @@
+'use client';
+
 import {ILevel} from 'interfaces/level-interface';
 import styled from 'styled-components';
+import {useRouter} from 'next/navigation';
 import TrophyBadge from './TrophyBadge';
 
 const Container = styled.div`
@@ -26,12 +29,17 @@ const LevelSubTitle = styled.div`
 
 interface IProps {
   levelData: ILevel;
-  onClick?(): void;
 }
 
-function LevelItem({levelData, onClick}: IProps): JSX.Element {
+function LevelItem({levelData}: IProps): JSX.Element {
+  const router = useRouter();
+
+  const onClickLevelItem = (level: ILevel): void => {
+    router.push(`/levels/${level.id}`);
+  };
+
   return (
-    <Container onClick={onClick}>
+    <Container onClick={() => onClickLevelItem(levelData)}>
       <TrophyBadge />
       <LevelInfo>
         <LevelNum>00</LevelNum>

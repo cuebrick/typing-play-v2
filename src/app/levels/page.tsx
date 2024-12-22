@@ -1,24 +1,19 @@
 'use client';
 
-import {observer} from 'mobx-react-lite';
-import {useContext, useEffect, useState} from 'react';
-import {ILevelList} from 'interfaces/level-interface';
-import {LevelContext} from 'store/LevelContext';
+import {ILevelInfo} from 'interfaces/level-interface';
 import LevelList from '../../components/level/LevelList';
 
 function LevelsIndexPage(): JSX.Element {
-  const store = useContext(LevelContext);
-  // const [levelData, setLevelData] = useState<ILevel[]>([]);
-  const [levelData, setLevelData] = useState<ILevelList[]>([]);
-  useEffect(() => {
-    setLevelData(JSON.parse(localStorage.getItem('levelList') as string));
-  }, [store.checkedApp]);
+  // const store = useContext(LevelContext);
+  // const levelData = store.checkedApp ? JSON.parse(localStorage.getItem('levelList') as string) : [];
+
+  const levelData = JSON.parse(localStorage.getItem('levelList') as string) || [];
 
   return (
     <div className="level-wrap">
-      {levelData && levelData.map((levelList: ILevelList) => <LevelList key={levelList.id} levelList={levelList} />)}
+      {levelData && levelData.map((levelInfo: ILevelInfo) => <LevelList key={levelInfo.id} levelList={levelInfo} />)}
     </div>
   );
 }
 
-export default observer(LevelsIndexPage);
+export default LevelsIndexPage;
