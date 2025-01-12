@@ -1,3 +1,5 @@
+'use client';
+
 import {useContext} from 'react';
 import {CommonContext} from 'store/CommonContext';
 import {observer} from 'mobx-react-lite';

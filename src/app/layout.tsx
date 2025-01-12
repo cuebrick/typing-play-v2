@@ -1,9 +1,12 @@
 import {PropsWithChildren} from 'react';
-import {LevelProvider} from '../store/LevelContext';
 import {CommonProvider} from '../store/CommonContext';
 import {AuthProvider} from '../store/AuthContext';
-import DefaultLayout from '../components/layout/DefaultLayout';
-import {EditorProvider} from '../store/EditorContext';
+import Modeless from '../components/modeless/Modeless';
+import UserInfo from '../components/layout/UserInfo';
+import AppLogo from '../components/layout/AppLogo';
+import StyledComponentsRegistry from '../lib/styles/registry';
+import DefaultLayoutHeader from '../components/layout/DefaultLayoutHeader';
+import ContentsBody from '../components/layout/ContentsBody';
 
 export const metadata = {
   title: 'Typing play',
@@ -16,11 +19,14 @@ function RootLayout({children}: PropsWithChildren) {
       <body>
         <CommonProvider>
           <AuthProvider>
-            <EditorProvider>
-              <LevelProvider>
-                <DefaultLayout>{children}</DefaultLayout>
-              </LevelProvider>
-            </EditorProvider>
+            <StyledComponentsRegistry>
+              <DefaultLayoutHeader>
+                <AppLogo />
+                <UserInfo />
+              </DefaultLayoutHeader>
+              <ContentsBody>{children}</ContentsBody>
+              <Modeless />
+            </StyledComponentsRegistry>
           </AuthProvider>
         </CommonProvider>
       </body>
