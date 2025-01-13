@@ -14,14 +14,14 @@ export const GlobalStyle = createGlobalStyle`
   // base style
   body {
       background-color: ${defaultTheme.presets.light.background};
-      font-size: ${defaultTheme.fonts.size};
+      font-size: ${defaultTheme.fonts.size}px;
   }
 
   input[type=text],
   input[type=password],
   textarea,
   select {
-      font-size: ${defaultTheme.fonts.size};
+      font-size: ${defaultTheme.fonts.size}px;
   }
 
   input, textarea, select {
