@@ -13,15 +13,15 @@ import ContentsBody from '../../components/layout/ContentsBody';
 function EditorLayout({children}: PropsWithChildren): JSX.Element {
   return (
     <EditorProvider>
-      {/* <ThemeProvider theme={defaultTheme}>
-        <DefaultLayoutHeader>
+      <ThemeProvider theme={defaultTheme}>
+        {/* <DefaultLayoutHeader>
           <AppLogo />
           <UserInfo />
         </DefaultLayoutHeader>
         <ContentsBody>{children}</ContentsBody>
-        <Modeless />
-      </ThemeProvider> */}
-      {children}
+        <Modeless /> */}
+        {children}
+      </ThemeProvider>
     </EditorProvider>
   );
 }
