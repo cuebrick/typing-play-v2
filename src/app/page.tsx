@@ -1,22 +1,8 @@
-'use client';
-
-import CardItem from 'components/CardItem';
+import CardItem from 'components/root/CardItem';
 import WelcomeCardItem from 'components/pages/WelcomeCardItem';
 import LoginCardItem from 'components/pages/LoginCardItem';
-import styled from 'styled-components';
-
-const Welcome = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-`;
-const CardWrap = styled.div`
-  width: 1120px;
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-`;
+import Welcome from 'components/root/Welcome';
+import CardWrap from 'components/root/CardWrap';
 
 function IndexPage(): JSX.Element {
   return (
