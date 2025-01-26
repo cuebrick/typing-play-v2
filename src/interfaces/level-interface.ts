@@ -75,6 +75,7 @@ export interface IScoreData {
   speed: number;
   duration: number;
   score: number;
+  trophy: number;
 }
 
 export interface IUserTypingData extends IScoreData {
