@@ -3,7 +3,7 @@
 import {ILevel} from 'interfaces/level-interface';
 import styled from 'styled-components';
 import {useRouter} from 'next/navigation';
-import TrophyBadge from './TrophyBadge';
+import Trophy from 'components/level/Trophy';
 
 const Container = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ function LevelItem({levelData}: IProps): JSX.Element {
 
   return (
     <Container onClick={() => onClickLevelItem(levelData)}>
-      <TrophyBadge />
+      <Trophy trophy={Math.floor(Math.random() * 4)} />
       <LevelInfo>
         <LevelNum>00</LevelNum>
         <LevelTitle>{levelData.title}</LevelTitle>
