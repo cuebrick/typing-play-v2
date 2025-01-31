@@ -75,7 +75,8 @@ function ScoreBoard({
       accuracy: typingAccuracy,
       speed: typingSpeed,
       duration: Math.floor(typingDuration),
-      score: 0
+      score: 0, // todo: 계산식 추가
+      trophy: 0 // todo: 계산식 추가
     };
     setScoreData(data);
     onSaveUserTypingData(data);
