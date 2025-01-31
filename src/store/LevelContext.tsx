@@ -23,16 +23,21 @@ import {AuthContext} from './AuthContext';
 
 export interface ILevelContext {
   checkedApp: boolean;
+  levelRecord: IUserTypingData[] | null;
   getAppInfo(): Promise<IAppInfo>;
   getCategoryList(): void;
   getLevelList(): void;
   getLevelData(params: ILevelListParams): Promise<ILevel[]>;
   checkAppVersion(): void;
   saveUserTypingData(userTypingData: IUserTypingData): void;
+
+  getLevelRecord(uid: string | null): void;
+  getUserLevelRecord(levelId: string): number;
 }
 
 const defaultState: ILevelContext = {
   checkedApp: false,
+  levelRecord: null,
   async getAppInfo() {
     const docRef = doc(db, 'application', 'info');
     const docSnap = await getDoc(docRef);
@@ -149,12 +154,40 @@ const defaultState: ILevelContext = {
       const docRef = await doc(collection(db, 'userTypingData'));
       userTypingData.createdAt = Timestamp.now();
       userTypingData.id = docRef.id;
-      // await setDoc(docRef, userTypingData); // todo: 기능 개발 후 주석 해제
+      await setDoc(docRef, userTypingData); // todo: 기능 개발 후 주석 해제
       return docRef;
     } catch (error) {
       console.error('failed save userTypingData');
       return error;
     }
+  },
+
+  /**
+   * 현재 유저의 모든 타자 기록을 가져옴.
+   * @param userId
+   */
+  async getLevelRecord(userId: string | null) {
+    if (!userId) return;
+
+    const q = query(collection(db, 'userTypingData'), where('userId', '==', userId));
+    const querySnapshot: QuerySnapshot = await getDocs(q);
+    const list: IUserTypingData[] = [];
+    querySnapshot.forEach((docObj) => {
+      list.push(docObj.data() as IUserTypingData);
+    });
+    this.levelRecord = list;
+  },
+
+  /**
+   * 각 레벨의 기록을 가져옴.
+   * 이 숫자를 이용해 트로피 별을 표시하며, 기록이 없을 땐 -99로 표기.
+   * @param levelId
+   */
+  getUserLevelRecord(levelId: string) {
+    const result = this.levelRecord?.find((record) => {
+      return record.levelId === levelId;
+    });
+    return result ? result.trophy : -99;
   }
 };
 
@@ -168,6 +201,7 @@ export function LevelProvider({children}: PropsWithChildren) {
     (userData) => {
       if (userData) {
         store.checkAppVersion();
+        store.getLevelRecord(userData.uid);
       }
     }
   );

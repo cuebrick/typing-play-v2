@@ -1,17 +1,34 @@
+import styled from 'styled-components';
+
 type IProps = {
+  /**
+   * 0 ~ 3, -99(기록이 없는 경우),
+   */
   trophy: number;
 };
 
+const Container = styled.svg<{$trophy: number}>`
+  // no record effect
+  ${(props) => (props.$trophy === -99 ? 'filter: grayscale(100%); opacity: 0.3;' : '')}
+`;
+
 function Trophy({trophy}: IProps): JSX.Element {
   return (
-    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Container
+      $trophy={trophy}
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         d="M50 97.5C76.2335 97.5 97.5 76.2335 97.5 50C97.5 23.7665 76.2335 2.5 50 2.5C23.7665 2.5 2.5 23.7665 2.5 50C2.5 76.2335 23.7665 97.5 50 97.5Z"
         fill="#152867"
         stroke="#ABE1FF"
-        stroke-width="5"
+        strokeWidth="5"
       />
-      <g clip-path="url(#clip0_1037_7)">
+      <g clipPath="url(#clip0_1037_7)">
         <path
           d="M32.8602 55.2406H27.418C21.6648 55.2406 17 50.5119 17 44.6799C17 38.8478 21.6648 34.1191 27.418 34.1191H32.8602C33.6031 34.1191 34.2078 34.7321 34.2078 35.4852C34.2078 36.2383 33.6031 36.8513 32.8602 36.8513H27.418C23.1679 36.8513 19.7125 40.354 19.7125 44.6624C19.7125 48.9707 23.1679 52.4734 27.418 52.4734H32.8602C33.6031 52.4734 34.2078 53.0864 34.2078 53.8395C34.2078 54.5926 33.6204 55.2406 32.8602 55.2406Z"
           fill="#CCA400"
@@ -65,7 +82,7 @@ function Trophy({trophy}: IProps): JSX.Element {
           <rect x="5" y="5" width="90" height="90" rx="45" fill="white" />
         </clipPath>
       </defs>
-    </svg>
+    </Container>
   );
 }
 
