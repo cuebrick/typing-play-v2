@@ -4,6 +4,8 @@ import {ILevel} from 'interfaces/level-interface';
 import styled from 'styled-components';
 import {useRouter} from 'next/navigation';
 import Trophy from 'components/level/Trophy';
+import {useContext} from 'react';
+import {LevelContext} from '../../store/LevelContext';
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +35,16 @@ interface IProps {
 
 function LevelItem({levelData}: IProps): JSX.Element {
   const router = useRouter();
+  const store = useContext(LevelContext);
+  const trophy = store.getUserLevelRecord(levelData.id);
+
+  // todo: store.getLevelRecord 실행 전에 store.getUserLevelRecord 먼저 작동함.
+  // todo: store.levelRecord 갱신 후 store.getUserLevelRecord 작동하도록 수정해야 함.
+
+  /* const [trophy, setTrophy] = useState<number>(-99);
+  useEffect(() => {
+    setTrophy(store.getUserLevelRecord(levelData.id));
+  }, [store.levelRecord]); */
 
   const onClickLevelItem = (level: ILevel): void => {
     router.push(`/levels/${level.id}`);
@@ -40,7 +52,7 @@ function LevelItem({levelData}: IProps): JSX.Element {
 
   return (
     <Container onClick={() => onClickLevelItem(levelData)}>
-      <Trophy trophy={Math.floor(Math.random() * 4)} />
+      <Trophy trophy={trophy} />
       <LevelInfo>
         <LevelNum>00</LevelNum>
         <LevelTitle>{levelData.title}</LevelTitle>
@@ -50,4 +62,5 @@ function LevelItem({levelData}: IProps): JSX.Element {
   );
 }
 
+// export default observer(LevelItem);
 export default LevelItem;
