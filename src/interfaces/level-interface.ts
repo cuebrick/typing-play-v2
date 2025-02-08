@@ -34,6 +34,10 @@ export interface ILevel {
   order: number;
 }
 
+export interface ILevelWithUserRecord extends ILevel {
+  userRecord?: IUserTypingData;
+}
+
 export interface ILevelListParams {
   categoryId?: string;
   orderBy?: string;
@@ -82,6 +86,7 @@ export interface IUserTypingData extends IScoreData {
   id: string;
   userId: string | null | undefined;
   levelId: string;
+  categoryId: string;
   keyInputList: IKeyInput[];
   createdAt: Timestamp | null;
 }
