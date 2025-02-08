@@ -4,7 +4,7 @@ type IProps = {
   /**
    * 0 ~ 3, -99(기록이 없는 경우),
    */
-  trophy: number;
+  trophy: number | undefined;
 };
 
 const Container = styled.svg<{$trophy: number}>`
@@ -12,7 +12,7 @@ const Container = styled.svg<{$trophy: number}>`
   ${(props) => (props.$trophy === -99 ? 'filter: grayscale(100%); opacity: 0.3;' : '')}
 `;
 
-function Trophy({trophy}: IProps): JSX.Element {
+function Trophy({trophy = -99}: IProps): JSX.Element {
   return (
     <Container
       $trophy={trophy}
