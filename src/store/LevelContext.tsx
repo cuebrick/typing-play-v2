@@ -32,7 +32,6 @@ export interface ILevelContext {
   saveUserTypingData(userTypingData: IUserTypingData): void;
 
   getLevelRecord(uid: string | null): void;
-  // getUserLevelRecord(levelId: string): number;
   getUserLevelRecord(levelId: string): IUserTypingData | undefined;
 }
 
@@ -178,18 +177,6 @@ const defaultState: ILevelContext = {
     });
     this.levelRecord = list;
   },
-
-  /**
-   * 각 레벨의 기록을 가져옴.
-   * 이 숫자를 이용해 트로피 별을 표시하며, 기록이 없을 땐 -99로 표기.
-   * @param levelId
-   */
-  /* getUserLevelRecord(levelId: string) {
-    const result = this.levelRecord?.find((record) => {
-      return record.levelId === levelId;
-    });
-    return result ? result.trophy : -99;
-  }, */
 
   /**
    * 해당 레벨의 기록을 가져옴.

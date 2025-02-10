@@ -34,14 +34,6 @@ interface IProps {
 function LevelItem({levelData}: IProps): JSX.Element {
   const router = useRouter();
 
-  // todo: store.getLevelRecord 실행 전에 store.getUserLevelRecord 먼저 작동함.
-  // todo: store.levelRecord 갱신 후 store.getUserLevelRecord 작동하도록 수정해야 함.
-
-  /* const [trophy, setTrophy] = useState<number>(-99);
-  useEffect(() => {
-    setTrophy(store.getUserLevelRecord(levelData.id));
-  }, [store.levelRecord]); */
-
   const onClickLevelItem = (level: ILevelWithUserRecord): void => {
     router.push(`/levels/${level.id}`);
   };
@@ -58,5 +50,4 @@ function LevelItem({levelData}: IProps): JSX.Element {
   );
 }
 
-// export default observer(LevelItem);
 export default LevelItem;
