@@ -14,7 +14,7 @@ function LoginCardItem(): JSX.Element {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [isNewAccount, setIsNewAccount] = useState(true);
+  const [isNewAccount, setIsNewAccount] = useState(false);
   const [loginUser, setLoginUser] = useState(auth.currentUser);
 
   const levelStore = useContext(LevelContext);
@@ -91,12 +91,14 @@ function LoginCardItem(): JSX.Element {
                 <TextForm onChange={onChange} name="email" required value={email} />
               </FormData>
             </FormRow>
-            <FormRow>
-              <FormLabel htmlFor="userName">사용자 이름</FormLabel>
-              <FormData>
-                <TextForm onChange={onChange} name="userName" required value={userName} />
-              </FormData>
-            </FormRow>
+            {isNewAccount && (
+              <FormRow>
+                <FormLabel htmlFor="userName">사용자 이름</FormLabel>
+                <FormData>
+                  <TextForm onChange={onChange} name="userName" required value={userName} />
+                </FormData>
+              </FormRow>
+            )}
             <FormRow>
               <FormLabel htmlFor="password">비밀번호</FormLabel>
               <FormData>
