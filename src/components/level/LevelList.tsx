@@ -10,6 +10,11 @@ import {LevelContext} from '../../store/LevelContext';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 20px;
+
+  @media screen and (min-width: 360px) {
+    padding: 10px;
+  }
 `;
 const GroupTitle = styled.p`
   flex-basis: 100%;
@@ -37,8 +42,8 @@ function LevelList({levelList}: IProps): JSX.Element | null {
   return (
     <Container>
       <GroupTitle>{levelList.title}</GroupTitle>
-      {levels.map((level: ILevelWithUserRecord) => (
-        <LevelItem levelData={level} key={level.id} />
+      {levels.map((level: ILevelWithUserRecord, index: number) => (
+        <LevelItem levelData={level} index={index} key={level.id} />
       ))}
     </Container>
   );
