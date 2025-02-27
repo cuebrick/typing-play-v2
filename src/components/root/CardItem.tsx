@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import {PropsWithChildren} from 'react';
 
 const Container = styled.div`
   background-color: #fff;
@@ -9,7 +10,13 @@ const Container = styled.div`
 const CardHeader = styled.div``;
 const CardBody = styled.div``;
 
-function CardItem({title, children, width, height}: any): JSX.Element {
+interface IProps {
+  title: string;
+  width: number;
+  height: number;
+}
+
+function CardItem({title, children, width, height}: PropsWithChildren<IProps>): JSX.Element {
   return (
     <Container style={{width, height}}>
       <CardHeader>{title}</CardHeader>
