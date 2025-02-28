@@ -22,6 +22,7 @@ export const defaultTheme: ITheme = {
   presets: {
     light: {
       text: '#333',
+      gray: '#666',
       background: '#DDD',
       buttonBackground: '#eff7fd',
       buttonText: '#bdd7df'
